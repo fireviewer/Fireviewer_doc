@@ -16,6 +16,12 @@ Chaque contrat possède :
 
 | Contrat | Producteur | Consommateurs | Rôle |
 | --- | --- | --- | --- |
+| Event candidate v2 | Frontend / Backend | Backend / AI worker | Point de vue, temps, message, preuves et admission privée. |
+| Event and provenance v2 | Backend | Frontend / AI worker / spatial | Événements, révisions, relations, temporalité et filiation. |
+| External source artifact | Connecteur / Backend | Backend / AI worker | Produit officiel ou capteur, révision, licence, CRS et parents. |
+| Localization attempt | AI worker / spatial | Backend / frontend Admin | Géométrie proposée ou abstention rejouable. |
+| Activity envelope revision | Backend / spatial | Frontend / publication | Enveloppe probable et événements supports. |
+| Publication snapshot | Backend | Frontend | Projection publique versionnée et retirable ; payload immuable, suppression interdite, hash revérifié et rétractation unique auditée dans le socle local. |
 | Incident public | Backend | Frontend | Métadonnées et état public de l’incident. |
 | Viewer manifest | Backend | Frontend | Asset courant, ETag et état du viewer. |
 | Public incident view | Backend | Frontend | Faits et observations publiés. |
@@ -65,8 +71,15 @@ Un contrat invalide est rejeté avant traitement. Une sortie partielle valide pe
 
 ## Documentation spécialisée
 
+- Gouvernance documentaire : `docs/REPOSITORY_DOCUMENTATION_POLICY.md`
+- Événements : `docs/contracts/EVENT_API_V2.md`, `docs/contracts/EVENT_AND_PROVENANCE_V2.md`
+- Sources externes : `docs/EXTERNAL_SOURCE_CONNECTORS.md`
+- Migration : `docs/MIGRATION_AND_FEATURE_FLAGS.md`
+- Acceptation : `docs/ACCEPTANCE_AND_REPLAY_MATRIX.md`
 - AI worker : `docs/PIPELINE_V2.md`, `docs/REPLAY_AND_PROVENANCE.md`
 - Backend : `docs/AGENT_ORCHESTRATION.md`, `docs/EVIDENCE_REGISTRY.md`
 - Spatial : `docs/CAMERA_AND_CRS_CONTRACT.md`, `docs/PACKAGE_VERSIONING.md`
 - Frontend : `docs/REVIEW_UI_CONTRACT.md`
 - SDG : `docs/SPLIT_AND_LEAKAGE_POLICY.md`
+
+Les chemins de la liste ci-dessus sont relatifs au dossier documentaire propre à chaque dépôt sous `repositories/<repo>/`. La politique canonique, les responsabilités et les règles de synchronisation sont décrites dans `docs/REPOSITORY_DOCUMENTATION_POLICY.md`.

@@ -1,9 +1,12 @@
 # Architecture canonique FireViewer
 
-**Statut :** source de vérité inter-dépôts  
+**Statut documentaire :** source de vérité inter-dépôts
+
+**Statut du recadrage événementiel :** socle backend, worker, formulaire, revue, registre externe, rétention et projection publique v2 3D/2D `IMPLEMENTED_TESTED_LOCAL` derrière flags ; dépendances et migrations live non vérifiées ; enveloppes, progression, recette déployée et replay complet `PENDING`
+
 **Portée :** frontend, backend, worker IA, spatial, génération de données et publication
 
-FireViewer est une plateforme incidente-centrique de documentation, d’analyse supervisée et de représentation spatiale des incendies. Elle ne constitue ni un service d’alerte, ni une source officielle, ni un outil de conduite des secours.
+FireViewer est une plateforme incidente-centrique de documentation, d’analyse supervisée et de représentation spatiale des incendies. Son architecture cible organise les contributions, preuves, sources externes et propositions autour d’événements documentés et versionnés. Elle ne constitue ni un service d’alerte, ni une source officielle, ni un outil de conduite des secours.
 
 ## Dépôts actifs
 
@@ -14,7 +17,7 @@ FireViewer est une plateforme incidente-centrique de documentation, d’analyse 
 | `fireviewer-ai-worker` | Analyse privée des médias, modèles, stages, abstentions et propositions. |
 | `fireviewer-spatial` | Référentiels, packages, rendus, contrats de caméra et géométrie. |
 | `fireviewer-sdg` | Données synthétiques, annotations, provenance et validation réel/synthétique. |
-| `.github` | Architecture, roadmap, statuts, sécurité, terminologie et contrats communs. |
+| `fireviewer_doc` | Architecture, roadmap, statuts, sécurité, terminologie et contrats communs. |
 
 L’ancien dépôt `charli-dev420/fireviewer` reste une archive technique et documentaire. Il ne porte plus la roadmap active.
 
@@ -30,17 +33,32 @@ La route publique canonique est :
 
 Les épisodes, observations, preuves, propositions, révisions spatiales et publications sont rattachés à cette identité sans fusion silencieuse.
 
+### Un événement documenté comme objet métier cible
+
+Le flux cible commence par un `EventCandidate`, pas par une image isolée. L’utilisateur fournit :
+
+- le point de prise de vue sur la carte ;
+- le moment ou l’intervalle de l’observation ;
+- un message et/ou des preuves facultatives ;
+- les autorisations applicables.
+
+Le point de prise de vue représente l’observateur ou la caméra. Il reste distinct de la géométrie de flamme, de fumée ou de front produite par l’analyse.
+
+L’admission met directement une analyse privée en file. La publication reste une décision séparée.
+
 ### Séparation des responsabilités
 
 Le système distingue :
 
-1. le média ou la source originale ;
-2. les artefacts dérivés ;
-3. les sorties de perception ;
-4. les observations structurées ;
-5. les propositions géométriques ;
-6. les décisions de revue ;
-7. les publications.
+1. l’événement candidat et son point de vue ;
+2. le message, le média ou la source originale ;
+3. les artefacts dérivés et leur filiation ;
+4. les sorties de perception ;
+5. les assertions et observations structurées ;
+6. les tentatives de localisation et abstentions ;
+7. les révisions d’événements et enveloppes ;
+8. les décisions de revue ;
+9. les publications.
 
 Une sortie de modèle ne modifie jamais directement un objet public.
 
@@ -74,9 +92,13 @@ Aucun seuil automatique ne déclenche seul une publication.
 
 ```mermaid
 graph TD
-    A[Ingestion backend] --> B[Provenance, consentement, empreinte, doublons]
-    B --> C[Registre de preuves]
-    C --> D{Capacités du média}
+    A[Viewpoint, temps, message et preuves] --> B[EventCandidate privé]
+    B --> C[Provenance, droits, empreintes et identité]
+    C --> D{Capacités et sources}
+
+    D -->|Source officielle| SO[Assertions officielles versionnées]
+    D -->|Satellite| SA[Acquisition, hotspot ou surface interprétée]
+    D -->|Météo et contexte| WX[Observation ou prévision séparée]
 
     D -->|Audio| E[VAD et Whisper]
     D -->|Vidéo| F[RT-DETRv2 - triage]
@@ -98,6 +120,9 @@ graph TD
     N --> P
     O --> P
     P --> Q[Validation déterministe]
+    SO --> Q
+    SA --> Q
+    WX --> Q
 
     Q --> R{Branche spatiale admissible ?}
     R -->|Non| S[Revue sans géométrie]
@@ -113,11 +138,14 @@ graph TD
     Y --> Z[Raycast MNT]
     Z --> AA[Propagation d’incertitude]
 
-    AA --> AB[Revue humaine]
+    AA --> AB[Association, contradictions et revue humaine]
     S --> AB
-    AB --> AC[Décisions séparées]
-    AC --> AD[Publication explicite et versionnée]
+    AB --> AC[FireActivityEvent versionné]
+    AC --> AE[Timeline et ActivityEnvelopeRevision]
+    AE --> AD[Publication explicite et versionnée]
 ```
+
+Ce graphe reste l’architecture cible complète. Le chemin local testé couvre les événements privés, leur revue, les snapshots, la timeline publique et la projection des événements publiés en texte, 3D et 2D. Les modèles lourds, connecteurs live, enveloppes, progression, LOD avancé et recette déployée ne sont actifs qu’après leurs gates respectives dans `STATUS_MATRIX.md`.
 
 ## Pipeline média
 
@@ -202,6 +230,24 @@ Chaque artefact conserve :
 
 Toute observation structurée référence des `evidence_refs` existants.
 
+Une preuve peut soutenir plusieurs événements. Un événement peut être soutenu par plusieurs preuves. La proximité ne constitue ni une identité d’événement, ni une indépendance de source.
+
+## Sources externes
+
+Les connecteurs cibles couvrent notamment :
+
+- communications des préfectures, SDIS/SIS, Sécurité civile, mairies et organismes publics ;
+- Sentinel-1/2 et autres acquisitions d’observation terrestre ;
+- FIRMS et EFFIS pour les détections thermiques ;
+- Copernicus EMS pour les produits de délinéation et de dommage ;
+- Météo-France pour observations et prévisions séparées ;
+- IGN pour les référentiels ;
+- BDIFF pour le bilan rétrospectif.
+
+Chaque artefact externe conserve collection, révision, temps, CRS natif, footprint, licence, attribution, filiation et statut provisoire ou corrigé. Deux produits dérivés du même passage capteur ne sont pas deux corroborations indépendantes.
+
+Le contrat complet est défini dans [`EXTERNAL_SOURCE_CONNECTORS.md`](EXTERNAL_SOURCE_CONNECTORS.md).
+
 ## Branche spatiale
 
 ### Photos au sol
@@ -250,6 +296,8 @@ Les objets suivants restent distincts :
 - `simulated_scenario`
 
 Un hotspot ne confirme pas automatiquement un feu. Une surface brûlée n’est pas une zone active. Une simulation reste hors du pipeline public courant sans décision produit dédiée.
+
+Les couches temporelles cibles restent distinctes : `event`, `front`, `activity_envelope`, `burned_area` et `simulation`. Une enveloppe probable référence les événements qui la soutiennent et ne remplit pas silencieusement les périodes ou zones non observées.
 
 ## Promotion
 

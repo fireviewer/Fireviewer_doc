@@ -12,9 +12,43 @@ Période temporelle distincte au sein d’un même incident, par exemple une ré
 
 Origine d’une observation ou d’un média : utilisateur, organisme, capteur, publication, dataset ou connecteur.
 
+## `EventCandidate`
+
+Objet privé créé lors d’une contribution. Il contient un point de prise de vue, un moment, un message et/ou des preuves, ainsi que les droits d’analyse. Il peut subsister après une abstention géométrique.
+
+## `Viewpoint`
+
+Position de l’observateur ou de la caméra. Elle ne représente jamais automatiquement un point de feu, une origine de fumée ou un front.
+
+## `EvidenceAsset`
+
+Image ou vidéo privée soumise par un contributeur et rattachable à un événement candidat. Le message appartient à `EventCandidate`. Les documents officiels, acquisitions satellite et produits spatiaux sont des révisions d’artefacts externes, pas des uploads de contribution.
+
+## `LocalizationAttempt`
+
+Tentative rejouable de produire une géométrie d’activité à partir d’un point de vue et de preuves. Elle produit une géométrie avec ses limites ou une abstention typée.
+
+## `FireActivityEvent`
+
+Objet métier stable représentant une activité documentée dans un incident. Ses informations, sa géométrie, son intervalle, son incertitude, ses preuves et sa revue évoluent par révisions.
+
+## `EventRelation`
+
+Relation versionnée entre événements ou candidats : identité proposée, ordre temporel, même front, support, contradiction, remplacement, fusion ou séparation.
+
+## `ActivityEnvelopeRevision`
+
+Enveloppe probable dérivée de plusieurs événements compatibles dans une fenêtre temporelle. Elle ne constitue ni une observation directe, ni une simulation, ni une prédiction.
+
+## `ProgressionDelta`
+
+Différence descriptive entre deux révisions validées. Elle ne remplit pas une période non observée et ne prédit pas la progression future.
+
 ## Preuve
 
-Élément immutable utilisé pour soutenir une observation : média, frame, segment audio, texte archivé, masque, boîte, produit satellite ou artefact spatial.
+Élément immuable utilisé pour soutenir une observation : image ou vidéo de contribution, frame, texte archivé, masque, boîte, produit satellite ou artefact spatial. L’API événementielle v2 n’accepte pas d’upload audio ou document.
+
+Une preuve n’est pas nécessairement indépendante. Deux services peuvent diffuser des produits dérivés d’une même acquisition.
 
 ## Artefact de preuve
 
@@ -23,6 +57,26 @@ Fichier ou objet dérivé conservant son origine, son empreinte, son modèle, sa
 ## Observation
 
 Énoncé structuré relié à une ou plusieurs preuves. Elle peut être observée, rapportée, contradictoire, inconnue ou soumise à revue.
+
+## Observation capteur
+
+Mesure ou détection issue d’un capteur avec temps d’acquisition, footprint et qualité. Son centroïde n’est pas automatiquement une position exacte du phénomène.
+
+## Observation interprétée
+
+Produit dérivé par un algorithme ou une analyse humaine, par exemple une surface brûlée. Sa méthode et ses parents restent visibles.
+
+## Déclaration officielle
+
+Assertion attribuée à une autorité identifiée. Son autorité dépend du type d’assertion et ne confère pas automatiquement une précision spatiale.
+
+## Référentiel
+
+Donnée utilisée pour géocoder, projeter ou contextualiser, par exemple un MNT IGN. Elle ne prouve pas une activité incendie.
+
+## Prévision
+
+Information produite pour une échéance future à partir d’un run daté. Elle reste séparée des observations.
 
 ## Fait accepté
 
@@ -88,6 +142,8 @@ Point ou observation thermique provenant d’un capteur ou d’un produit compat
 ## `observed_burned_perimeter`
 
 Surface observée comme brûlée à partir d’un produit adapté et revue selon son contrat.
+
+Elle ne représente pas automatiquement la zone active au moment de sa publication.
 
 ## `human_reviewed_active_zone`
 

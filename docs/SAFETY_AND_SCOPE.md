@@ -21,6 +21,8 @@ Un détecteur, un VLM, un produit satellite, un OCR ou une recherche de source n
 
 Les sorties IA restent privées jusqu’à une décision humaine explicite. Les faits, géométries, rapports et médias sont validés séparément.
 
+L’envoi d’un `EventCandidate` déclenche directement une analyse privée, jamais une publication directe.
+
 ### Aucune coordonnée générative
 
 Ministral, MolmoPoint, DINOv3 et les autres modèles génératifs ou visuels ne produisent pas de latitude ou longitude faisant autorité.
@@ -57,6 +59,10 @@ Le texte lu dans une image est un indice. Il peut être ancien, ajouté, manipul
 - les incidents actifs sont exclus des corpus d’entraînement ;
 - les demandes de retrait doivent pouvoir purger les dérivés concernés.
 
+Le point de prise de vue exact est privé par défaut. Son affichage, sa généralisation ou son masquage possède une autorisation distincte de celle du message, du média et de la géométrie d’activité.
+
+Un organisme public peut publier un contenu soumis à des droits tiers. La disponibilité en ligne ne vaut ni Licence Ouverte, ni autorisation de republier le média.
+
 ## Observation, estimation et simulation
 
 Les couches suivantes restent séparées :
@@ -66,6 +72,8 @@ Les couches suivantes restent séparées :
 - zones revues humainement ;
 - enveloppes d’incertitude ;
 - simulations.
+
+Les déclarations officielles, référentiels et prévisions sont également des classes distinctes.
 
 Une simulation n’est jamais présentée comme une observation.
 
@@ -78,6 +86,8 @@ Le worker ne dispose pas d’un réseau libre. Toute recherche passe par un cour
 - journalisation ;
 - archivage du contenu ;
 - protection contre les instructions contenues dans les pages récupérées.
+
+Les connecteurs conservent la collection, l’identifiant objet, la révision, les temps, le CRS natif, le footprint, la licence et la filiation. Une source officielle ou satellite ne déclenche pas seule une publication.
 
 ## Gestion des incidents techniques
 

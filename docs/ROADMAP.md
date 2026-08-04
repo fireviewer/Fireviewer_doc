@@ -1,13 +1,96 @@
 # Roadmap consolidée FireViewer
 
-**Statut :** roadmap inter-dépôts pilotée par des gates de preuve  
+**Statut :** roadmap inter-dépôts pilotée par des gates de preuve
+
 **Principe :** aucun délai ou résultat n’est garanti par ce document
+
+## Séquence prioritaire — recadrage événementiel
+
+Les entraînements et promotions de nouveaux modèles ne sont pas le chemin critique de cette séquence. Les composants existants restent des baselines de perception jusqu’à la création du benchmark événementiel.
+
+### E0 — Contrats et terminologie
+
+**État :** `IMPLEMENTED_TESTED_LOCAL`
+
+- adopter `EventCandidate`, `Viewpoint`, `LocalizationAttempt`, `FireActivityEvent`, `EventRelation` et `ActivityEnvelopeRevision` ;
+- versionner l’API, la provenance, la temporalité et les reason codes ;
+- maintenir les fonctions cibles en `specified_not_implemented` tant que le runtime n’existe pas.
+
+**Gate :** contrats cohérents, fixtures définies, aucune fonction non implémentée déclarée active.
+
+### E1 — Schéma backend additif
+
+**État :** code et DDL `IMPLEMENTED_NOT_LIVE_VERIFIED`
+
+- ajouter les entités v2 sans supprimer les objets historiques ;
+- conserver des relations persistantes vers preuves et sources ;
+- stocker les géométries métier en PostGIS ;
+- produire des adaptateurs privés sans publication automatique.
+
+**Gate :** migration idempotente, rollback, zéro perte et rapport de compatibilité.
+
+### E2 — Contribution événementielle
+
+**État :** `IMPLEMENTED_TESTED_LOCAL`, recette Supabase/Blob/ClamAV live en attente
+
+- formulaire unique : point de vue, moment, message et zéro à vingt images ou vidéos facultatives ;
+- upload privé et idempotence ;
+- mise en file directe d’une analyse privée ;
+- point de vue privé par défaut.
+
+**Gate :** message seul accepté, plusieurs médias acceptés, un seul job par soumission et aucune confusion viewpoint/activité.
+
+### E3 — Connecteurs et provenance externe
+
+**État :** registre et scheduler `IMPLEMENTED_TESTED_LOCAL` ; adaptateurs et collecte live suivis par collection
+
+- enrôler par collection Sentinel/Copernicus, FIRMS/EFFIS, Météo-France, IGN, BDIFF et organismes officiels ;
+- distinguer observation, interprétation, déclaration, référentiel, prévision et simulation ;
+- conserver révisions, filiation, licences, temps et CRS natifs ;
+- planifier les collectes par incident et AOI.
+
+**Gate :** même URL modifiée conservée comme révision, produits d’un même granule non comptés comme corroborations indépendantes, restrictions de redistribution respectées.
+
+### E4 — Analyse et revue événementielles
+
+**État :** admission, worker, dispatcher et transitions principales `IMPLEMENTED_TESTED_LOCAL` ; correction, fusion et replay avancés `PENDING`
+
+- profils sol large, distant, proche et serré ;
+- localisation ou abstention ;
+- association, contradictions, fusion et séparation proposées ;
+- revue unifiée des informations, preuves et géométries.
+
+**Gate :** toute géométrie est rejouable, toute abstention conserve le candidat et toute correction crée une révision.
+
+### E5 — Timeline, enveloppes et progression
+
+**État :** `PENDING` au-delà du stockage additif
+
+- timeline issue des événements validés ;
+- couches `event`, `front`, `activity_envelope`, `burned_area` et `simulation` séparées ;
+- enveloppes citant leurs événements supports ;
+- progression décrite entre révisions, sans interpolation silencieuse.
+
+**Gate :** un événement seul ne ferme pas un périmètre, la fumée seule ne crée pas une zone active et une prévision ne rejoint jamais les observations.
+
+### E6 — Recette et activation limitée
+
+**État :** `PENDING`
+
+- exécuter la matrice d’acceptation ;
+- mesurer localisation, abstention, association et calibration par profil ;
+- tester sécurité, retrait, rollback et replay ;
+- activer les flags sur des incidents de recette avant toute publication limitée.
+
+**Gate :** décision humaine documentée avec artefacts ; aucune promotion sur score unique.
+
+Les lots G1 à G6 ci-dessous restent des chantiers de capacités. Ils ne précèdent pas les gates E0 à E6 et ne constituent pas une autorisation de relancer des entraînements.
 
 ## G0 — Rétablir la source de vérité
 
 ### Travail
 
-- maintenir l’architecture et la roadmap dans `fireviewer/.github` ;
+- maintenir l’architecture et la roadmap dans `fireviewer_doc` ;
 - définir les statuts communs ;
 - corriger les liens hérités de l’ancien monorepo ;
 - marquer `charli-dev420/fireviewer` comme historique ;
