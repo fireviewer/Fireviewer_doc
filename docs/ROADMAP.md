@@ -86,21 +86,45 @@ Les entraînements et promotions de nouveaux modèles ne sont pas le chemin crit
 
 Les lots G1 à G6 ci-dessous restent des chantiers de capacités. Ils ne précèdent pas les gates E0 à E6 et ne constituent pas une autorisation de relancer des entraînements.
 
-## S0 — Reprise des scènes Omniverse
+## S0 — Reprise terrain-first Omniverse
 
-**État :** `BLOCKED_PENDING_REBUILT_USD_ASSETS`
+**État :** `GROUND_LIBRARY_IN_PROGRESS_PRODUCTION_BLOCKED`
 
-- les scènes Unity et simulations précédentes sont retirées du chemin actif ;
+- les scènes Unity, les simulations précédentes et la production Die actuelle
+  sont retirées du chemin actif ;
 - le dataset de la première simulation et son pack autonome de reproduction
   complet restent conservés comme archives historiques ;
-- le contrat V2 exige exactement 295 assets USD, quatre bases, cinq variantes
-  par base et aucune simplification ou substitution ;
-- le backend et le frontend ne publient aucun ancien pack pendant l'attente ;
-- la séquence détaillée est définie dans
+- six emprises carrées couvrent les incendies déjà référencés sur le site avec
+  une marge conservatrice de 5 km et une grille de 500 m ;
+- le relief 3D provient du MNT/MNS 0,5 m ; le sol 2D léger combine une palette
+  PBR avec des couches classifiées approuvées pour sols, champs, routes,
+  chemins, berges et plateformes ferroviaires ;
+- 21 sources rapprochées restent des micro-détails hors ligne, empaquetés dans
+  exactement quatre textures atlas runtime ;
+- 72 profils procéduraux couvrent sols naturels/brûlés, champs, routes,
+  chemins, cours d’eau, plateformes ferroviaires et parois rocheuses ;
+- la variation est paramétrique aux échelles 16–64 m et 128–512 m afin de ne
+  pas multiplier les images importées dans la scène ;
+- les rails métalliques restent une géométrie 3D distincte ;
+- les orthophotos et autres images lourdes sont interdites dans ce contrat ;
+- l’ordre est terrain/sol, bâtis, routes/petits assets, végétation, puis
+  composition/simulation/packs ;
+- les 295 USD refaits ne bloquent pas la production des terrains ;
+- Die ne conserve que sa logique de nombres et de structure de composition ;
+- le backend et le frontend ne publient aucun ancien pack pendant la reprise ;
+- aucun nouveau travail frontend/backend n'entre dans le chemin critique avant
+  la phase de composition et de packs ;
+- la séquence et les gates sont définies dans
   [`SIMULATION_COMPOSITION_RESTART.md`](SIMULATION_COMPOSITION_RESTART.md).
 
-**Gate :** ne lancer aucune nouvelle scène avant réception, inventaire SHA-256,
-provenance et ouverture Kit isolée des 295 assets USD refaits.
+**Gate immédiat :** accepter les 4 atlas, les 72 profils et les contrats de contexte,
+puis produire et valider les 10 631 tuiles terrain/sol des six cas avec
+couverture MNT/MNS complète, reçus SHA-256 et zéro orthophoto.
+
+**Preuve courante :** une seule tuile de FR-30-00001 est reproductible depuis
+ses sources MNT/MNS. Les cinq autres terrains restent au stade du plan et le
+mapping contextuel des sols reste non produit ; routes et bâtiments demeurent
+donc bloqués.
 
 ## G0 — Rétablir la source de vérité
 
