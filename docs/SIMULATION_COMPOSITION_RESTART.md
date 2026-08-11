@@ -1,135 +1,124 @@
-# Reprise terrain-first des productions Omniverse
+# Cartes 3D, périmètres observés et entrées de simulation
 
-**État :** `GROUND_LIBRARY_IN_PROGRESS_PRODUCTION_BLOCKED`
+**État :** `IMPLEMENTED_TESTED_LOCAL_NOT_DEPLOYED`
 
 ## Décision
 
-Les scènes Unity, les simulations précédentes et la production Die actuelle
-sont dépréciées. Elles ne fournissent plus ni terrain, ni texture de sol, ni
-asset, ni placement à la nouvelle production. Seules les règles encore valides
-de nombres et de structure de composition de Die pourront être réinterprétées
-après la reconstruction des couches géographiques.
+FireViewer possède désormais un seul pipeline actif de production de cartes
+3D. Il remplace les anciennes scènes Unity, le terrain adaptatif/PBR et les
+registres de packs de simulation historiques.
 
-Le dataset issu de la première simulation et son pack autonome complet de
-reproduction restent conservés pour audit et replay. Ils ne sont ni publiés
-comme nouveaux packs, ni utilisés comme sources des six terrains.
+La production et la simulation restent deux responsabilités séparées :
 
-## Contrat terrain et sol 2D
+- l'espace de production crée une carte ou un package supplémentaire de
+  périmètres observés ;
+- un moteur de simulation, un pipeline dataset ou un replay consomme ensuite
+  ces artefacts immuables ;
+- aucun consommateur ne reconstruit le terrain, les assets ou les périmètres.
 
-La première livraison couvre les six incendies déjà référencés sur le site :
+Carte et périmètres sont volontairement deux jobs distincts, avec une seule
+production active à la fois. Une nouvelle timeline peut donc être ajoutée quand
+la progression observée évolue sans recréer la carte.
 
-| Incident | Côté du carré | Tuiles de 500 m |
-| --- | ---: | ---: |
-| FR-30-00001 — Lédenon–Bezouce–Cabrières | 14,5 km | 841 |
-| FR-34-00001 — Oupia–Pouzols-Minervois | 16 km | 1 024 |
-| FR-83-00001 — Taradeau–Les Arcs | 22,5 km | 2 025 |
-| FR-26-00001 — Die, massif de Justin | 20 km | 1 600 |
-| FR-66-00001 — Trévillach | 27,5 km | 3 025 |
-| FR-77-00001 — Forêt de Fontainebleau | 23 km | 2 116 |
+## Carte autonome
 
-Chaque emprise est un carré EPSG:2154 aligné sur la grille de 500 m. Elle
-contient l’enveloppe de toutes les géométries publiques de l’incident, une
-marge de sécurité de 5 km sur chaque côté, puis l’extension nécessaire pour
-obtenir un carré. Le terrain ne dépend donc pas d’un périmètre d’incendie
-supposé exact et couvre une zone où l’incendie ne peut raisonnablement pas
-s’étendre au-delà des limites retenues.
+L'utilisateur fournit le centre GPS du carré et la longueur d'un côté. Le
+moteur aligne l'emprise sur des tuiles Lambert-93 de 500 m et, pour chaque
+tuile, traite temporairement MNT, MNS et orthophoto.
 
-Pour chaque tuile :
+Le résultat scellé contient :
 
-- le MNT IGN natif à 0,5 m produit le relief 3D ;
-- le MNS IGN colocalisé à 0,5 m doit avoir la même grille et une couverture
-  finie complète ;
-- une palette surfacique RGBA de 256 × 256 pixels encode jusqu’à quatre sols
-  naturels ou brûlés par tuile ;
-- des masques structurés séparés composent les champs orientés, routes,
-  chemins, berges et plateformes ferroviaires à partir de parcelles, réseaux
-  de transport et hydrographie approuvés ;
-- le MNT fournit pente et rugosité ; le couple MNT/MNS réserve les futurs
-  objets sans inventer leur classe ni leur position ;
-- les 21 sources ImageGen rapprochées servent uniquement de micro-détail hors
-  ligne et ne sont jamais importées directement dans les scènes ;
-- quatre textures atlas PBR runtime empaquettent ces sources ;
-- 72 profils procéduraux couvrent 22 sols naturels/brûlés, 8 champs, 12 routes,
-  6 chemins, 10 cours d’eau, 6 plateformes ferroviaires et 8 parois rocheuses ;
-- la variation visuelle s’étage à 1,5–6 m, 16–64 m et 128–512 m sans demander
-  de nouvelles images par tuile ;
-- les réseaux linéaires changent de profil tous les 250 m, conservent leur UV
-  entre tuiles et ne répètent pas les deux variantes précédentes ;
-- les rails métalliques sont exclus des textures et seront authorés comme
-  géométrie 3D après acceptation des terrains ;
-- aucune orthophoto, image aérienne ou texture cartographique lourde n’est
-  téléchargée, embarquée ou requise ;
-- les géométries de bâtiments, routes, rails, petits assets spécifiques,
-  végétation et simulation sont explicitement différées ;
-- chaque résultat est lié aux SHA-256 des sources et de ses sorties par un reçu
-  reproductible.
+- `zone.usda` et `zone.blend`, scènes unifiées autonomes ;
+- les packages terrain FVTG de chaque tuile ;
+- la texture de sol orthophoto bakée ;
+- les instances d'assets mesurées et les placements GPS explicites ;
+- uniquement les USD et textures effectivement utilisés ;
+- les petits reçus de provenance et tous les hashes ;
+- exactement 20 captures de contrôle : quatre vues générales puis seize
+  détails.
 
-## Séquence de production
+Les rasters MNT/MNS/orthophoto bruts sont supprimés après validation de leur
+tuile et ne sont pas livrés. Le package reste ouvrable indépendamment après
+extraction.
 
-### P0 — Plans des six terrains
+## Périmètres observés
 
-**État :** `IMPLEMENTED_TESTED_LOCAL`
+Le second job accepte un JSON FireViewer ou un GeoJSON. Il produit :
 
-Les six AOI carrées et leurs manifests sont générés. Ils totalisent 10 631
-tuiles de sortie et 2 782 tuiles sources MNT/MNS.
+- `geographic-perimeters.usda` ;
+- `fire-progression-timeline.json` ;
+- `perimeters.normalized.json` ;
+- le manifeste hashé ;
+- une vue GLB dérivée par état pour le contrôle web.
 
-**Gate :** six identifiants uniques, carrés complets, marge minimale de 5 km,
-grille EPSG:2154/500 m, zéro requête orthophoto.
+Affected et active restent des catégories distinctes. Chaque état correspond à
+un instant observé ou à une plage explicitement fournie. Entre deux
+observations, la progression est `undefined` ; aucune interpolation, vitesse ou
+prévision n'est inventée.
 
-### P1 — Relief 3D et sol 2D
+Les GLB servent uniquement à afficher la timeline dans le navigateur. Le JSON
+normalisé, la timeline et l'USD restent les données de référence.
 
-**État :** `BLOCKED_PENDING_GROUND_LIBRARY_AND_CONTEXT_MAPPING_ACCEPTANCE`
+## Import et contrôle dans le site
 
-Avant la production générale, accepter les quatre atlases PBR et les 72 profils,
-puis lier les couches classifiées de parcelles, transport,
-hydrographie, occupation et géologie. Télécharger, valider et mettre en cache
-les MNT/MNS seulement après passage de ce gate.
+Le site ne transforme pas les livrables. Après extraction du ZIP, il vérifie
+chaque fichier, SHA-256, contrat et identité spatiale avant l'import.
 
-Une première tuile réelle de 500 × 500 m de FR-30-00001 a été reconstruite
-intégralement depuis ses deux sources MNT et ses deux sources MNS : hashes
-identiques, grille Lambert-93 colocalisée à 0,50 m, 251 001 sommets, 250 000
-faces et carte de contexte MNT/MNS identique pixel par pixel. Les GeoTIFF IGN
-WMS-R portent les paramètres Lambert-93 de la requête EPSG:2154, mais leur WKT
-omet le nom du datum RGF93 et n'est donc pas résolu en code EPSG par GDAL ; ce
-cas est enregistré explicitement au lieu d'être présenté comme un CRS canonique.
-Cette preuve ne constitue ni une acceptation du nouveau contrat de sol
-contextuel, ni une validation des cinq autres terrains.
+- OpenUSD est contrôlé dans l'Admin par les 20 captures liées au package ;
+- la timeline est contrôlée par les GLB dérivés déjà contenus dans son package ;
+- le téléchargement direct de `zone.usda`, de la timeline et du calque USD
+  reste disponible ;
+- aucune publication publique n'est automatique.
 
-**Gate :** 4/4 atlas et 72/72 profils contrôlés à plusieurs échelles, contrats
-de contexte acceptés, puis 10 631/10 631 reçus valides, aucune lacune MNT/MNS,
-jointures de terrain conformes et contrôle visuel d’un échantillon de chaque
-incident. Aucun placement de route ou de bâtiment ne commence avant ce gate.
+Le site ne traite plus OpenUSD comme un ancien catalogue de tuiles. L'ancien
+registre global vide de packs est retiré ; les téléchargements sont désormais
+rattachés à la fiche de l'incident et au build exact de sa carte.
 
-### P2 — Bâtiments
+## Téléchargements de la fiche incident
 
-Authorer les bâtis contre les terrains acceptés, sans reprendre les positions
-des scènes dépréciées.
+Lorsqu'une carte est publiée, son ZIP complet de production doit être proposé
+sur la fiche incident. Ce ZIP est le livrable autonome original, pas une scène
+reconstruite par le site.
 
-**Gate :** emprise, altitude, échelle, provenance et collisions validées.
+Les packs de simulation restent prévus comme livrables supplémentaires. Quand
+un pack est produit et publié, il apparaît à côté de la carte et conserve au
+minimum l'identité du build de carte, la timeline utilisée, son SHA-256, sa
+taille et son point d'entrée. Plusieurs packs peuvent viser la même carte sans
+la modifier.
 
-### P3 — Routes et petits assets spécifiques
+La disponibilité publique d'un ZIP carte ou simulation est une décision de
+publication explicite. L'import technique d'une carte ne rend aucun fichier
+public automatiquement.
 
-Construire les réseaux routiers, puis les objets particuliers propres à chaque
-cas. Les 295 USD refaits sont une entrée de cette phase et des compositions
-ultérieures ; ils ne bloquent pas P0 ou P1.
+## Contrat des consommateurs
 
-**Gate :** topologie, ancrage terrain, contexte et cohérence locale validés.
+Une simulation, un dataset ou un replay utilise
+`fireviewer.scene-consumer-input.v1`. Ce contrat verrouille :
 
-### P4 — Végétation
+- package ID, révision, zone, build ID, contrat et archive de la carte ;
+- `zone.usda`, `EPSG:2154` et `NGF-IGN69` ;
+- éventuellement le package de périmètres, sa timeline et le build exact de sa
+  carte de base ;
+- l'interdiction de reconstruire terrain et périmètres ;
+- l'absence d'interpolation entre observations ;
+- le fait que l'exécution de simulation est une responsabilité externe.
 
-Composer une végétation variée et cohérente après acceptation des couches
-précédentes. Le MNS sert d’indice spatial, sans restaurer les placements Die.
+Une carte `technical_unpublished` peut être utilisée pour une simulation ou un
+dataset interne. Sa publication publique est une décision indépendante.
 
-**Gate :** variété, densité, exclusion des bâtis/routes, ancrage et continuité
-entre tuiles validés.
+## Gates
 
-### P5 — Composition, simulation et packs
+| Gate | Preuve requise |
+| --- | --- |
+| Carte produite | packages revalidés, assets autonomes, rasters bruts absents, 20 captures hashées |
+| Carte importée | inventaire byte-for-byte, contrat actif, identité de zone/build et contrôles disponibles |
+| Timeline produite | source normalisée, états explicites, USD, timeline et GLB dérivés hashés |
+| Timeline attachée | même package/révision/zone/build/contrat que la carte active |
+| Consommation simulation/dataset | `scene-consumer-input.v1` valide et aucune reconstruction |
+| Téléchargement carte | ZIP original, SHA-256 et build de carte publiés sur la fiche incident |
+| Téléchargement simulation | pack supplémentaire lié au même build et à la timeline consommée |
+| Publication | décision humaine séparée et auditée |
 
-Réinterpréter les nombres et structures de composition encore valides, authorer
-les scènes OpenUSD reproductibles, ajouter la simulation, puis construire les
-packs autonomes. La richesse visuelle doit progresser ; aucun fallback vers
-des scènes simplifiées n’est accepté.
-
-**Gate :** dépendances relatives complètes, replay déterministe, ouverture Kit,
-QA visuelle/runtime, archive isolée rouverte, backend fail-closed et frontend
-sans ancien pack avant publication explicite.
+Les tests locaux ne prouvent pas une acquisition fournisseur live, un pod, un
+rendu GPU ni une publication réelle. Ces validations restent rapportées
+séparément.

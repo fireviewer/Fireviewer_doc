@@ -299,6 +299,22 @@ Un hotspot ne confirme pas automatiquement un feu. Une surface brûlée n’est 
 
 Les couches temporelles cibles restent distinctes : `event`, `front`, `activity_envelope`, `burned_area` et `simulation`. Une enveloppe probable référence les événements qui la soutiennent et ne remplit pas silencieusement les périodes ou zones non observées.
 
+La géométrie 3D de référence n'est pas reconstruite par la simulation. Le
+pipeline spatial produit séparément une carte autonome et, lorsque nécessaire,
+une timeline de périmètres observés liée à son build exact :
+
+```text
+carte mesurée → package OpenUSD immuable + 20 captures de contrôle
+observations → package de périmètres + timeline JSON + vues GLB dérivées
+carte + timeline optionnelle → scene-consumer-input.v1
+scene-consumer-input.v1 → simulation, dataset ou replay externe
+```
+
+La carte peut être publiée ou rester `technical_unpublished` pour un travail
+interne. Les GLB permettent le contrôle web mais ne remplacent ni OpenUSD ni la
+timeline. Le consommateur n'a le droit de recalculer ni le terrain ni les
+périmètres, et la valeur entre observations reste indéfinie.
+
 ## Promotion
 
 Ordre de promotion :

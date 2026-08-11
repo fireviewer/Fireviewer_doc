@@ -30,6 +30,11 @@ Chaque contrat possède :
 | Agent result | AI worker | Backend | Résultats partiels, abstentions, preuves et rapports. |
 | Evidence artifact | Backend / worker | Backend / frontend Admin | Filiation et provenance des artefacts. |
 | Spatial package | Spatial | Backend / frontend / worker | Référentiel versionné et assets du viewer. |
+| Simple measured map package v1 | Spatial | Backend / frontend / simulation and dataset consumers | Carte OpenUSD autonome, assets utilisés, reçus et 20 captures de contrôle hashées. |
+| Observed perimeter package v1 | Spatial | Backend / frontend / simulation and dataset consumers | Calques et timeline observés liés au build exact d'une carte ; GLB de contrôle non autoritatifs. |
+| Scene consumer input v1 | Simulation / dataset / replay orchestrator | Simulation / dataset / replay runtime | Références immuables vers une carte publiée ou non et sa timeline optionnelle, sans reconstruction. |
+| Incident map download | Spatial production / publication | Public incident page | ZIP autonome original d'une carte publiée, lié à son build et à son SHA-256. |
+| Incident simulation pack | Simulation producer / publication | Public incident page / replay | Livrable supplémentaire lié au build de carte et à la timeline effectivement consommée. |
 | Spatial registration | Backend / spatial | AI worker | Entrées de recalage autorisées. |
 | Spatial proposal | AI worker | Backend / frontend Admin | Pose, intersection, incertitude ou abstention. |
 | SDG case | SDG | AI worker / pipelines de training | Cas synthétique et provenance. |
@@ -79,6 +84,9 @@ Un contrat invalide est rejeté avant traitement. Une sortie partielle valide pe
 - AI worker : `docs/PIPELINE_V2.md`, `docs/REPLAY_AND_PROVENANCE.md`
 - Backend : `docs/AGENT_ORCHESTRATION.md`, `docs/EVIDENCE_REGISTRY.md`
 - Spatial : `docs/CAMERA_AND_CRS_CONTRACT.md`, `docs/PACKAGE_VERSIONING.md`
+- Cartes et timelines :
+  `fireviewer-spatial/docs/SIMPLE_PRODUCTION_POD.md` et
+  `fireviewer-spatial/contracts/spatial/v1/scene-consumer-input.schema.json`
 - Frontend : `docs/REVIEW_UI_CONTRACT.md`
 - SDG : `docs/SPLIT_AND_LEAKAGE_POLICY.md`
 
