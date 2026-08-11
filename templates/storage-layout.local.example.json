@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "free_space": {
+    "minimum_gib": 100,
+    "minimum_percent": 15
+  },
+  "entries": [
+    {
+      "id": "code",
+      "class": "CODE",
+      "kind": "tree",
+      "path": "%FV_CODE_ROOT%",
+      "required": true,
+      "protected": true,
+      "note": "Dépôts Git actifs uniquement"
+    },
+    {
+      "id": "data",
+      "class": "DATA",
+      "kind": "tree",
+      "path": "%FV_DATA_ROOT%",
+      "required": true,
+      "protected": true,
+      "note": "Sources, corpus et manifests canoniques"
+    },
+    {
+      "id": "work-children",
+      "class": "WORK",
+      "kind": "children_matching",
+      "path": "%FV_WORK_ROOT%",
+      "pattern": ".+",
+      "required": true,
+      "protected": false,
+      "note": "La mesure reste en lecture seule ; la rétention est décidée séparément"
+    },
+    {
+      "id": "git-temporary-objects",
+      "class": "CACHE",
+      "kind": "files_matching_recursive",
+      "path": "%FV_LEGACY_GIT_OBJECT_ROOT%",
+      "pattern": "^tmp_obj_",
+      "required": false,
+      "protected": false,
+      "note": "Candidats seulement après contrôle Git et approbation explicite"
+    },
+    {
+      "id": "docker-managed-storage",
+      "class": "APPLICATION_MANAGED",
+      "kind": "file",
+      "path": "%FV_DOCKER_VHDX%",
+      "required": false,
+      "protected": true,
+      "note": "Mesure du conteneur ; aucun nettoyage brut autorisé"
+    }
+  ]
+}

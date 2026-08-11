@@ -22,6 +22,7 @@ Il porte la source de vérité documentaire locale inter-dépôts. Son état de 
 - [`docs/TERMINOLOGY.md`](docs/TERMINOLOGY.md)
 - [`docs/CONTRACT_MAP.md`](docs/CONTRACT_MAP.md)
 - [`docs/REPOSITORY_DOCUMENTATION_POLICY.md`](docs/REPOSITORY_DOCUMENTATION_POLICY.md)
+- [`docs/STORAGE_AND_RETENTION.md`](docs/STORAGE_AND_RETENTION.md)
 
 ## Documentation par dépôt
 

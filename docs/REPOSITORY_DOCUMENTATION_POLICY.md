@@ -20,7 +20,7 @@ Un document de niveau inférieur résume ou référence le niveau supérieur. Il
 
 | Dépôt | Responsabilité documentaire locale | Références canoniques principales |
 | --- | --- | --- |
-| `Fireviewer_doc` | doctrine produit, architecture inter-dépôts, contrats, sécurité, migration et statut | `ARCHITECTURE.md`, `STATUS_MATRIX.md`, `TERMINOLOGY.md`, `CONTRACT_MAP.md` |
+| `Fireviewer_doc` | doctrine produit, architecture inter-dépôts, contrats, sécurité, migration, stockage et statut | `ARCHITECTURE.md`, `STATUS_MATRIX.md`, `TERMINOLOGY.md`, `CONTRACT_MAP.md`, `STORAGE_AND_RETENTION.md` |
 | `fireviewer-backend` | API, persistance, migrations, sécurité serveur, connecteurs et publication | `EVENT_API_V2.md`, `EVENT_AND_PROVENANCE_V2.md`, `SECURITY_PRIVACY_EVENT_PIPELINE.md` |
 | `fireviewer-frontend` | contribution, authentification cliente, revue, timeline et vues 3D/2D | `EVENT_API_V2.md`, `MIGRATION_AND_FEATURE_FLAGS.md`, `STATUS_MATRIX.md` |
 | `fireviewer-ai-worker` | traitement des preuves, abstention, modèles, provenance et replay | `EVENT_AND_PROVENANCE_V2.md`, `ACCEPTANCE_AND_REPLAY_MATRIX.md`, `STATUS_MATRIX.md` |
