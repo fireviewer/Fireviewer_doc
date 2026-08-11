@@ -86,6 +86,22 @@ Les entraînements et promotions de nouveaux modèles ne sont pas le chemin crit
 
 Les lots G1 à G6 ci-dessous restent des chantiers de capacités. Ils ne précèdent pas les gates E0 à E6 et ne constituent pas une autorisation de relancer des entraînements.
 
+## S0 — Reprise des scènes Omniverse
+
+**État :** `BLOCKED_PENDING_REBUILT_USD_ASSETS`
+
+- les scènes Unity et simulations précédentes sont retirées du chemin actif ;
+- le dataset de la première simulation et son pack autonome de reproduction
+  complet restent conservés comme archives historiques ;
+- le contrat V2 exige exactement 295 assets USD, quatre bases, cinq variantes
+  par base et aucune simplification ou substitution ;
+- le backend et le frontend ne publient aucun ancien pack pendant l'attente ;
+- la séquence détaillée est définie dans
+  [`SIMULATION_COMPOSITION_RESTART.md`](SIMULATION_COMPOSITION_RESTART.md).
+
+**Gate :** ne lancer aucune nouvelle scène avant réception, inventaire SHA-256,
+provenance et ouverture Kit isolée des 295 assets USD refaits.
+
 ## G0 — Rétablir la source de vérité
 
 ### Travail
