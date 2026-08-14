@@ -6,22 +6,20 @@ FireViewer est un projet distinct de recherche et développement, maintenu par *
 
 > FireViewer n’est ni un service d’alerte, ni une source officielle, ni un outil de conduite des secours. Ses cartes, reconstructions, analyses et simulations ne doivent pas être utilisées pour la sécurité des personnes, le commandement opérationnel, une expertise d’assurance ou une preuve juridique. En situation réelle, suivez les consignes des autorités et contactez les services d’urgence compétents.
 
-## Publication sélective
+## Publications
 
-FireViewer ne présente pas l’ensemble de sa plateforme comme open source. Pendant la restructuration, les dépôts GitHub restent privés. L’application web, l’API/backend, les configurations de production, les secrets, les preuves utilisateur, les données non publiées et les poids privés restent à accès privé.
-
-Les datasets et modèles explicitement publiés sont disponibles sur [Hugging Face](https://huggingface.co/fireviewer). Chaque artefact conserve sa propre licence, sa provenance, ses limites et sa décision d’admission.
+Les datasets et modèles FireViewer sont disponibles sur [Hugging Face](https://huggingface.co/fireviewer). Chaque artefact conserve sa propre licence, sa provenance, ses limites et sa décision d’admission.
 
 ## Composants
 
-| Composant | Rôle | Accès |
-| --- | --- | --- |
-| Documentation | Architecture, contrats, statuts, sécurité et terminologie. | Privé pendant la restructuration |
-| Frontend | Contribution, consultation, revue et visualisation 3D/2D. | Privé |
-| Backend | Registre incident-centrique, preuves, audit et publication. | Privé |
-| AI worker | Analyse des preuves, propositions et abstention. | Privé |
-| Spatial | Référentiels, packages, cartes et validation géométrique. | Privé |
-| SDG | Données synthétiques et validation réel/synthétique. | Privé |
+| Composant | Rôle |
+| --- | --- |
+| Documentation | Architecture, contrats, statuts, sécurité et terminologie. |
+| Frontend | Contribution, consultation, revue et visualisation 3D/2D. |
+| Backend | Registre incident-centrique, preuves, audit et publication. |
+| AI worker | Analyse des preuves, propositions et abstention. |
+| Spatial | Référentiels, packages, cartes et validation géométrique. |
+| SDG | Données synthétiques et validation réel/synthétique. |
 
 ## Données et reconstructions
 
@@ -35,7 +33,7 @@ Une timeline de périmètres observés et un pack de reconstruction sont deux fa
 
 - provenance, date, licence et incertitude restent visibles ;
 - observation, reconstruction, déclaration officielle, prévision et simulation restent distinctes ;
-- une sortie automatisée reste privée jusqu’à validation humaine ;
+- une sortie automatisée n’est publiée qu’après validation humaine ;
 - l’abstention est obligatoire lorsque la preuve est insuffisante ;
 - aucun modèle génératif ne produit une coordonnée géographique faisant autorité.
 
