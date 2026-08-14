@@ -1,60 +1,46 @@
 # FireViewer
 
-**Cartographie 3D, chronologique et incidente-centrique pour mieux comprendre les incendies.**
+**Cartographie 3D, chronologique et sourcée pour documenter l’évolution des incendies.**
 
-FireViewer est un projet open source qui rassemble des données ouvertes, des observations documentées, des contributions citoyennes et des analyses automatisées supervisées afin de produire une représentation visuelle, datée et sourcée d’un incendie.
+FireViewer est un projet distinct de recherche et développement, maintenu par **Unicorn Who Dev**. Les espaces `fireviewer` sur GitHub et Hugging Face constituent ses espaces de publication canoniques.
 
-> FireViewer est un projet de développement et de recherche. Ce n’est ni un service d’alerte, ni une source officielle, ni un outil de conduite des secours. Il ne remplace jamais les consignes des autorités et services d’urgence.
+> FireViewer n’est ni un service d’alerte, ni une source officielle, ni un outil de conduite des secours. Ses cartes, reconstructions, analyses et simulations ne doivent pas être utilisées pour la sécurité des personnes, le commandement opérationnel, une expertise d’assurance ou une preuve juridique. En situation réelle, suivez les consignes des autorités et contactez les services d’urgence compétents.
 
-## Architecture événementielle
+## Publication sélective
 
-Le cœur métier cible est un événement documenté au sein d’un incident. Une contribution crée un `EventCandidate` privé avec un point de prise de vue, un instant ou un intervalle, un message et, facultativement, des images ou vidéos. Le point de prise de vue représente l’observateur ou la caméra, jamais automatiquement le feu.
+FireViewer ne présente pas l’ensemble de sa plateforme comme open source. Pendant la restructuration, les dépôts GitHub restent privés. L’application web, l’API/backend, les configurations de production, les secrets, les preuves utilisateur, les données non publiées et les poids privés restent à accès privé.
 
-L’analyse produit des propositions privées, des tentatives de localisation ou des abstentions explicites. Une sortie automatisée ne devient jamais publique par elle-même : la validation humaine et la publication éditoriale restent deux décisions séparées. La route publique canonique d’un incident est `/incident/{fire_id}`.
+Les datasets et modèles explicitement publiés sont disponibles sur [Hugging Face](https://huggingface.co/fireviewer). Chaque artefact conserve sa propre licence, sa provenance, ses limites et sa décision d’admission.
 
-## Documentation canonique
+## Composants
 
-Le dépôt [`Fireviewer_doc`](https://github.com/fireviewer/Fireviewer_doc) maintient la source de vérité documentaire inter-dépôts :
+| Composant | Rôle | Accès |
+| --- | --- | --- |
+| Documentation | Architecture, contrats, statuts, sécurité et terminologie. | Privé pendant la restructuration |
+| Frontend | Contribution, consultation, revue et visualisation 3D/2D. | Privé |
+| Backend | Registre incident-centrique, preuves, audit et publication. | Privé |
+| AI worker | Analyse des preuves, propositions et abstention. | Privé |
+| Spatial | Référentiels, packages, cartes et validation géométrique. | Privé |
+| SDG | Données synthétiques et validation réel/synthétique. | Privé |
 
-- [architecture canonique](https://github.com/fireviewer/Fireviewer_doc/blob/main/docs/ARCHITECTURE.md) ;
-- [roadmap](https://github.com/fireviewer/Fireviewer_doc/blob/main/docs/ROADMAP.md) ;
-- [matrice de statut](https://github.com/fireviewer/Fireviewer_doc/blob/main/docs/STATUS_MATRIX.md) ;
-- [sécurité et périmètre](https://github.com/fireviewer/Fireviewer_doc/blob/main/docs/SAFETY_AND_SCOPE.md) ;
-- [terminologie](https://github.com/fireviewer/Fireviewer_doc/blob/main/docs/TERMINOLOGY.md) ;
-- [carte des contrats](https://github.com/fireviewer/Fireviewer_doc/blob/main/docs/CONTRACT_MAP.md).
+## Données et reconstructions
 
-Les documents spécialisés de chaque dépôt complètent cette source de vérité sans la remplacer.
+Les datasets Hugging Face sont des artefacts de recherche versionnés. Leur publication ne prouve ni leur intégration dans le runtime, ni leur aptitude à un usage opérationnel.
 
-## Dépôts actifs
+Le pack FireViewer de juillet 2026 décrit cinq reconstructions rétrospectives en fenêtres de douze heures. Les géométries marquées `reconstructed` sont dérivées de sources disponibles ; elles ne sont ni des contours officiels, ni des observations directes, ni des prévisions.
 
-| Dépôt | Rôle |
-| --- | --- |
-| [`Fireviewer_doc`](https://github.com/fireviewer/Fireviewer_doc) | Architecture, contrats communs, roadmap, statuts, sécurité et terminologie. |
-| [`fireviewer-frontend`](https://github.com/fireviewer/fireviewer-frontend) | Contribution événementielle, interface publique, administration, revue et projection 3D/2D. |
-| [`fireviewer-backend`](https://github.com/fireviewer/fireviewer-backend) | Registre incident-centrique, preuves, orchestration, audit, validation et publication. |
-| [`fireviewer-ai-worker`](https://github.com/fireviewer/fireviewer-ai-worker) | Analyse privée des preuves, stages, modèles, localisation et abstentions. |
-| [`fireviewer-spatial`](https://github.com/fireviewer/fireviewer-spatial) | Référentiels, packages, rendus, contrats de caméra et géométrie. |
-| [`fireviewer-sdg`](https://github.com/fireviewer/fireviewer-sdg) | Données synthétiques, annotations, provenance et validation réel/synthétique. |
-
-## État vérifié et limites
-
-Le socle event-v2 est **implémenté et testé localement derrière des feature flags désactivés par défaut** : API et persistance, job d’analyse persistant, worker `event-2.0`, formulaire, revue humaine, registre externe, rétention et projection publique des événements en 3D avec secours 2D.
-
-Ce statut local ne prouve ni un déploiement ni un service opérationnel. Supabase, Blob, ClamAV, RunPod, PostGIS et les fournisseurs externes n’ont pas été validés en conditions live. Les enveloppes d’activité, la progression, la recette publique déployée et le replay complet restent à livrer. Les statuts détaillés et leurs preuves sont maintenus dans la [matrice de statut](https://github.com/fireviewer/Fireviewer_doc/blob/main/docs/STATUS_MATRIX.md).
+Une timeline de périmètres observés et un pack de reconstruction sont deux familles différentes. Elles ne sont jamais fusionnées ou présentées sous le même niveau de preuve.
 
 ## Principes
 
-- chaque information conserve sa date, sa provenance et son niveau d’incertitude ;
-- observation, interprétation, déclaration officielle, prévision et simulation restent distinctes ;
-- les faits, preuves, géométries, rapports et publications sont validés séparément ;
-- aucun modèle génératif ne produit une coordonnée géographique ;
-- l’absence de preuve ou l’impossibilité de conclure reste explicite ;
-- FireViewer ne prédit pas la propagation dans son pipeline public courant.
+- provenance, date, licence et incertitude restent visibles ;
+- observation, reconstruction, déclaration officielle, prévision et simulation restent distinctes ;
+- une sortie automatisée reste privée jusqu’à validation humaine ;
+- l’abstention est obligatoire lorsque la preuve est insuffisante ;
+- aucun modèle génératif ne produit une coordonnée géographique faisant autorité.
 
-## Modèles et datasets
+## Contact
 
-Les artefacts publics sont publiés progressivement sur [Hugging Face](https://huggingface.co/fireviewer). La publication d’un modèle ou d’un dataset ne signifie pas qu’il est promu dans le runtime ; son statut réel reste documenté dans la matrice de statut et dans le dépôt producteur.
+Contact public, provenance, droits, sécurité et demandes de retrait : [unicornwhodev@gmail.com](mailto:unicornwhodev@gmail.com).
 
-## Ancien monorepo
-
-`charli-dev420/fireviewer` désigne l’historique du développement initial lorsqu’il est accessible. La roadmap et l’architecture actives sont maintenues dans l’organisation `fireviewer`.
+La visibilité d’un dépôt ou d’un dataset ne remplace jamais sa licence. Les droits applicables sont ceux indiqués dans chaque dépôt, dataset et notice de source.
