@@ -10,9 +10,7 @@ FireViewer est un projet distinct de recherche et développement, maintenu par *
 
 Une affirmation présente dans un README ne vaut pas preuve de déploiement ou de qualité terrain. Les statuts et leurs preuves sont consignés dans la [matrice de statut](docs/STATUS_MATRIX.md).
 
-## Publication et accès
-
-FireViewer adopte une publication sélective. Pendant la restructuration, les dépôts GitHub sont conservés à accès privé. L’application web, l’API/backend, les configurations de production, les secrets, les preuves utilisateur, les données non publiées et les poids privés restent à accès privé.
+## Publications
 
 Les modèles et datasets effectivement publiés sont disponibles dans l’[organisation Hugging Face FireViewer](https://huggingface.co/fireviewer). La visibilité d’un dépôt ou d’un artefact ne remplace jamais la licence et les conditions propres à ses sources.
 
@@ -36,14 +34,14 @@ Les modèles et datasets effectivement publiés sont disponibles dans l’[organ
 
 ## Composants
 
-| Composant | Rôle | Accès pendant la restructuration |
-| --- | --- | --- |
-| Documentation | Contrats, architecture, statut et règles communes. | Privé |
-| Frontend | Contribution, consultation, revue et visualisation 3D/2D. | Privé |
-| Backend | Incidents, événements, preuves, audit, validation et publication. | Privé |
-| AI worker | Analyse des preuves, propositions, localisation et abstention. | Privé |
-| Spatial | Référentiels, packages, cartes et validation géométrique. | Privé |
-| SDG | Données synthétiques, provenance et validation réel/synthétique. | Privé |
+| Composant | Rôle |
+| --- | --- |
+| Documentation | Contrats, architecture, statut et règles communes. |
+| Frontend | Contribution, consultation, revue et visualisation 3D/2D. |
+| Backend | Incidents, événements, preuves, audit, validation et publication. |
+| AI worker | Analyse des preuves, propositions, localisation et abstention. |
+| Spatial | Référentiels, packages, cartes et validation géométrique. |
+| SDG | Données synthétiques, provenance et validation réel/synthétique. |
 
 Les détails propres à chaque composant restent dans son README et ses documents locaux. Les copies spécialisées conservées sous `repositories/` ne remplacent pas les contrats communs.
 
@@ -67,7 +65,7 @@ Le pack fourni ne comporte pas de licence FireViewer racine et les cinq ZIP déc
 
 - séparer observation, reconstruction, interprétation, déclaration officielle, prévision et simulation ;
 - conserver la date, la provenance, la licence et l’incertitude de chaque information ;
-- maintenir les sorties automatisées privées jusqu’à une décision humaine explicite ;
+- ne publier les sorties automatisées qu’après une décision humaine explicite ;
 - permettre l’abstention lorsque les preuves ou la géométrie sont insuffisantes ;
 - ne jamais transformer une validation locale en promesse de service live ;
 - ne jamais publier automatiquement une coordonnée, un périmètre ou un rapport opérationnel.
