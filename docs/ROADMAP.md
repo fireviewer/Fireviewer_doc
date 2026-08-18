@@ -1,351 +1,305 @@
-# Roadmap consolidée FireViewer
+# FireViewer — Roadmap
 
-**Statut :** roadmap inter-dépôts pilotée par des gates de preuve
+**Purpose:** cross-repository roadmap organised around verifiable technical milestones.
 
-**Principe :** aucun délai ou résultat n’est garanti par ce document
+FireViewer does not use this document to promise operational wildfire capabilities or delivery dates. A milestone is complete only when its required evidence exists.
 
-## Séquence prioritaire — recadrage événementiel
+The current programme is intentionally centred on **spatial reproducibility, temporal evidence, replay, independent evaluation and sustainability** rather than adding more disconnected features.
 
-Les entraînements et promotions de nouveaux modèles ne sont pas le chemin critique de cette séquence. Les composants existants restent des baselines de perception jusqu’à la création du benchmark événementiel.
-
-### E0 — Contrats et terminologie
-
-**État :** `IMPLEMENTED_TESTED_LOCAL`
-
-- adopter `EventCandidate`, `Viewpoint`, `LocalizationAttempt`, `FireActivityEvent`, `EventRelation` et `ActivityEnvelopeRevision` ;
-- versionner l’API, la provenance, la temporalité et les reason codes ;
-- maintenir les fonctions cibles en `specified_not_implemented` tant que le runtime n’existe pas.
-
-**Gate :** contrats cohérents, fixtures définies, aucune fonction non implémentée déclarée active.
-
-### E1 — Schéma backend additif
-
-**État :** code et DDL `IMPLEMENTED_NOT_LIVE_VERIFIED`
-
-- ajouter les entités v2 sans supprimer les objets historiques ;
-- conserver des relations persistantes vers preuves et sources ;
-- stocker les géométries métier en PostGIS ;
-- produire des adaptateurs privés sans publication automatique.
-
-**Gate :** migration idempotente, rollback, zéro perte et rapport de compatibilité.
-
-### E2 — Contribution événementielle
-
-**État :** `IMPLEMENTED_TESTED_LOCAL`, recette Supabase/Blob/ClamAV live en attente
-
-- formulaire unique : point de vue, moment, message et zéro à vingt images ou vidéos facultatives ;
-- upload privé et idempotence ;
-- mise en file directe d’une analyse privée ;
-- point de vue privé par défaut.
-
-**Gate :** message seul accepté, plusieurs médias acceptés, un seul job par soumission et aucune confusion viewpoint/activité.
-
-### E3 — Connecteurs et provenance externe
-
-**État :** registre et scheduler `IMPLEMENTED_TESTED_LOCAL` ; adaptateurs et collecte live suivis par collection
-
-- enrôler par collection Sentinel/Copernicus, FIRMS/EFFIS, Météo-France, IGN, BDIFF et organismes officiels ;
-- distinguer observation, interprétation, déclaration, référentiel, prévision et simulation ;
-- conserver révisions, filiation, licences, temps et CRS natifs ;
-- planifier les collectes par incident et AOI.
-
-**Gate :** même URL modifiée conservée comme révision, produits d’un même granule non comptés comme corroborations indépendantes, restrictions de redistribution respectées.
-
-### E4 — Analyse et revue événementielles
-
-**État :** admission, worker, dispatcher et transitions principales `IMPLEMENTED_TESTED_LOCAL` ; correction, fusion et replay avancés `PENDING`
-
-- profils sol large, distant, proche et serré ;
-- localisation ou abstention ;
-- association, contradictions, fusion et séparation proposées ;
-- revue unifiée des informations, preuves et géométries.
-
-**Gate :** toute géométrie est rejouable, toute abstention conserve le candidat et toute correction crée une révision.
-
-### E5 — Timeline, enveloppes et progression
-
-**État :** `PENDING` au-delà du stockage additif
-
-- timeline issue des événements validés ;
-- couches `event`, `front`, `activity_envelope`, `burned_area` et `simulation` séparées ;
-- enveloppes citant leurs événements supports ;
-- progression décrite entre révisions, sans interpolation silencieuse.
-
-**Gate :** un événement seul ne ferme pas un périmètre, la fumée seule ne crée pas une zone active et une prévision ne rejoint jamais les observations.
-
-### E6 — Recette et activation limitée
-
-**État :** `PENDING`
-
-- exécuter la matrice d’acceptation ;
-- mesurer localisation, abstention, association et calibration par profil ;
-- tester sécurité, retrait, rollback et replay ;
-- activer les flags sur des incidents de recette avant toute publication limitée.
-
-**Gate :** décision humaine documentée avec artefacts ; aucune promotion sur score unique.
-
-Les lots G1 à G6 ci-dessous restent des chantiers de capacités. Ils ne précèdent pas les gates E0 à E6 et ne constituent pas une autorisation de relancer des entraînements.
-
-## S0 — Cartes OpenUSD et timelines observées
-
-**État :** `IMPLEMENTED_TESTED_LOCAL_NOT_DEPLOYED`
-
-- une carte carrée est planifiée depuis un centre GPS et un côté demandé ;
-- le relief fixe vient du MNT, les placements mesurés du couple MNS−MNT et le
-  sol d'une orthophoto bakée par tuile ;
-- les rasters bruts sont temporaires et absents du ZIP final ;
-- le livrable autonome contient `zone.usda`, `zone.blend`, les assets utilisés,
-  les reçus et 20 captures de contrôle ;
-- les placements GPS explicites utilisent le catalogue embarqué et prennent
-  leur altitude sur le terrain ;
-- un second job produit une timeline de périmètres observés liée au build exact
-  de la carte, sans interpolation ni prédiction ;
-- le site importe les dossiers extraits, vérifie chaque hash et affiche la carte
-  par ses captures et la timeline par ses GLB dérivés ;
-- simulations, datasets et replays référencent ces packages immuables via
-  `fireviewer.scene-consumer-input.v1` sans reconstruire le terrain ou les
-  périmètres ;
-- le ZIP complet d'une carte publiée sera téléchargeable depuis sa fiche
-  incident ; les packs de simulation publiés s'y ajouteront comme livrables
-  séparés liés au même build ;
-- l'ancien registre global vide de packs et les pipelines terrain/PBR remplacés
-  sont retirés du chemin actif.
-
-**Gate immédiat :** recette complète sur une nouvelle image/pod avec acquisition
-live, ZIP rouvert indépendamment, 20 captures contrôlées, import Admin carte et
-timeline, puis audit de sécurité. La publication reste une décision humaine
-séparée.
-
-## G0 — Rétablir la source de vérité
-
-### Travail
-
-- maintenir l’architecture et la roadmap dans `fireviewer_doc` ;
-- définir les statuts communs ;
-- corriger les liens hérités de l’ancien monorepo ;
-- marquer `charli-dev420/fireviewer` comme historique ;
-- aligner la route canonique sur `/incident/{fire_id}` ;
-- séparer le code public des résultats d’analyse privés ;
-- retirer des documents actifs les chiffres sans artefact de benchmark.
-
-### Gate
-
-- les documents inter-dépôts ne se contredisent plus ;
-- les liens canoniques sont valides ;
-- aucun modèle n’est déclaré actif si son registre le désactive ;
-- toute performance publiée référence une mesure archivée.
-
-## G1 — Migrer Qwen vers Ministral et généraliser les stages
-
-### Dépôts
-
-- `fireviewer-ai-worker`
-- `fireviewer-backend`
-
-### Travail
-
-- intégrer Ministral à révision fixe ;
-- remplacer Qwen pour l’extraction, la recherche bornée et les rapports privés ;
-- ajouter PP-OCRv6 comme stage CPU conditionnel ;
-- remplacer l’ordre de rôles codé en dur par un graphe déclaratif ;
-- conserver le verrou GPU et l’exécution séquentielle ;
-- étendre les pré-gates et post-gates ;
-- ajouter un manifeste de replay complet ;
-- retirer les fallbacks Qwen silencieux.
-
-### Gate
-
-- les sorties structurées respectent leur schéma ;
-- chaque affirmation acceptée référence une preuve ;
-- Ministral ne produit aucun champ géographique ;
-- un run peut être rejoué avec les mêmes entrées, contrats et révisions.
-
-## G2 — Clarifier le rôle des détecteurs
-
-### Mode normal
-
-- image : D-FINE principal ;
-- vidéo : RT-DETRv2 pour le triage, D-FINE sur les keyframes ;
-- shadow : second détecteur sur échantillon ou incertitude ;
-- validation : comparaison sur le corpus complet.
-
-### Profils
-
-- `production_cascade`
-- `validation_quorum`
-- `shadow_sampling`
-
-### Challenger
-
-RF-DETR est entraîné et évalué sur les mêmes splits FireViewer. La décision repose sur un compromis documenté, pas sur les seuls résultats externes.
-
-### Gate
-
-- le rappel des cas difficiles reste acceptable ;
-- la calibration n’est pas dégradée sans justification ;
-- le coût du profil est mesuré ;
-- la contre-détection reste traçable.
-
-## G3 — Construire le challenger segmentation-pointage
-
-### Dépôts
-
-- `fireviewer-ai-worker`
-- `fireviewer-sdg`
-
-### Données
-
-Le SDG et les corpus réels doivent produire ou conserver :
-
-- masque flamme ;
-- masque fumée ;
-- visibilité et occlusion ;
-- base de flamme ;
-- base de fumée visible ;
-- front visible ;
-- négatifs difficiles ;
-- abstentions visuelles.
-
-Les splits sont séparés par incident, zone, séquence et source.
-
-### Modèle
+## Guiding sequence
 
 ```text
-DINOv3
-├─ tête segmentation
-├─ tête heatmap
-└─ tête abstention visuelle
+canonical map builder
+        ↓
+reviewed temporal fire layers
+        ↓
+fully replayable reference incident
+        ↓
+independent localisation / AI benchmarks
+        ↓
+deployed source + storage validation
+        ↓
+public technical case studies
+        ↓
+research / infrastructure partnerships at larger scale
 ```
 
-Le premier pilote entraîne les têtes avec backbone gelé. Le déblocage de blocs supplémentaires dépend des résultats.
+## P0 — Documentation and project clarity
 
-MolmoPoint reste primaire. SegFormer reste une baseline hors ligne. SAM sert à l’annotation et à la propagation.
+**State:** in progress on the current documentation refactor.
+
+### Objectives
+
+- establish one public description of what FireViewer is;
+- remove Unity/Omniverse from the core product architecture;
+- keep Omniverse only where it accurately describes optional SDG research;
+- align architecture, status, map production, timeline and replay terminology;
+- make current limitations visible without burying the project under warnings;
+- expose concrete ways for research groups, cloud providers and sponsors to help.
 
 ### Gate
 
-- le challenger est comparé à MolmoPoint et à la baseline ;
-- l’abstention est évaluée séparément ;
-- un point accepté respecte la zone admissible du masque ;
-- la calibration est analysée sur réel et synthétique ;
-- aucun incident opérationnel actif n’entre dans l’entraînement.
+- README, architecture and status documents do not contradict each other;
+- each major capability links to a technical document;
+- partner-facing claims are traceable to implementation or explicitly described as planned;
+- no unconfigured funding mechanism or institutional status is advertised.
 
-## G4 — Pilote de recalage des photos au sol
+## P1 — Canonical headless map builder
 
-### Dépôts
+**Core implementation:** present in `fireviewer-spatial`.
 
-- `fireviewer-spatial`
-- `fireviewer-ai-worker`
-- `fireviewer-sdg`
+### Objectives
 
-### Banque de rendus
+- use the endpoint-driven map builder as the only canonical spatial production path;
+- keep map generation independent from the browser, Unity and Omniverse;
+- validate representative map builds from live geographic inputs;
+- preserve source receipts, CRS, tile metadata, hashes and asset revisions;
+- validate autonomous `zone.usda` and `zone.blend` reopening;
+- archive real run metrics for compute time, storage size and failure modes.
 
-La banque est limitée au package de l’incident et versionnée avec lui. Les poses sont priorisées autour des zones accessibles et pertinentes pour les prises de vue.
+### Gate
 
-Un index local suffit pour le pilote. Une infrastructure nationale n’est pas une dépendance.
+A reference build must be reproducible from a documented request and independently inspectable from its delivered package without regenerating the terrain.
 
-### Chaîne
+### Support that helps
+
+- CPU batch credits;
+- object storage;
+- bandwidth;
+- infrastructure/reliability review;
+- geospatial expertise.
+
+See [Map Builder](MAP_BUILDER.md).
+
+## P2 — Fire evolution timeline
+
+### Objectives
+
+- make observed perimeter packages and reviewed temporal states first-class artifacts;
+- keep observed, reconstructed, interpreted, simulated and predicted states separate;
+- preserve unknown intervals rather than inventing interpolation;
+- bind every temporal package to an exact map build;
+- expose derived browser views without making GLB the canonical timeline format.
+
+### Gate
+
+A timeline can be reopened and interpreted without ambiguity about state type, time, supporting evidence or map revision.
+
+### Support that helps
+
+- GIS review;
+- wildfire-domain review;
+- retrospective reference cases;
+- storage for temporal artifacts.
+
+See [Fire Evolution Timeline](FIRE_EVOLUTION_TIMELINE.md).
+
+## P3 — Fully replayable reference incident
+
+This is the most important credibility milestone for the current architecture.
+
+### Objectives
+
+Produce at least one incident/reconstruction package that links:
+
+- source/evidence registry;
+- immutable map build;
+- temporal fire states;
+- AI and deterministic processing revisions;
+- localisation/abstention results;
+- human review decisions;
+- public snapshot;
+- replay manifest;
+- one independent post-event analysis.
+
+### Gate
+
+A second environment or reviewer can inspect the archived package and reproduce the documented study without silently downloading a newer terrain, model or temporal state.
+
+### Support that helps
+
+- durable storage;
+- compute credits;
+- independent methodology review;
+- engineering time for packaging and replay tooling.
+
+See [Replay and Post-Event Studies](REPLAY_AND_POST_EVENT_STUDIES.md).
+
+## P4 — Event/localisation benchmark
+
+Long model-training campaigns are not the priority until the evaluation contract is strong enough.
+
+### Objectives
+
+- define fixed incident-level splits;
+- keep training/evaluation leakage under control;
+- measure localisation error in metres where valid targets exist;
+- evaluate abstention separately from accepted localisations;
+- preserve difficult negatives and ambiguous views;
+- compare model revisions and deterministic spatial methods on the same cases;
+- publish failure analysis, not only aggregate scores.
+
+### Candidate components
+
+Depending on their status in [STATUS_MATRIX.md](STATUS_MATRIX.md), evaluation can cover:
+
+- FireViewer D-FINE detector;
+- FireViewer RT-DETRv2 detector;
+- MolmoPoint-based visual pointing;
+- DINOv3 challenger work;
+- RoMa-family matching;
+- PyCOLMAP pose estimation;
+- other registered baselines/challengers.
+
+### Gate
+
+No model or matcher is promoted on a single headline score. The benchmark must document uncertainty, abstention and major failure families.
+
+### Support that helps
+
+- GPU credits;
+- held-out evaluation data;
+- computer-vision expertise;
+- independent benchmark review.
+
+## P5 — External sources and deployed reproducibility
+
+### Objectives
+
+- validate selected external connectors against live providers;
+- preserve collection, revision, licence, acquisition time and CRS;
+- confirm that mirrors/derived products are not counted as independent corroboration;
+- exercise production storage, backup and restoration;
+- validate long-running jobs, cancellation, recovery and artifact delivery;
+- archive provider failures and recovery behaviour.
+
+### Gate
+
+At least one representative source family and one large spatial/replay artifact path are exercised on deployed infrastructure with documented recovery evidence.
+
+### Support that helps
+
+- provider/data partnerships;
+- hosting credits;
+- security/reliability engineering;
+- licence review.
+
+## P6 — Public technical case studies
+
+### Objectives
+
+Publish a small number of high-quality technical studies rather than a large number of opaque demos.
+
+Each case study should explain:
+
+- the question being studied;
+- the available evidence;
+- the exact map/timeline build;
+- what FireViewer could conclude;
+- what remained uncertain;
+- what failed or abstained;
+- how the result can be reproduced.
+
+### Gate
+
+A reader outside the project can understand both the value and the limitations without needing private context from the maintainer.
+
+### Support that helps
+
+- research collaborators;
+- domain review;
+- documentation support;
+- public-interest organisations able to evaluate usefulness.
+
+## P7 — Sustainable operation
+
+FireViewer currently has significant single-maintainer risk. Sustainability is therefore a technical roadmap item.
+
+### Objectives
+
+- reduce personally funded infrastructure where credits or sponsorship are available;
+- document recurring infrastructure costs from measured runs;
+- establish at least one stable support channel appropriate to the maintainer's legal status;
+- obtain external technical review on one or more critical workstreams;
+- make contribution tasks small enough for external collaborators;
+- keep core public artifacts reproducible even if a specific cloud provider changes.
+
+### Gate
+
+The project can continue core validation work without relying exclusively on unbounded personal spending and one person's undocumented operational knowledge.
+
+See [Support and Partnerships](SUPPORT_AND_PARTNERSHIPS.md).
+
+---
+
+# Research workstreams
+
+The following research streams continue in parallel but do not override P1–P7.
+
+## R1 — Detection and media triage
+
+- D-FINE remains a FireViewer detection component subject to benchmark evidence;
+- RT-DETRv2 remains available for video triage / comparison;
+- challengers are evaluated on the same fixed corpus before promotion.
+
+## R2 — Visual anchors and segmentation
+
+- MolmoPoint remains a current reference component where applicable;
+- DINOv3 segmentation/pointing work remains a challenger path;
+- SAM is primarily an annotation/correction tool unless separately promoted.
+
+## R3 — Ground-view spatial registration
+
+Target chain:
 
 ```text
-zone
-→ retrieval
-→ filtres métadonnées / horizon / FOV / relief
-→ matching dense
-→ points 2D-3D
-→ PyCOLMAP
-→ raycast MNT
-→ uncertainty_envelope
+map package
+→ local reference/retrieval
+→ geometric filters
+→ dense matching
+→ 2D–3D correspondences
+→ robust pose
+→ terrain raycast
+→ uncertainty
 ```
 
-MoGe reste auxiliaire.
+No language model is authorised to fill missing coordinates.
 
-### Gate
+## R4 — UAV / remote-sensing evaluation
 
-- les candidats, correspondances et poses sont inspectables ;
-- les erreurs critiques sont consignées ;
-- l’enveloppe est calibrée avant d’être présentée comme probabiliste ;
-- le système s’abstient lorsque la pose ou le raycast n’est pas défendable.
+Matching and remote-sensing methods are compared using source-aware evaluation. A hotspot, burned-area product and active-fire interpretation remain different data families.
 
-## G5 — Recalage UAV et observation satellite
+## R5 — Synthetic data
 
-### UAV
+`fireviewer-sdg` remains a separate R&D workstream for synthetic data and simulation experiments.
 
-Comparer sur les mêmes lots :
+Omniverse, Isaac Sim, NuRec and related NVIDIA technologies may be used there when useful, but do not define the FireViewer core runtime.
 
-- AerialExtreMatch-RoMa ;
-- RoMa v2 ;
-- AdHoP/OrthoLoC ;
-- autres challengers enregistrés.
+---
 
-La promotion dépend d’un benchmark FireViewer par domaine de vue.
+# Promotion rule
 
-### Satellite
-
-Prithvi reste disponible comme étape auxiliaire. Les travaux portent sur les produits, leur géoréférencement, leur heure d’acquisition, leur footprint et leur confiance capteur.
-
-Les types restent séparés :
-
-- `observed_hotspot`
-- `observed_burned_perimeter`
-- `human_reviewed_active_zone`
-- `simulated_scenario`
-
-### Gate
-
-- aucune sortie satellite ne confirme seule un incident ;
-- le produit source et sa temporalité sont conservés ;
-- les couches observées et simulées ne sont pas fusionnées.
-
-## G6 — Revue humaine, shadow mode et promotion
-
-### Interface
-
-Afficher séparément :
-
-- source ;
-- détections ;
-- masque ;
-- heatmap ;
-- point ;
-- correspondances ;
-- rendus candidats ;
-- pose ;
-- raycast ;
-- enveloppe d’incertitude ;
-- preuves textuelles et OCR ;
-- raisons d’abstention.
-
-### Actions opérateur
-
-- corriger un masque ;
-- déplacer ou rejeter un point ;
-- invalider des correspondances ;
-- imposer une abstention ;
-- valider séparément le fait, la géométrie, le rapport, le média et la publication.
-
-### Ordre de déploiement
+Typical promotion path:
 
 ```text
-benchmark
-→ replay
-→ recette
-→ shadow
-→ Admin privé
-→ validation indépendante
-→ publication humaine limitée
+contract
+→ implementation
+→ local tests
+→ deployed integration
+→ benchmark / replay evidence
+→ shadow or private use
+→ independent review
+→ limited public promotion
 ```
 
-### Gate
+A README claim does not replace a gate.
 
-Aucune promotion n’est déclenchée par un score automatique seul. Toute décision reste auditée et réversible selon les règles du produit.
+# What FireViewer will not claim before evidence
 
-## À ne pas faire avant preuve
-
-- supprimer MolmoPoint ;
-- déclarer DINOv3 validé avant entraînement ;
-- remplacer RT-DETRv2 par RF-DETR sans benchmark ;
-- imposer MoGe sans comparaison ;
-- créer un index national pour le pilote ;
-- ajouter un serveur LLM optimisé sans besoin de concurrence mesuré ;
-- publier des chiffres de coût ou de performance non archivés ;
-- réactiver les propositions spatiales avant qualification ;
-- intégrer une simulation dans le pipeline public courant.
+- operational emergency readiness;
+- certified propagation forecasting;
+- field localisation accuracy without a reproducible benchmark;
+- provider availability without live tests;
+- infrastructure cost without archived measurements;
+- complete replay without an independently reopened reference case;
+- model superiority without fixed comparative evaluation.
