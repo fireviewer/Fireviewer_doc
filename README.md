@@ -160,11 +160,12 @@ Support can have a direct, measurable effect on the project. Priority needs incl
 
 A contribution does not buy influence over scientific conclusions, incident validation or publication decisions. Provenance, uncertainty and safety boundaries remain part of the project regardless of the source of support.
 
-See [Support and Partnerships](docs/SUPPORT_AND_PARTNERSHIPS.md) for concrete needs and possible forms of collaboration.
+See the concise [Funding Brief](docs/FUNDING_BRIEF.md) and the detailed [Support and Partnerships](docs/SUPPORT_AND_PARTNERSHIPS.md) guide.
 
 ## Useful starting points
 
 - [Project Overview](docs/PROJECT_OVERVIEW.md)
+- [Funding Brief](docs/FUNDING_BRIEF.md)
 - [Architecture](docs/ARCHITECTURE.md)
 - [Map Builder](docs/MAP_BUILDER.md)
 - [Fire Evolution Timeline](docs/FIRE_EVOLUTION_TIMELINE.md)
