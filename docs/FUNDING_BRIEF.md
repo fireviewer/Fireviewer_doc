@@ -2,6 +2,8 @@
 
 This page is a concise, reusable description for grant applications, infrastructure programmes, sponsorship discussions and research-partnership introductions.
 
+For application forms that require multiple summary lengths, milestones, budget categories and reusable answers, see the [Funding Application Kit](FUNDING_APPLICATION_KIT.md).
+
 ## One-sentence description
 
 **FireViewer is an open-source platform for documenting wildfire observations, building reproducible spatial references, tracking reviewed fire states over time and enabling replayable post-event research.**
@@ -131,6 +133,7 @@ Funding mechanisms must therefore be selected according to the eligibility and l
 
 Useful references:
 
+- [Funding Application Kit](FUNDING_APPLICATION_KIT.md)
 - [Project Overview](PROJECT_OVERVIEW.md)
 - [Architecture](ARCHITECTURE.md)
 - [Roadmap](ROADMAP.md)
