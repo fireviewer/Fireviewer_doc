@@ -1,34 +1,32 @@
-schema_version: 1
+schema_version: 2
 generated_for: fireviewer
-overall_status: PENDING_REMOTE_WRITE
+overall_status: READY_FOR_REVIEW
 remote_write_performed: false
-verified_at: "2026-08-04"
+verified_at: "2026-08-18"
 
 organization:
   login: fireviewer
-  status: PENDING_REMOTE_WRITE
   proposed:
     name: FireViewer
-    description: "Cartographie 3D, chronologique et incidente-centrique des incendies, fondée sur des événements documentés, une provenance explicite et une publication humaine."
+    description: "Open infrastructure for wildfire observation, spatial reconstruction, temporal tracking and reproducible post-event analysis."
     blog: "https://fireviewer.vercel.app"
     location: France
 
 repositories:
   - repository: fireviewer/.github
-    status: PENDING_REMOTE_WRITE
     proposed:
-      description: "Profil public et fichiers communautaires de l’organisation open source FireViewer."
+      description: "Public profile and community entry point for the open-source FireViewer research project."
       homepage: "https://github.com/fireviewer"
       topics:
         - fireviewer
         - wildfire
         - geospatial
+        - reproducibility
         - open-source
 
   - repository: fireviewer/Fireviewer_doc
-    status: PENDING_REMOTE_WRITE
     proposed:
-      description: "Source de vérité documentaire FireViewer : architecture event-v2, contrats, roadmap, statuts, sécurité, provenance et terminologie."
+      description: "Canonical FireViewer documentation: architecture, map builder, fire timelines, replay, provenance, safety, roadmap and partnerships."
       homepage: "https://github.com/fireviewer/Fireviewer_doc"
       topics:
         - fireviewer
@@ -36,13 +34,13 @@ repositories:
         - architecture
         - wildfire
         - geospatial
+        - reproducibility
         - provenance
-        - human-in-the-loop
+        - open-science
 
   - repository: fireviewer/fireviewer-ai-worker
-    status: PENDING_REMOTE_WRITE
     proposed:
-      description: "Worker IA privé FireViewer pour l’analyse event-v2 des preuves, les stages de perception et localisation, la provenance et les abstentions explicites."
+      description: "Private FireViewer AI analysis worker for evidence processing, visual anchors, localisation attempts, provenance and explicit abstention."
       homepage: "https://huggingface.co/fireviewer"
       topics:
         - fireviewer
@@ -51,12 +49,12 @@ repositories:
         - multimodal
         - geospatial
         - provenance
+        - uncertainty
         - human-in-the-loop
 
   - repository: fireviewer/fireviewer-backend
-    status: PENDING_REMOTE_WRITE
     proposed:
-      description: "Backend event-v2 FireViewer : incidents, événements privés, preuves, orchestration, audit, revue humaine et publication versionnée."
+      description: "FireViewer backend for incident identity, evidence, orchestration, audit, human review, spatial jobs and versioned publication."
       homepage: "https://fireviewer-api.vercel.app"
       topics:
         - fireviewer
@@ -69,45 +67,43 @@ repositories:
         - human-in-the-loop
 
   - repository: fireviewer/fireviewer-frontend
-    status: PENDING_REMOTE_WRITE
     proposed:
-      description: "Frontend FireViewer pour les contributions event-v2, la revue humaine et la timeline publique incidente-centrique en 3D avec secours 2D."
+      description: "FireViewer web interface for contributions, human review, wildfire timelines and public 2D/3D incident exploration."
       homepage: "https://fireviewer.vercel.app"
       topics:
         - fireviewer
         - wildfire
         - react
         - typescript
-        - threejs
         - geospatial
+        - visualization
         - accessibility
         - human-in-the-loop
 
   - repository: fireviewer/fireviewer-sdg
-    status: PENDING_REMOTE_WRITE
     proposed:
-      description: "Génération de données synthétiques FireViewer avec provenance, annotations et validation réel/synthétique pour les modèles de perception."
+      description: "Optional FireViewer synthetic-data and simulation R&D with explicit provenance, evaluation boundaries and real/synthetic separation."
       homepage: "https://github.com/fireviewer/fireviewer-sdg"
       topics:
         - fireviewer
         - wildfire
-        - nvidia-omniverse
         - synthetic-data
+        - simulation
         - sim-to-real
         - computer-vision
         - provenance
+        - nvidia-omniverse
 
   - repository: fireviewer/fireviewer-spatial
-    status: PENDING_REMOTE_WRITE
     proposed:
-      description: "Outils spatiaux FireViewer pour les référentiels, packages, LiDAR, rendus, caméras, recalage et géométrie avec provenance."
+      description: "Headless FireViewer map builder and spatial tooling for reproducible OpenUSD/Blender packages, fire timelines, CRS and provenance."
       homepage: "https://github.com/fireviewer/fireviewer-spatial"
       topics:
         - fireviewer
         - wildfire
         - geospatial
-        - lidar
         - openusd
-        - unity
         - blender
+        - lidar
+        - reproducibility
         - provenance

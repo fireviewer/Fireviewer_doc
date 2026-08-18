@@ -1,124 +1,142 @@
-# Cartes 3D, périmètres observés et entrées de simulation
+# FireViewer — Simulation and Dataset Consumer Boundary
 
-**État :** `IMPLEMENTED_TESTED_LOCAL_NOT_DEPLOYED`
+**Role of this document:** compatibility note for simulation/dataset consumers. It is **not** the canonical description of FireViewer core.
 
-## Décision
+The canonical architecture is documented in [ARCHITECTURE.md](ARCHITECTURE.md), the map-production path in [MAP_BUILDER.md](MAP_BUILDER.md), and replay/post-event use in [REPLAY_AND_POST_EVENT_STUDIES.md](REPLAY_AND_POST_EVENT_STUDIES.md).
 
-FireViewer possède désormais un seul pipeline actif de production de cartes
-3D. Il remplace les anciennes scènes Unity, le terrain adaptatif/PBR et les
-registres de packs de simulation historiques.
+## Current decision
 
-La production et la simulation restent deux responsabilités séparées :
+FireViewer spatial production and downstream simulation are separate responsibilities.
 
-- l'espace de production crée une carte ou un package supplémentaire de
-  périmètres observés ;
-- un moteur de simulation, un pipeline dataset ou un replay consomme ensuite
-  ces artefacts immuables ;
-- aucun consommateur ne reconstruit le terrain, les assets ou les périmètres.
+The core system produces immutable spatial and temporal packages. A simulation engine, dataset pipeline or replay/study tool may consume those packages without being allowed to silently rebuild or replace them.
 
-Carte et périmètres sont volontairement deux jobs distincts, avec une seule
-production active à la fois. Une nouvelle timeline peut donc être ajoutée quand
-la progression observée évolue sans recréer la carte.
+```text
+measured map build
+        │
+        ├── observed/reviewed temporal package
+        │
+        ▼
+scene-consumer input
+        │
+        ├── replay / post-event study
+        ├── dataset export
+        └── optional simulation research
+```
 
-## Carte autonome
+Simulation is therefore a **consumer family**, not the centre of the FireViewer product architecture.
 
-L'utilisateur fournit le centre GPS du carré et la longueur d'un côté. Le
-moteur aligne l'emprise sur des tuiles Lambert-93 de 500 m et, pour chaque
-tuile, traite temporairement MNT, MNS et orthophoto.
+## Canonical map package
 
-Le résultat scellé contient :
+The active map builder creates a portable package containing artifacts such as:
 
-- `zone.usda` et `zone.blend`, scènes unifiées autonomes ;
-- les packages terrain FVTG de chaque tuile ;
-- la texture de sol orthophoto bakée ;
-- les instances d'assets mesurées et les placements GPS explicites ;
-- uniquement les USD et textures effectivement utilisés ;
-- les petits reçus de provenance et tous les hashes ;
-- exactement 20 captures de contrôle : quatre vues générales puis seize
-  détails.
+```text
+zone.usda
+zone.blend
+zone.done.json
+zone-plan.json
+zone-context.json
+packages/<tile>/
+shared/prototypes/
+provenance/<tile>/
+```
 
-Les rasters MNT/MNS/orthophoto bruts sont supprimés après validation de leur
-tuile et ne sont pas livrés. Le package reste ouvrable indépendamment après
-extraction.
+The active measured-map contract is `fireviewer.simple-measured-map-package.v2` with its corresponding upload contract.
 
-## Périmètres observés
+The production path does **not** require a gallery of 20 control captures. The canonical result is the validated package itself. Renders/screenshots can be produced by review or study tools as derived artifacts without becoming part of the measured-map contract.
 
-Le second job accepte un JSON FireViewer ou un GeoJSON. Il produit :
+## Temporal package
 
-- `geographic-perimeters.usda` ;
-- `fire-progression-timeline.json` ;
-- `perimeters.normalized.json` ;
-- le manifeste hashé ;
-- une vue GLB dérivée par état pour le contrôle web.
+Observed geographic states are produced separately from the map build.
 
-Affected et active restent des catégories distinctes. Chaque état correspond à
-un instant observé ou à une plage explicitement fournie. Entre deux
-observations, la progression est `undefined` ; aucune interpolation, vitesse ou
-prévision n'est inventée.
+Current spatial outputs can include:
 
-Les GLB servent uniquement à afficher la timeline dans le navigateur. Le JSON
-normalisé, la timeline et l'USD restent les données de référence.
+```text
+geographic-perimeters.usda
+fire-progression-timeline.json
+perimeters.normalized.json
+perimeter-layer.manifest.json
+preview/perimeter-viewer.manifest.json
+preview/frame-*.glb
+```
 
-## Import et contrôle dans le site
+The normalised geometry, timeline and OpenUSD layer are the reference data. Browser-oriented GLB files are derived views.
 
-Le site ne transforme pas les livrables. Après extraction du ZIP, il vérifie
-chaque fichier, SHA-256, contrat et identité spatiale avant l'import.
+Unknown intervals remain unknown; no simulation consumer is allowed to rewrite that semantic rule and still describe the result as the original observed timeline.
 
-- OpenUSD est contrôlé dans l'Admin par les 20 captures liées au package ;
-- la timeline est contrôlée par les GLB dérivés déjà contenus dans son package ;
-- le téléchargement direct de `zone.usda`, de la timeline et du calque USD
-  reste disponible ;
-- aucune publication publique n'est automatique.
+## Consumer contract
 
-Le site ne traite plus OpenUSD comme un ancien catalogue de tuiles. L'ancien
-registre global vide de packs est retiré ; les téléchargements sont désormais
-rattachés à la fiche de l'incident et au build exact de sa carte.
+`scene-consumer-input.v1` binds a consumer to immutable spatial/temporal references.
 
-## Téléchargements de la fiche incident
+A consumer should be able to identify:
 
-Lorsqu'une carte est publiée, son ZIP complet de production doit être proposé
-sur la fiche incident. Ce ZIP est le livrable autonome original, pas une scène
-reconstruite par le site.
+- map package ID/build/revision;
+- map-package contract version;
+- archive/hash reference;
+- canonical spatial entry point;
+- CRS/vertical-reference information;
+- optional temporal package and its exact base map build;
+- prohibition on silent terrain/perimeter reconstruction.
 
-Les packs de simulation restent prévus comme livrables supplémentaires. Quand
-un pack est produit et publié, il apparaît à côté de la carte et conserve au
-minimum l'identité du build de carte, la timeline utilisée, son SHA-256, sa
-taille et son point d'entrée. Plusieurs packs peuvent viser la même carte sans
-la modifier.
+## Replay versus simulation
 
-La disponibilité publique d'un ZIP carte ou simulation est une décision de
-publication explicite. L'import technique d'une carte ne rend aucun fichier
-public automatiquement.
+Replay and simulation are not synonyms.
 
-## Contrat des consommateurs
+### Replay
 
-Une simulation, un dataset ou un replay utilise
-`fireviewer.scene-consumer-input.v1`. Ce contrat verrouille :
+A replay preserves the historical spatial, temporal, evidence and processing revisions and allows them to be inspected/re-executed at the level documented by the replay contract.
 
-- package ID, révision, zone, build ID, contrat et archive de la carte ;
-- `zone.usda`, `EPSG:2154` et `NGF-IGN69` ;
-- éventuellement le package de périmètres, sa timeline et le build exact de sa
-  carte de base ;
-- l'interdiction de reconstruire terrain et périmètres ;
-- l'absence d'interpolation entre observations ;
-- le fait que l'exécution de simulation est une responsabilité externe.
+### Simulation
 
-Une carte `technical_unpublished` peut être utilisée pour une simulation ou un
-dataset interne. Sa publication publique est une décision indépendante.
+A simulation produces a new model-derived scenario from selected inputs.
+
+Its output is a new derived artifact and must carry its own model/configuration provenance.
+
+A simulation must never be inserted into the observed timeline as if it were an historical observation.
+
+## Dataset export
+
+A dataset is also a separate derived product.
+
+Exporting data from an incident/replay requires explicit rules for:
+
+- source licences;
+- included/excluded artifact families;
+- labels and their semantic class;
+- train/validation/test split policy;
+- incident/source leakage;
+- transformation history.
+
+The dataset does not modify the source incident.
+
+## Optional SDG research
+
+`fireviewer-sdg` may use simulation technologies such as NVIDIA Omniverse/Isaac Sim in controlled synthetic-data campaigns.
+
+That work:
+
+- is optional R&D;
+- is not a dependency of the canonical map builder;
+- does not define the public FireViewer architecture;
+- must label synthetic cases explicitly;
+- must preserve its own provenance and split/leakage rules.
+
+## Publication and downloads
+
+A published incident may expose an accepted map package and other authorised artifacts as downloads.
+
+A future simulation pack, benchmark export or post-event study can appear as an additional artifact linked to the exact map/replay inputs it consumed. It does not replace the base map package.
+
+Publication remains a separate reviewed action.
 
 ## Gates
 
-| Gate | Preuve requise |
+| Gate | Evidence required |
 | --- | --- |
-| Carte produite | packages revalidés, assets autonomes, rasters bruts absents, 20 captures hashées |
-| Carte importée | inventaire byte-for-byte, contrat actif, identité de zone/build et contrôles disponibles |
-| Timeline produite | source normalisée, états explicites, USD, timeline et GLB dérivés hashés |
-| Timeline attachée | même package/révision/zone/build/contrat que la carte active |
-| Consommation simulation/dataset | `scene-consumer-input.v1` valide et aucune reconstruction |
-| Téléchargement carte | ZIP original, SHA-256 et build de carte publiés sur la fiche incident |
-| Téléchargement simulation | pack supplémentaire lié au même build et à la timeline consommée |
-| Publication | décision humaine séparée et auditée |
+| Map package accepted | package contract valid, hashes valid, source/provenance receipts present, package independently inspectable according to the current gate |
+| Temporal package accepted | explicit state types/times, normalised geometry, exact map-build reference, integrity hashes |
+| Replay consumption | immutable references preserved; no silent terrain/timeline substitution |
+| Dataset consumption | export methodology, labels, rights and split/leakage policy documented |
+| Simulation consumption | model/configuration provenance explicit and output labelled simulated |
+| Public release | human publication decision and applicable rights checks |
 
-Les tests locaux ne prouvent pas une acquisition fournisseur live, un pod, un
-rendu GPU ni une publication réelle. Ces validations restent rapportées
-séparément.
+Local tests alone do not prove live source acquisition, deployed provider resilience, scientific accuracy or operational safety.

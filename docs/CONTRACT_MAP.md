@@ -1,93 +1,115 @@
-# Carte des contrats FireViewer
+# FireViewer — Contract Map
 
-## Principe
+## Principle
 
-Chaque contrat possède :
+Every cross-component contract has:
 
-- un producteur ;
-- un ou plusieurs consommateurs ;
-- une version ;
-- un schéma ;
-- une empreinte ou un verrou ;
-- une politique de compatibilité ;
-- un propriétaire documentaire.
+- a producer;
+- one or more consumers;
+- a version;
+- a schema or typed representation;
+- compatibility rules;
+- an integrity/version lock where applicable;
+- a documented owner.
 
-## Carte inter-dépôts
+Contracts are the boundaries that let FireViewer change runtimes or providers without silently changing the meaning of archived incidents.
 
-| Contrat | Producteur | Consommateurs | Rôle |
+## Cross-repository contracts
+
+| Contract / family | Producer | Consumers | Role |
 | --- | --- | --- | --- |
-| Event candidate v2 | Frontend / Backend | Backend / AI worker | Point de vue, temps, message, preuves et admission privée. |
-| Event and provenance v2 | Backend | Frontend / AI worker / spatial | Événements, révisions, relations, temporalité et filiation. |
-| External source artifact | Connecteur / Backend | Backend / AI worker | Produit officiel ou capteur, révision, licence, CRS et parents. |
-| Localization attempt | AI worker / spatial | Backend / frontend Admin | Géométrie proposée ou abstention rejouable. |
-| Activity envelope revision | Backend / spatial | Frontend / publication | Enveloppe probable et événements supports. |
-| Publication snapshot | Backend | Frontend | Projection publique versionnée et retirable ; payload immuable, suppression interdite, hash revérifié et rétractation unique auditée dans le socle local. |
-| Incident public | Backend | Frontend | Métadonnées et état public de l’incident. |
-| Viewer manifest | Backend | Frontend | Asset courant, ETag et état du viewer. |
-| Public incident view | Backend | Frontend | Faits et observations publiés. |
-| Admin review | Backend | Frontend | Dossier privé de revue et actions autorisées. |
-| Agent batch | Backend | AI worker | Lot, preuves, étapes et contraintes d’exécution. |
-| Agent result | AI worker | Backend | Résultats partiels, abstentions, preuves et rapports. |
-| Evidence artifact | Backend / worker | Backend / frontend Admin | Filiation et provenance des artefacts. |
-| Spatial package | Spatial | Backend / frontend / worker | Référentiel versionné et assets du viewer. |
-| Simple measured map package v1 | Spatial | Backend / frontend / simulation and dataset consumers | Carte OpenUSD autonome, assets utilisés, reçus et 20 captures de contrôle hashées. |
-| Observed perimeter package v1 | Spatial | Backend / frontend / simulation and dataset consumers | Calques et timeline observés liés au build exact d'une carte ; GLB de contrôle non autoritatifs. |
-| Scene consumer input v1 | Simulation / dataset / replay orchestrator | Simulation / dataset / replay runtime | Références immuables vers une carte publiée ou non et sa timeline optionnelle, sans reconstruction. |
-| Incident map download | Spatial production / publication | Public incident page | ZIP autonome original d'une carte publiée, lié à son build et à son SHA-256. |
-| Incident simulation pack | Simulation producer / publication | Public incident page / replay | Livrable supplémentaire lié au build de carte et à la timeline effectivement consommée. |
-| Spatial registration | Backend / spatial | AI worker | Entrées de recalage autorisées. |
-| Spatial proposal | AI worker | Backend / frontend Admin | Pose, intersection, incertitude ou abstention. |
-| SDG case | SDG | AI worker / pipelines de training | Cas synthétique et provenance. |
-| Model manifest | AI worker | Bootstrap / runtime / docs | Modèles, révisions, profils et état d’activation. |
+| Event candidate v2 | Frontend / Backend | Backend / AI worker | Private viewpoint, time, message/evidence and admission context. |
+| Event and provenance v2 | Backend | Frontend / AI worker / spatial | Events, revisions, relations, temporal semantics and provenance. |
+| External source artifact | Connector / Backend | Backend / AI worker | Versioned external product with licence, time, CRS and lineage. |
+| Evidence artifact | Backend / worker | Backend / Admin frontend | Immutable evidence/derived-artifact lineage. |
+| Localization attempt | AI worker / spatial | Backend / Admin frontend | Proposed spatial result or typed abstention. |
+| Fire activity event | Backend | Frontend / replay consumers | Reviewed event state with evidence, time and geometry references. |
+| Activity envelope revision | Backend / spatial | Frontend / publication | Multi-event interpretation with explicit supports; not a direct observation. |
+| Publication snapshot | Backend | Frontend / replay | Immutable public revision and retraction/replacement lineage. |
+| Incident public metadata | Backend | Frontend | Stable incident identity and public state. |
+| Viewer manifest | Backend | Frontend | Current web-view asset references and cache/version state. |
+| Public incident view | Backend | Frontend | Public facts, temporal states, sources and download references. |
+| Admin review | Backend | Frontend | Private review dossier and authorised actions. |
+| Agent batch / event bundle | Backend | AI worker | Private evidence bundle, stages and execution constraints. |
+| Agent result | AI worker | Backend | Structured proposals, anchors, localisation attempts, abstentions and reports. |
+| `fireviewer.simple-measured-map-package.v2` | Spatial | Backend / frontend / replay/dataset consumers | Canonical autonomous OpenUSD/Blender map package, tile packages, used assets and provenance receipts. |
+| `fireviewer.simple-measured-map-upload-contract.v2` | Spatial | Backend/storage | Validation boundary for ingestion of a measured map package. |
+| `fireviewer.observed-perimeter-package.v1` | Spatial | Backend / frontend / replay/dataset consumers | Normalised observed perimeter layer and timeline bound to an exact map build. |
+| `fireviewer.observed-perimeter-upload-contract.v1` | Spatial | Backend/storage | Validation boundary for observed-perimeter package ingestion. |
+| `scene-consumer-input.v1` | Replay/dataset/simulation orchestration | Replay/dataset/simulation runtime | Immutable references to a map build and optional temporal package without rebuilding them. |
+| Incident map download | Spatial production / publication | Public incident page / authorised consumers | Original accepted ZIP and exact build/hash reference. |
+| Spatial registration input | Backend / spatial | AI worker | Authorised spatial references for localisation attempts. |
+| Spatial proposal/result | AI worker / spatial | Backend / Admin frontend | Pose, raycast/intersection, uncertainty or abstention. |
+| SDG case | SDG | Training/evaluation pipelines | Explicitly synthetic case with its own provenance. |
+| Model manifest | AI worker / model registry | Runtime / bootstrap / docs | Model revision, role, profile and activation state. |
+| Replay manifest | Replay orchestrator | Post-event study / benchmark / archive tools | Binding of exact spatial, temporal, evidence, processing and review revisions. |
+| Post-event study artifact | Study workflow | Researchers / publication | New derived analysis that references a replay without rewriting it. |
 
-## Route canonique
+## Important spatial correction
+
+The canonical measured-map contract is **v2**.
+
+The active map-production path does **not** require a gallery of 20 PNG captures. The canonical result is the validated autonomous package containing the OpenUSD/Blender scenes, tile packages, used prototype bundle and provenance receipts.
+
+Browser views and study renders are derived consumers, not required canonical map artifacts.
+
+## Canonical route
 
 ```text
 /incident/{fire_id}
 ```
 
-Les anciennes routes ne doivent être conservées que comme alias explicitement documentés.
+Compatibility aliases may exist during migrations, but the canonical public identity is stable.
 
-## Contrats de décisions séparées
+## Separate decisions
 
-Les décisions suivantes ne partagent pas un unique statut :
+The following decisions must not collapse into one status:
 
-- validation d’un fait ;
-- validation d’une géométrie ;
-- validation d’un rapport ;
-- modération d’un média ;
-- publication d’un média ;
-- publication d’une révision spatiale.
+- fact validation;
+- evidence validation/moderation;
+- visual-anchor validation;
+- geometry validation;
+- uncertainty review;
+- temporal-state classification;
+- report/text validation;
+- media publication;
+- incident/public revision publication.
 
-## Versionnement
+## Versioning
 
-Une évolution incompatible crée une nouvelle version de contrat.
+An incompatible semantic or structural change creates a new contract version.
 
-Les consommateurs doivent verrouiller :
+Consumers should lock, where applicable:
 
-- la version ;
-- le chemin ;
-- le schéma ;
-- l’empreinte lorsque le mécanisme existe.
+- contract version;
+- schema path/identifier;
+- producer revision;
+- expected hash or lockfile entry.
 
-## Rejet
+A new implementation behind an unchanged contract must still preserve the same observable semantics.
 
-Un contrat invalide est rejeté avant traitement. Une sortie partielle valide peut être conservée uniquement si son statut et ses étapes manquantes sont explicites.
+## Invalid or partial output
 
-## Documentation spécialisée
+Invalid input is rejected before it becomes an accepted artifact.
 
-- Gouvernance documentaire : `docs/REPOSITORY_DOCUMENTATION_POLICY.md`
-- Événements : `docs/contracts/EVENT_API_V2.md`, `docs/contracts/EVENT_AND_PROVENANCE_V2.md`
-- Sources externes : `docs/EXTERNAL_SOURCE_CONNECTORS.md`
-- Migration : `docs/MIGRATION_AND_FEATURE_FLAGS.md`
-- Acceptation : `docs/ACCEPTANCE_AND_REPLAY_MATRIX.md`
-- AI worker : `docs/PIPELINE_V2.md`, `docs/REPLAY_AND_PROVENANCE.md`
-- Backend : `docs/AGENT_ORCHESTRATION.md`, `docs/EVIDENCE_REGISTRY.md`
-- Spatial : `docs/CAMERA_AND_CRS_CONTRACT.md`, `docs/PACKAGE_VERSIONING.md`
-- Cartes et timelines :
-  `fireviewer-spatial/docs/SIMPLE_PRODUCTION_POD.md` et
-  `fireviewer-spatial/contracts/spatial/v1/scene-consumer-input.schema.json`
-- Frontend : `docs/REVIEW_UI_CONTRACT.md`
-- SDG : `docs/SPLIT_AND_LEAKAGE_POLICY.md`
+A valid partial output may be preserved only when its partial status, missing stages and limitations are explicit. FireViewer prefers a typed partial/abstention state over fabricating a complete result.
 
-Les chemins de la liste ci-dessus sont relatifs au dossier documentaire propre à chaque dépôt sous `repositories/<repo>/`. La politique canonique, les responsabilités et les règles de synchronisation sont décrites dans `docs/REPOSITORY_DOCUMENTATION_POLICY.md`.
+## Replay rule
+
+A replay consumer may read and analyse accepted packages. It must not silently regenerate terrain, rewrite historical perimeter states or substitute a newer model revision and still claim that the result is the original replay.
+
+A changed method produces a new **study artifact** referencing the original replay.
+
+## Canonical documentation
+
+- [Architecture](ARCHITECTURE.md)
+- [Map Builder](MAP_BUILDER.md)
+- [Fire Evolution Timeline](FIRE_EVOLUTION_TIMELINE.md)
+- [Replay and Post-Event Studies](REPLAY_AND_POST_EVENT_STUDIES.md)
+- [Provenance and Reproducibility](PROVENANCE_AND_REPRODUCIBILITY.md)
+- [Event API v2](contracts/EVENT_API_V2.md)
+- [Event and Provenance v2](contracts/EVENT_AND_PROVENANCE_V2.md)
+- [External Source Connectors](EXTERNAL_SOURCE_CONNECTORS.md)
+- [Acceptance and Replay Matrix](ACCEPTANCE_AND_REPLAY_MATRIX.md)
+
+Repository-specific schemas and implementation documents remain owned by their producer repositories. This repository defines the cross-project meaning and boundaries rather than duplicating every implementation file.

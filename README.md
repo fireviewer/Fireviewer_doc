@@ -1,77 +1,195 @@
-# Documentation FireViewer
+# FireViewer
 
-FireViewer est un projet distinct de recherche et développement, maintenu par **Unicorn Who Dev**. Les espaces `fireviewer` sur GitHub et Hugging Face constituent ses espaces de publication canoniques.
+**Open infrastructure for wildfire observation, spatial reconstruction, temporal tracking and reproducible post-event analysis.**
 
-> FireViewer n’est ni un service d’alerte, ni une source officielle, ni un outil de conduite des secours. Ses cartes, reconstructions, analyses et simulations ne doivent pas être utilisées pour la sécurité des personnes, le commandement opérationnel, une expertise d’assurance ou une preuve juridique. En situation réelle, suivez les consignes des autorités et contactez les services d’urgence compétents.
+FireViewer is an independent open-source research and engineering project maintained by **Unicorn Who Dev**. Its goal is to make wildfire information easier to inspect, compare, preserve and replay over time without turning uncertain observations into false certainty.
 
-## Rôle de ce dépôt
+FireViewer is not primarily a 3D viewer. The viewer is one interface over a larger technical system that combines geospatial processing, evidence management, computer vision, temporal modelling, reproducible scene generation and human validation.
 
-`Fireviewer_doc` est la source de vérité documentaire inter-dépôts de FireViewer. Il maintient l’architecture, les contrats communs, la terminologie, les statuts vérifiés, les limites de sécurité et les règles de publication.
+> **FireViewer is not an emergency alert service, an official source, a firefighting command tool or a wildfire propagation predictor.** In an active emergency, follow the instructions of the relevant public authorities and emergency services.
 
-Une affirmation présente dans un README ne vaut pas preuve de déploiement ou de qualité terrain. Les statuts et leurs preuves sont consignés dans la [matrice de statut](docs/STATUS_MATRIX.md).
+## Why FireViewer exists
 
-## Publications
+Wildfire information is fragmented across photographs, videos, satellite products, public reports, maps, terrain data and retrospective assessments. These sources often arrive at different times, at different spatial resolutions, with different levels of confidence.
 
-Les modèles et datasets effectivement publiés sont disponibles dans l’[organisation Hugging Face FireViewer](https://huggingface.co/fireviewer). La visibilité d’un dépôt ou d’un artefact ne remplace jamais la licence et les conditions propres à ses sources.
+FireViewer is designed around a simple principle:
 
-## Documents canoniques
+> **Every published state should remain traceable to what was observed, when it was observed, where it was placed, how it was transformed and which exact spatial build was used.**
 
-- [Architecture](docs/ARCHITECTURE.md)
-- [Décision d’architecture événementielle](docs/adr/ADR-0001-EVENT-CENTRIC-INCIDENT-ANALYSIS.md)
-- [Contrat API événement v2](docs/contracts/EVENT_API_V2.md)
-- [Événements et provenance v2](docs/contracts/EVENT_AND_PROVENANCE_V2.md)
-- [Connecteurs de sources externes](docs/EXTERNAL_SOURCE_CONNECTORS.md)
-- [Migration et feature flags](docs/MIGRATION_AND_FEATURE_FLAGS.md)
-- [Sécurité et confidentialité](docs/SECURITY_PRIVACY_EVENT_PIPELINE.md)
-- [Acceptation et replay](docs/ACCEPTANCE_AND_REPLAY_MATRIX.md)
-- [Roadmap](docs/ROADMAP.md)
-- [Matrice de statut](docs/STATUS_MATRIX.md)
-- [Sécurité et périmètre](docs/SAFETY_AND_SCOPE.md)
-- [Terminologie](docs/TERMINOLOGY.md)
-- [Carte des contrats](docs/CONTRACT_MAP.md)
-- [Politique documentaire](docs/REPOSITORY_DOCUMENTATION_POLICY.md)
-- [Stockage et rétention](docs/STORAGE_AND_RETENTION.md)
+The project therefore focuses on four capabilities:
 
-## Composants
-
-| Composant | Rôle |
+| Capability | Purpose |
 | --- | --- |
-| Documentation | Contrats, architecture, statut et règles communes. |
-| Frontend | Contribution, consultation, revue et visualisation 3D/2D. |
-| Backend | Incidents, événements, preuves, audit, validation et publication. |
-| AI worker | Analyse des preuves, propositions, localisation et abstention. |
-| Spatial | Référentiels, packages, cartes et validation géométrique. |
-| SDG | Données synthétiques, provenance et validation réel/synthétique. |
+| **Observe and document** | Keep evidence, timestamps, provenance, uncertainty and human review attached to each incident. |
+| **Build a reproducible spatial reference** | Generate a deterministic geographic scene from measured terrain and imagery through a headless map-production pipeline. |
+| **Track change over time** | Represent observations and reviewed fire states as a temporal sequence without silently filling unknown periods. |
+| **Replay and study afterwards** | Reopen an incident later with the exact map build, evidence, revisions, hashes and temporal states used at the time. |
 
-Les détails propres à chaque composant restent dans son README et ses documents locaux. Les copies spécialisées conservées sous `repositories/` ne remplacent pas les contrats communs.
+## From sources to a reproducible incident
 
-## Publications de données
+```text
+external and contributed sources
+            │
+            ▼
+   provenance + evidence registry
+            │
+            ├──────────────► AI-assisted analysis
+            │                    │
+            │                    ▼
+            │             localisation / abstention
+            │
+            ▼
+     human review and validation
+            │
+            ├──────────────► temporal fire states
+            │
+            ▼
+   immutable spatial map build
+            │
+            ▼
+ versioned incident representation
+            │
+            ├──────────────► public exploration
+            ├──────────────► datasets / benchmarks
+            └──────────────► replay / post-event studies
+```
 
-### Datasets Hugging Face
+Observation, reconstruction, interpretation, simulation and prediction are deliberately kept separate. A reconstructed historical perimeter is not presented as a direct observation. A simulation is not presented as an observed future state.
 
-Chaque dataset FireViewer possède sa propre carte. Elle décrit son contenu réel, ses splits, sa provenance, ses droits, ses limites et le statut du Dataset Viewer. Un artefact publié n’est pas automatiquement admis à l’entraînement ou promu dans le runtime.
+## Headless map builder
 
-### Packs d’évolution des incendies de juillet 2026
+The active FireViewer map builder no longer depends on Unity or NVIDIA Omniverse.
 
-Le pack `fireviewer_july_2026_packs_v0.1.0` décrit cinq reconstructions rétrospectives découpées en fenêtres de douze heures : Diois, Fontainebleau, Trévillach, Gros Bessillon et Saumos/Gironde.
+A map build is requested through the backend and executed as a headless production job. The spatial pipeline works from a geographic centre and requested area, acquires the required geographic inputs, processes the area on a **Lambert-93 / EPSG:2154 grid of 500 m tiles**, and produces a portable spatial package.
 
-Les contours, zones actives et fronts marqués `reconstructed` sont des géométries dérivées de bilans de surface, de secteurs nommés, de produits cartographiques et d’observations thermiques. Ils ne constituent pas des délimitations officielles. Une interpolation rétrospective n’est ni une observation directe ni une prévision.
+Current outputs include, among other artifacts:
 
-Le champ `qa_pass` atteste uniquement les contrôles décrits dans la méthodologie : format, validité géométrique, inclusion, croissance monotone et tolérance de surface. Chaque fenêtre doit être lue avec `activity_state`, `confidence` et `source_refs`.
+```text
+zone.usda
+zone.blend
+zone.done.json
+zone-plan.json
+zone-context.json
+packages/<tile>/
+shared/prototypes/
+provenance/<tile>/
+```
 
-Le pack fourni ne comporte pas de licence FireViewer racine et les cinq ZIP déclarés dans `individual_archives.json` ne sont pas présents dans le dossier. Il ne doit donc pas être présenté comme une release réutilisable complète tant que ces points ne sont pas régularisés.
+The final package contains the spatial scene, the assets actually used and compact provenance receipts. Raw MNT, MNS and orthophoto rasters are temporary processing inputs and are not required in the delivered package.
 
-## Principes communs
+The browser consumes derived web representations where useful, but the spatial reference remains the versioned map package rather than a screenshot or a client-specific scene.
 
-- séparer observation, reconstruction, interprétation, déclaration officielle, prévision et simulation ;
-- conserver la date, la provenance, la licence et l’incertitude de chaque information ;
-- ne publier les sorties automatisées qu’après une décision humaine explicite ;
-- permettre l’abstention lorsque les preuves ou la géométrie sont insuffisantes ;
-- ne jamais transformer une validation locale en promesse de service live ;
-- ne jamais publier automatiquement une coordonnée, un périmètre ou un rapport opérationnel.
+See [Map Builder](docs/MAP_BUILDER.md).
 
-## Contact et droits
+## Tracking wildfire evolution
 
-Contact public, provenance, droits, sécurité et demandes de retrait : [unicornwhodev@gmail.com](mailto:unicornwhodev@gmail.com).
+FireViewer treats the map as a stable spatial reference and wildfire evolution as a separate temporal layer.
 
-Ce dépôt ne possède pas de licence racine. Aucun droit de réutilisation de sa documentation ne doit être déduit de sa seule visibilité. Les dépôts techniques et les datasets conservent leurs licences et notices propres.
+Observed or reviewed geographic states can be attached to the exact map build used for an incident. Each state belongs to a known observation time or an explicitly documented interval. When nothing is known between two states, FireViewer keeps that period unknown instead of inventing a smooth progression.
+
+```text
+observed ≠ reconstructed ≠ interpolated ≠ simulated ≠ predicted
+```
+
+This distinction is central to the project and to every dataset, replay or public representation derived from it.
+
+See [Fire Evolution Timeline](docs/FIRE_EVOLUTION_TIMELINE.md).
+
+## Reproducibility and post-event studies
+
+FireViewer is designed to remain useful after an incident has ended.
+
+A replay can bind together:
+
+- the exact spatial package and its hashes;
+- geographic source receipts and coordinate-reference information;
+- time-stamped observations and reviewed temporal states;
+- evidence and derived artifacts;
+- AI model revisions and processing profiles;
+- human review decisions and publication revisions.
+
+This makes it possible to compare what was known at different moments, create reproducible datasets and benchmarks, test new analysis methods on archived incidents, and study how the documented understanding of a fire evolved without rewriting history with hindsight.
+
+See [Replay and Post-Event Studies](docs/REPLAY_AND_POST_EVENT_STUDIES.md) and [Provenance and Reproducibility](docs/PROVENANCE_AND_REPRODUCIBILITY.md).
+
+## AI-assisted analysis, with abstention
+
+FireViewer can use computer-vision and multimodal models to help analyse private evidence. Model output is treated as a proposal or derived artifact, never as an automatically published fact.
+
+The system is designed to preserve:
+
+- detection and visual anchors;
+- localisation attempts;
+- uncertainty and contradictions;
+- model and contract revisions;
+- explicit reasons for abstention or failure.
+
+When a defensible geometry cannot be produced, **abstention is a valid result**. Human review remains the publication boundary.
+
+## Core components
+
+| Component | Responsibility |
+| --- | --- |
+| **Frontend** | Contribution, incident exploration, review and 2D/3D presentation. |
+| **Backend** | Incident registry, orchestration, audit, evidence, validation and publication. |
+| **AI worker** | Private multimodal analysis, visual anchors, localisation attempts and abstention. |
+| **Spatial** | Map generation, geographic packages, temporal perimeter layers and spatial contracts. |
+| **SDG** | Optional synthetic-data and simulation research; not a runtime dependency of FireViewer core. |
+| **Documentation** | Cross-repository architecture, contracts, safety boundaries, status and reproducibility rules. |
+
+The canonical cross-project documentation lives in this repository. Technical implementation details remain in the repository responsible for each component.
+
+## Current maturity
+
+FireViewer already contains substantial implementation across the frontend, backend, AI worker and spatial pipeline, but it must not be presented as an operational emergency system. Local tests, working code paths and published models do not by themselves prove field accuracy, live-provider availability or operational safety.
+
+The project tracks those distinctions explicitly in the [Status Matrix](docs/STATUS_MATRIX.md) and [Acceptance and Replay Matrix](docs/ACCEPTANCE_AND_REPLAY_MATRIX.md).
+
+## What support would unlock
+
+FireViewer is currently maintained as an independent project with very limited resources. The technical scope now exceeds what can be sustainably developed, validated and operated by one person without external support.
+
+Support can have a direct, measurable effect on the project. Priority needs include:
+
+- **compute credits** for GPU inference, model evaluation and controlled synthetic-data work;
+- **CPU and storage credits** for map production, spatial packages, datasets and replay artifacts;
+- **data and imagery partnerships** for better validation and reproducible research cases;
+- **engineering and research collaboration** on geospatial processing, computer vision, wildfire science, benchmarking and reproducibility;
+- **testing and validation support** from organisations able to review methodology and failure cases;
+- **financial sponsorship or grants** that can fund infrastructure costs and sustained development time.
+
+A contribution does not buy influence over scientific conclusions, incident validation or publication decisions. Provenance, uncertainty and safety boundaries remain part of the project regardless of the source of support.
+
+See the concise [Funding Brief](docs/FUNDING_BRIEF.md) and the detailed [Support and Partnerships](docs/SUPPORT_AND_PARTNERSHIPS.md) guide.
+
+## Useful starting points
+
+- [Project Overview](docs/PROJECT_OVERVIEW.md)
+- [Funding Brief](docs/FUNDING_BRIEF.md)
+- [Architecture](docs/ARCHITECTURE.md)
+- [Map Builder](docs/MAP_BUILDER.md)
+- [Fire Evolution Timeline](docs/FIRE_EVOLUTION_TIMELINE.md)
+- [Replay and Post-Event Studies](docs/REPLAY_AND_POST_EVENT_STUDIES.md)
+- [Provenance and Reproducibility](docs/PROVENANCE_AND_REPRODUCIBILITY.md)
+- [Support and Partnerships](docs/SUPPORT_AND_PARTNERSHIPS.md)
+- [Roadmap](docs/ROADMAP.md)
+- [Status Matrix](docs/STATUS_MATRIX.md)
+- [Safety and Scope](docs/SAFETY_AND_SCOPE.md)
+
+Models and datasets published by the project are available through the [FireViewer organisation on Hugging Face](https://huggingface.co/fireviewer).
+
+## Contact
+
+FireViewer is maintained by **Unicorn Who Dev**.
+
+For research collaboration, infrastructure support, sponsorship discussions, provenance questions, security reports or data-removal requests: **unicornwhodev@gmail.com**.
+
+No tax-deductibility, charitable status or institutional affiliation is implied by this repository. Any funding or partnership arrangement must use terms appropriate to the parties involved.
+
+---
+
+### Résumé en français
+
+FireViewer est une infrastructure ouverte de **documentation des incendies, reconstruction spatiale, suivi temporel et étude reproductible après événement**. Le projet cherche à conserver non seulement une représentation finale, mais aussi les sources, dates, incertitudes, versions, décisions humaines et artefacts nécessaires pour comprendre et rejouer l'évolution documentée d'un incendie.
+
+Le cœur du projet ne dépend plus de Unity ni d'Omniverse. La construction des cartes est réalisée par un pipeline headless déclenché par le backend. Omniverse peut subsister dans des travaux R&D de génération synthétique séparés, sans être une dépendance du produit principal.

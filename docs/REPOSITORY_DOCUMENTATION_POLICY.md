@@ -1,90 +1,169 @@
-# Politique documentaire inter-dépôts FireViewer
+# FireViewer — Repository Documentation Policy
 
-## Objet
+## Purpose
 
-Ce document fixe l’autorité, la portée et la synchronisation de la documentation FireViewer. Il évite qu’un README, un guide d’exploitation ou le profil GitHub de l’organisation présente une architecture, un statut ou une promesse différente du contrat canonique.
+This policy keeps FireViewer repositories **clean, coherent and maintainable**.
 
-## Hiérarchie d’autorité
+The project should not copy the full architecture, funding narrative or cross-project roadmap into every repository. Each repository documents its own implementation and links back to the canonical project documentation in `fireviewer/Fireviewer_doc`.
 
-En cas de divergence, l’ordre suivant s’applique :
+The goal is to avoid documentation drift, stale branches and duplicated claims.
 
-1. les ADR et contrats versionnés de `Fireviewer_doc` ;
-2. la matrice de statut et la terminologie de `Fireviewer_doc` ;
-3. les documents spécialisés sous `repositories/<repo>/docs` ;
-4. les README et guides d’exploitation du dépôt producteur ;
-5. le profil GitHub de l’organisation et les descriptions de dépôts.
+## Canonical source of truth
 
-Un document de niveau inférieur résume ou référence le niveau supérieur. Il ne modifie pas seul une décision produit, un contrat inter-dépôts ou le statut de validation d’une capacité.
+`fireviewer/Fireviewer_doc` owns the cross-project narrative and policy:
 
-## Responsabilités
+- project positioning;
+- canonical architecture;
+- map-builder role;
+- fire-evolution semantics;
+- replay and post-event study model;
+- provenance/reproducibility doctrine;
+- safety boundaries;
+- cross-repository contract meaning;
+- status and roadmap;
+- support/funding/partnership material.
 
-| Dépôt | Responsabilité documentaire locale | Références canoniques principales |
-| --- | --- | --- |
-| `Fireviewer_doc` | doctrine produit, architecture inter-dépôts, contrats, sécurité, migration, stockage et statut | `ARCHITECTURE.md`, `STATUS_MATRIX.md`, `TERMINOLOGY.md`, `CONTRACT_MAP.md`, `STORAGE_AND_RETENTION.md` |
-| `fireviewer-backend` | API, persistance, migrations, sécurité serveur, connecteurs et publication | `EVENT_API_V2.md`, `EVENT_AND_PROVENANCE_V2.md`, `SECURITY_PRIVACY_EVENT_PIPELINE.md` |
-| `fireviewer-frontend` | contribution, authentification cliente, revue, timeline et vues 3D/2D | `EVENT_API_V2.md`, `MIGRATION_AND_FEATURE_FLAGS.md`, `STATUS_MATRIX.md` |
-| `fireviewer-ai-worker` | traitement des preuves, abstention, modèles, provenance et replay | `EVENT_AND_PROVENANCE_V2.md`, `ACCEPTANCE_AND_REPLAY_MATRIX.md`, `STATUS_MATRIX.md` |
-| `fireviewer-spatial` | référentiels, CRS, terrain, packages spatiaux et validation géométrique | `EVENT_AND_PROVENANCE_V2.md`, `CONTRACT_MAP.md`, `STATUS_MATRIX.md` |
-| `fireviewer-sdg` | génération synthétique, provenance, splits et validation réel/synthétique | `SAFETY_AND_SCOPE.md`, `ACCEPTANCE_AND_REPLAY_MATRIX.md`, `STATUS_MATRIX.md` |
-| `fireviewer/.github` | présentation publique synthétique de l’organisation | README et matrice de statut canoniques |
+Repository-local documentation must not redefine these subjects independently.
 
-## Doctrine commune obligatoire
+## Repository-local responsibility
 
-Tous les dépôts et le profil d’organisation doivent présenter FireViewer comme une plateforme de documentation quasi temps réel des incendies centrée sur les événements, leur localisation, leur incertitude, leur chronologie et leur progression observée.
+| Repository | Local documentation should focus on |
+| --- | --- |
+| `fireviewer-frontend` | setup, routes, UI contracts, auth integration, local tests, deployment details |
+| `fireviewer-backend` | API, persistence, migrations, orchestration, auth/security, runbooks |
+| `fireviewer-ai-worker` | worker setup, stages, model registry, inference contracts, benchmark tooling |
+| `fireviewer-spatial` | map-builder implementation, spatial schemas, packaging, CRS, deployment/runbooks |
+| `fireviewer-sdg` | synthetic-data research, runtime setup, provenance, split/leakage rules, campaign-specific gates |
+| `Fireviewer_doc` | everything that must remain consistent across repositories |
 
-Ils doivent rappeler les frontières suivantes lorsqu’elles sont pertinentes :
+A repository README should answer:
 
-- FireViewer n’est ni un service d’alerte, ni un outil de commandement, ni un moteur de prédiction de propagation ;
-- une contribution associe un point de prise de vue privé, un temps, un message et éventuellement des médias ;
-- le point de prise de vue n’est jamais assimilé au phénomène actif ;
-- une sortie agentique peut proposer une localisation avec incertitude ou s’abstenir ;
-- un analyste valide avant qu’un éditeur puisse publier ;
-- la 3D est la vue principale et la 2D une expérience complète de secours ;
-- les données officielles, satellitaires, les prévisions et les simulations conservent des rôles sémantiques distincts ;
-- une fonctionnalité testée localement n’est pas présentée comme validée en production.
+1. what this component does;
+2. where it sits in the canonical architecture;
+3. how to install/run/test it;
+4. what contracts it produces or consumes;
+5. what its current limitations are;
+6. where to find the canonical project documentation.
 
-## Statuts et preuves
+It should not duplicate a 20-page project overview.
 
-Une affirmation de capacité utilise les statuts de `STATUS_MATRIX.md`. Les documents d’exploitation distinguent au minimum :
+## Public doctrine
 
-- `OBSERVÉ` : présence constatée dans le code ou un artefact ;
-- `VÉRIFIÉ` : contrôle exécuté avec commande, périmètre et résultat ;
-- `NON VÉRIFIÉ` : gate non exécuté ou environnement indisponible ;
-- `BLOQUÉ` : dépendance ou autorisation absente.
+All repositories should remain compatible with this concise project description:
 
-Un ancien rapport de test reste historique. Il ne prouve pas la révision courante sans date, commit, commande et périmètre associés.
+> FireViewer is open infrastructure for wildfire observation, spatial reconstruction, temporal tracking and reproducible post-event analysis.
 
-## Documentation canonique et documents locaux
+Key boundaries:
 
-Les contrats inter-dépôts sont maintenus dans `Fireviewer_doc`. Les copies placées dans un dépôt producteur servent à rendre son exploitation autonome ; elles doivent :
+- FireViewer is not an emergency alert, command or certified propagation-prediction system;
+- the canonical map builder is headless and independent from Unity/Omniverse;
+- Omniverse can exist inside optional SDG research without becoming a core dependency;
+- observation, reconstruction, simulation and prediction remain separate;
+- AI output is a proposal until the applicable human review;
+- abstention is a valid result;
+- a tested local code path is not automatically a deployed or scientifically qualified capability;
+- the viewer is a consumer of canonical spatial/temporal artifacts, not the source of truth.
 
-- porter le même titre et le même sens que leur source canonique ;
-- indiquer l’URL de la source canonique ;
-- ne pas être modifiées isolément pour changer un contrat ;
-- être resynchronisées dans le même lot documentaire qu’une évolution canonique.
+## Documentation authority order
 
-Les détails propres à un dépôt — installation, commandes, variables, packaging et runbooks — restent locaux. Un guide v1 conservé pendant la migration doit être marqué explicitement comme historique ou compatible, sans suggérer une conversion automatique vers v2.
+When two documents disagree, use this order:
 
-## Liens et terminologie
+1. versioned contracts/ADRs in `Fireviewer_doc`;
+2. `STATUS_MATRIX.md`, `TERMINOLOGY.md` and `CONTRACT_MAP.md`;
+3. canonical architecture and domain documents in `Fireviewer_doc`;
+4. producer-repository schemas/contracts;
+5. repository README/runbooks;
+6. organisation profile, repository descriptions and promotional text.
 
-- Les liens inter-dépôts utilisent des URLs GitHub complètes ; les liens relatifs sont réservés aux fichiers du même dépôt.
-- Les noms éditoriaux utilisent `FireViewer`.
-- Les identifiants publiés ou immuables contenant `FireWarning` ou `firewarning` sont conservés et qualifiés d’identifiants historiques.
-- Aucun chemin personnel, secret, jeton, dataset, checkpoint, log ou fichier de run ne doit apparaître dans la documentation publiée.
+A lower-level document may explain implementation details but must not silently promote a capability beyond the canonical status.
 
-## Profil et métadonnées GitHub
+## Keep repositories clean
 
-Le modèle du profil public est maintenu dans `templates/organization-profile/README.md`. Le dépôt `fireviewer/.github` en contient la copie destinée à publication. Les descriptions, thèmes et pages d’accueil proposés sont suivis dans `templates/organization-profile/github-metadata.yaml`.
+### One working branch for a cross-project documentation refactor
 
-La préparation locale, le commit et le push sont des opérations distinctes. Une modification distante du profil ou des métadonnées exige une autorisation explicite et ne peut pas être déduite de l’alignement local.
+When a documentation change is primarily cross-project, prefer one working branch in `Fireviewer_doc` rather than creating equivalent branches in every repository.
 
-## Gate de synchronisation
+Producer repositories should only receive targeted documentation changes when the canonical wording is stable.
 
-Avant commit d’un lot documentaire inter-dépôts :
+### No branch proliferation
 
-1. vérifier les liens locaux et les URLs canoniques ;
-2. rechercher les secrets et chemins personnels ;
-3. comparer la terminologie aux contrats v2 ;
-4. confirmer que les statuts ne dépassent pas les preuves disponibles ;
-5. inspecter le diff indexé dépôt par dépôt ;
-6. exclure explicitement datasets, modèles, caches, logs et fichiers de run.
+Do not create branches in every repository simply to keep README wording temporarily in sync.
+
+For small, low-risk README alignment changes after canonical review, use the repository's normal clean integration workflow rather than leaving stale documentation branches.
+
+### No generated artifacts in Git
+
+Do not commit:
+
+- datasets;
+- model weights/checkpoints;
+- generated maps/scenes;
+- production ZIPs;
+- caches;
+- large logs;
+- credentials/tokens;
+- personal local paths;
+- runtime volumes.
+
+Git contains code, schemas, small fixtures and documentation. Heavy reproducible artifacts live in their designated artifact/data stores.
+
+## Linking policy
+
+Inside `Fireviewer_doc`, use relative links for canonical documents.
+
+From another repository, use stable links to the canonical FireViewer documentation rather than copying entire documents unless a local contract genuinely must be vendored for runtime independence.
+
+Vendored contract copies must identify their canonical source/version and be updated intentionally.
+
+## Status claims
+
+Repository documentation should use the meanings in [STATUS_MATRIX.md](STATUS_MATRIX.md).
+
+At minimum distinguish:
+
+- implemented in code;
+- tested locally;
+- integrated against a deployed provider/environment;
+- scientifically benchmarked/qualified;
+- promoted for public use.
+
+Historical test numbers should not be used as current marketing claims without the exact revision and evidence artifact.
+
+## Funding/support material
+
+Funding and sponsorship messaging belongs centrally in:
+
+- [Project Overview](PROJECT_OVERVIEW.md);
+- [Funding Brief](FUNDING_BRIEF.md);
+- [Support and Partnerships](SUPPORT_AND_PARTNERSHIPS.md).
+
+Component repositories may include one short sentence linking to these pages. They should not each contain different funding asks or different statements about legal/tax status.
+
+## Licences and legal claims
+
+A repository must accurately describe its own code/documentation licence.
+
+Do not infer from public visibility that data or third-party assets are reusable.
+
+Do not claim:
+
+- charitable status;
+- tax-deductible donations;
+- institutional endorsement;
+- grant eligibility;
+- partner status;
+
+unless the relevant status has actually been established.
+
+## Synchronisation gate
+
+Before merging a cross-project documentation change:
+
+1. verify canonical links;
+2. search for stale Unity/Omniverse-as-core wording;
+3. search for outdated map-package versions or capture-gallery requirements;
+4. verify terminology against `TERMINOLOGY.md`;
+5. verify claims against `STATUS_MATRIX.md`;
+6. scan for credentials, personal paths and generated artifacts;
+7. compare the branch against `main` and review every changed file;
+8. only then apply targeted README alignment to producer repositories if needed.
