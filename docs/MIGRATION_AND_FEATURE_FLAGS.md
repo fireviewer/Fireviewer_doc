@@ -1,122 +1,134 @@
-# Migration et feature flags — recadrage événementiel
+# FireViewer — Migration and Feature Flags
 
-**Migration additive en code :** `IMPLEMENTED_NOT_LIVE_VERIFIED`
+**Additive migration code:** `implemented_not_live_verified`
 
-**Activation déployée :** `PENDING`
+**Deployed activation:** `pending`
 
-La migration `b7f2e4a9c810` ajoute le domaine événementiel, les jobs, la revue, le registre externe, les plans de source et les snapshots sans supprimer les objets historiques. Sa compilation et sa dérive de schéma ont été contrôlées localement. Elle n’a pas été exécutée sur Neon/PostGIS réel et ne doit pas être promue avant sauvegarde, restauration, upgrade et downgrade sur une copie.
+This document describes the technical migration from historical v1 paths to the event-oriented v2 implementation. It does not redefine the canonical FireViewer architecture documented in [ARCHITECTURE.md](ARCHITECTURE.md).
 
-## Stratégie
+The migration `b7f2e4a9c810` adds the event domain, jobs, review, external-source registry, source plans and publication snapshots without deleting historical objects. Compilation/schema-drift checks were performed locally. The migration still requires representative PostgreSQL/PostGIS upgrade, backup, restore and downgrade evidence before broader activation.
 
-- migration additive uniquement ;
-- routes v1 maintenues ;
-- routes, analyse, connecteurs, 3D principale et publication v2 désactivés par défaut ;
-- aucun backfill automatique ;
-- aucun objet legacy publié ou fusionné sans décision humaine ;
-- rollback par désactivation des flags et retour à la projection v1, sans suppression des données v2.
+## Strategy
 
-## Tables ajoutées
+- additive migration only;
+- keep required v1 routes during compatibility period;
+- v2 contribution, analysis, connectors and publication remain flag-controlled;
+- no automatic backfill;
+- no legacy object is silently upgraded into a richer semantic class;
+- rollback is performed by disabling v2 paths and returning to the compatible public projection, not by deleting v2 data.
 
-- `incident_candidate` ;
-- `viewpoint` ;
-- `event_candidate` ;
-- `event_analysis_job` ;
-- `evidence_asset` ;
-- `localization_attempt` ;
-- `fire_activity_event` ;
-- `fire_activity_event_evidence` ;
-- `event_relation` ;
-- `activity_envelope_revision` ;
-- `activity_envelope_support` ;
-- `progression_delta` ;
-- `publication_snapshot` ;
-- `external_provider` ;
-- `external_collection` ;
-- `external_artifact_revision` ;
-- `external_claim` ;
-- `artifact_lineage` ;
+## Important note about 3D flags
+
+`FV_3D_PRIMARY_ENABLED` / `VITE_FV_3D_PRIMARY_ENABLED` are **historical implementation/migration switches**.
+
+They do not define current FireViewer product doctrine. The canonical architecture treats text, 2D and 3D as presentation/inspection layers over immutable spatial and temporal artifacts. The core map builder is headless and independent from browser rendering technology.
+
+The flags can remain until the migration code no longer needs them, but documentation outside implementation details should not describe FireViewer as a "3D-primary" product.
+
+## Tables added
+
+- `incident_candidate`;
+- `viewpoint`;
+- `event_candidate`;
+- `event_analysis_job`;
+- `evidence_asset`;
+- `localization_attempt`;
+- `fire_activity_event`;
+- `fire_activity_event_evidence`;
+- `event_relation`;
+- `activity_envelope_revision`;
+- `activity_envelope_support`;
+- `progression_delta`;
+- `publication_snapshot`;
+- `external_provider`;
+- `external_collection`;
+- `external_artifact_revision`;
+- `external_claim`;
+- `artifact_lineage`;
 - `incident_source_plan`.
 
-Sur PostgreSQL, la migration ajoute aussi les colonnes PostGIS, index GiST, triggers de synchronisation, protections append-only du registre externe et garde d’immutabilité/rétractation unique des snapshots publics. Ces éléments sont `IMPLEMENTED_NOT_LIVE_VERIFIED` tant qu’ils n’ont pas été exercés sur une vraie instance.
+On PostgreSQL, the migration also adds PostGIS columns, GiST indexes, synchronisation triggers, append-oriented protections for the external registry and public-snapshot immutability/retraction guards. These remain `implemented_not_live_verified` until exercised on a representative live instance.
 
-## Correspondances historiques
+## Historical object mapping
 
-| Objet historique | Cible possible | Règle |
+| Historical object | Possible target | Rule |
 | --- | --- | --- |
-| `Observation` | `EventCandidate` ou assertion | Seulement si viewpoint, temps et contexte sont réellement présents. |
-| `AgentSpatialProposal` | `LocalizationAttempt` | Conserver méthode, modèle, révision et abstention. |
-| `AgentFactProposal` | `ExternalClaim` ou assertion | Ne jamais lui attribuer une géométrie absente. |
-| `IncidentSpatialMarker` | géométrie candidate | Revue obligatoire avant événement. |
-| `ActiveFireZoneRevision` | `ActivityEnvelopeRevision` | Conserver origine et supports ; ne pas présumer leur indépendance. |
-| `IncidentBulletinEntry` | assertion éditoriale | Ne pas créer d’événement spatial sans preuve spatiale. |
-| média ou contribution | `EvidenceAsset` | Un média isolé ne devient pas un événement. |
+| `Observation` | `EventCandidate` or assertion | Only if viewpoint, time and context really exist. |
+| `AgentSpatialProposal` | `LocalizationAttempt` | Preserve method, model, revision and abstention. |
+| `AgentFactProposal` | `ExternalClaim` or assertion | Never invent missing geometry. |
+| `IncidentSpatialMarker` | candidate geometry | Human review required before accepted event state. |
+| `ActiveFireZoneRevision` | `ActivityEnvelopeRevision` | Preserve source/support lineage; do not assume source independence. |
+| `IncidentBulletinEntry` | editorial assertion | Do not create a spatial event without spatial evidence. |
+| media/contribution | `EvidenceAsset` | An isolated media item does not automatically become an event. |
 
-Les adaptateurs de migration devront produire `convertible`, `incomplete`, `ambiguous` ou `rejected`. `incomplete` et `ambiguous` restent privés. Ces adaptateurs et rapports sont `PENDING`.
+Future migration adapters should report `convertible`, `incomplete`, `ambiguous` or `rejected`. `incomplete` and `ambiguous` remain private. Complete backfill/report tooling remains `pending`.
 
-## Flags backend et worker
+## Backend and worker flags
 
-| Variable | Valeur initiale | État | Autorise |
+| Variable | Initial value | Status | Enables |
 | --- | --- | --- | --- |
-| `FV_EVENT_V2_ENABLED` | `false` | `IMPLEMENTED_TESTED_LOCAL` | Routes de contribution et revue v2. En staging/production, exige Supabase et ClamAV. |
-| `FV_SUPABASE_AUTH_ENABLED` | `false` | `IMPLEMENTED_TESTED_LOCAL` | Mode Supabase du backend, avec configuration correspondante. |
-| `FV_AGENT_EVENT_PIPELINE_ENABLED` | `false` | `IMPLEMENTED_TESTED_LOCAL` | Traitement worker des payloads `schema_version=event-2.0`. |
-| `FV_AGENT_EVENT_PIPELINE_ENABLED` via `agent_event_pipeline_enabled` backend | `false` | `IMPLEMENTED_TESTED_LOCAL` | Priorité au dispatcher événementiel dans le dispatcher backend. |
-| `FV_OFFICIAL_CONNECTORS_ENABLED` | `false` | `IMPLEMENTED_TESTED_LOCAL` pour registre/scheduler | Réclamation des `IncidentSourcePlan` par cron privé ou CLI ; n’implique jamais qu’un adaptateur live soit prêt. |
-| `FV_3D_PRIMARY_ENABLED` | `false` | `IMPLEMENTED_TESTED_LOCAL` pour le flag/fallback | Préférence 3D du frontend ; alias backend temporaire `FV_THREE_D_PRIMARY_ENABLED`. |
-| `FV_V2_PUBLICATION_ENABLED` | `false` | `IMPLEMENTED_TESTED_LOCAL` pour la transition | Publication d’un événement analyste-validé avec rôle courant et session récente. |
+| `FV_EVENT_V2_ENABLED` | `false` | `implemented_tested_local` | v2 contribution/review routes; deployed activation still requires its dependencies. |
+| `FV_SUPABASE_AUTH_ENABLED` | `false` | `implemented_tested_local` | Supabase-backed auth mode with matching server configuration. |
+| `FV_AGENT_EVENT_PIPELINE_ENABLED` | `false` | `implemented_tested_local` | Worker handling of `schema_version=event-2.0` payloads. |
+| `FV_AGENT_EVENT_PIPELINE_ENABLED` via backend dispatcher config | `false` | `implemented_tested_local` | Event-oriented dispatch path. |
+| `FV_OFFICIAL_CONNECTORS_ENABLED` | `false` | `implemented_tested_local` for registry/scheduler | Claims source plans; does not imply any live provider is qualified. |
+| `FV_3D_PRIMARY_ENABLED` | `false` | `implemented_tested_local` for legacy switch/fallback | Historical frontend display preference only; temporary backend alias may exist. |
+| `FV_V2_PUBLICATION_ENABLED` | `false` | `implemented_tested_local` for transition | Publication of an analyst-validated event under the current role/session policy. |
 
-Le dispatcher général conserve également ses propres gates historiques, notamment `FV_AGENT_DISPATCH_ENABLED`. Activer le pipeline événementiel sans le processus de dispatch ne traite aucun job.
+The general dispatcher retains its own historical gates, including `FV_AGENT_DISPATCH_ENABLED`. Enabling the event pipeline without a functioning dispatcher does not process jobs.
 
-Le registre officiel est initialisé sans réseau par `python -m fire_viewer.scripts.bootstrap_official_sources`. Le scheduler s’exécute par `GET /api/v1/internal/external-sources/progress` dans le cron privé ou par `python -m fire_viewer.scripts.run_external_source_scheduler` ; ces points d’entrée restent sans preuve de déclenchement hébergé ou de collecte fournisseur live.
+The official-source registry can be initialised without network access through repository tooling. Scheduler entry points existing in code do not by themselves prove hosted execution or successful live provider collection.
 
-## Flags frontend
+## Frontend flags
 
-Vite expose uniquement les variables préfixées `VITE_` :
+Vite exposes only variables prefixed with `VITE_`, including:
 
-- `VITE_FV_EVENT_V2_ENABLED` ;
-- `VITE_FV_SUPABASE_AUTH_ENABLED` ;
-- `VITE_FV_OFFICIAL_CONNECTORS_ENABLED` ;
-- `VITE_FV_AGENT_EVENT_PIPELINE_ENABLED` ;
-- `VITE_FV_3D_PRIMARY_ENABLED` ;
+- `VITE_FV_EVENT_V2_ENABLED`;
+- `VITE_FV_SUPABASE_AUTH_ENABLED`;
+- `VITE_FV_OFFICIAL_CONNECTORS_ENABLED`;
+- `VITE_FV_AGENT_EVENT_PIPELINE_ENABLED`;
+- `VITE_FV_3D_PRIMARY_ENABLED`;
 - `VITE_FV_V2_PUBLICATION_ENABLED`.
 
-Seule la chaîne exacte `true` active un flag. Les flags frontend n’accordent aucune autorisation : le backend reste la source de vérité pour les rôles et transitions.
+Only the exact configured activation value enables a flag according to the frontend implementation. Frontend flags grant no server authority; backend roles and transitions remain authoritative.
 
-## Ordre d’activation
+## Activation sequence
 
-1. restaurer une copie récente de la base ;
-2. exécuter upgrade, contrôles PostGIS et downgrade sur la copie ;
-3. réexécuter upgrade et vérifier les objets legacy ;
-4. configurer Supabase, JWKS, session active et ClamAV ;
-5. activer v2 uniquement en environnement privé ;
-6. valider contribution, upload, dispatch, abstention et revue ;
-7. valider chaque adaptateur officiel séparément ;
-8. activer la publication uniquement sur un incident de recette ;
-9. comparer v1/v2 en shadow ;
-10. tester rollback et restauration ;
-11. décider explicitement d’une activation limitée.
+1. restore a representative recent database copy;
+2. run migration upgrade, PostGIS checks and downgrade on that copy;
+3. upgrade again and verify historical objects;
+4. configure identity, private storage/scanning and other required deployed dependencies;
+5. enable v2 only in a private/staging environment;
+6. validate contribution, upload, dispatch, abstention and review;
+7. validate each external-source adapter independently;
+8. enable publication only on a controlled reference incident;
+9. compare legacy/current projections where migration still requires it;
+10. test rollback and restoration;
+11. document an explicit decision before any broader activation.
 
-## Double écriture et délégation v1
+## Double write / v1 delegation
 
-La double écriture et la délégation du formulaire v1 restent `PENDING`. Elles ne seront autorisées que si :
+Double-write and automatic delegation remain `pending`. They are acceptable only if:
 
-- une transaction relie les identifiants v1 et v2 ;
-- une erreur n’entraîne aucune publication partielle ;
-- la source immuable n’est écrite qu’une fois ;
-- les divergences sont mesurées ;
-- une seule projection publique est autoritaire.
+- one transaction links v1/v2 identities;
+- a partial failure cannot publish a partial state;
+- immutable source material is not duplicated as independent evidence;
+- divergences are measured;
+- only one public projection is authoritative at a time.
 
 ## Backfill
 
-Le backfill reste `PENDING` et devra :
+A future backfill must:
 
-- fonctionner par incident et fenêtre temporelle ;
-- être rejouable et idempotent ;
-- conserver les objets historiques ;
-- ne jamais inventer viewpoint, précision, temps d’observation ou filiation ;
-- ne rien publier ;
-- produire un rapport de couverture et de rejets.
+- operate by incident/time window;
+- be replayable and idempotent;
+- preserve historical objects;
+- never invent viewpoint, precision, observation time or lineage;
+- publish nothing automatically;
+- produce a coverage/rejection report.
 
 ## Rollback
 
-Le rollback fonctionnel désactive les flags v2 et restaure la lecture publique v1. Il ne supprime pas les tables ni les données v2. Les jobs restent privés et sont terminés ou suspendus selon leur état. Une migration destructive est exclue tant que la période de compatibilité n’est pas close par décision documentée.
+Functional rollback disables v2 paths and restores the compatible public read path. It does not delete v2 tables or evidence. Private jobs are completed, failed or suspended according to explicit state.
+
+Destructive migration remains out of scope until the compatibility period is closed by a documented decision.
