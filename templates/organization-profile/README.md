@@ -1,44 +1,82 @@
 # FireViewer
 
-**Cartographie 3D, chronologique et sourcée pour documenter l’évolution des incendies.**
+**Open infrastructure for wildfire observation, spatial reconstruction, temporal tracking and reproducible post-event analysis.**
 
-FireViewer est un projet distinct de recherche et développement, maintenu par **Unicorn Who Dev**. Les espaces `fireviewer` sur GitHub et Hugging Face constituent ses espaces de publication canoniques.
+FireViewer is an independent open-source research and engineering project maintained by **Unicorn Who Dev**.
 
-> FireViewer n’est ni un service d’alerte, ni une source officielle, ni un outil de conduite des secours. Ses cartes, reconstructions, analyses et simulations ne doivent pas être utilisées pour la sécurité des personnes, le commandement opérationnel, une expertise d’assurance ou une preuve juridique. En situation réelle, suivez les consignes des autorités et contactez les services d’urgence compétents.
+The project combines geospatial processing, provenance-aware evidence management, AI-assisted analysis, human review and portable spatial/temporal packages so that wildfire incidents can be inspected while active and studied reproducibly afterwards.
 
-## Publications
+> FireViewer is not an emergency alert service, an official wildfire source, a command tool or a certified propagation predictor.
 
-Les datasets et modèles FireViewer sont disponibles sur [Hugging Face](https://huggingface.co/fireviewer). Chaque artefact conserve sa propre licence, sa provenance, ses limites et sa décision d’admission.
+## What we are building
 
-## Composants
+```text
+sources + observations
+        ↓
+provenance + evidence
+        ↓
+AI analysis / localisation / abstention
+        ↓
+human review
+        ↓
+reproducible spatial map build
+        +
+reviewed temporal fire states
+        ↓
+public exploration / replay / datasets / post-event studies
+```
 
-| Composant | Rôle |
+### Spatial reconstruction
+
+The canonical map builder is headless and endpoint-driven. It produces portable OpenUSD/Blender map packages from measured geographic inputs on a Lambert-93 tile grid.
+
+**FireViewer core no longer depends on Unity or NVIDIA Omniverse.** Omniverse can still be used in optional synthetic-data R&D inside the SDG workstream.
+
+### Fire evolution
+
+Observed, reconstructed, interpreted, simulated and predicted states remain separate. Unknown intervals stay unknown instead of being silently interpolated.
+
+### Replay and research
+
+FireViewer aims to preserve enough provenance, hashes, model/tool revisions and human decisions to reopen an incident later and use it for reproducible post-event studies, datasets and benchmarks.
+
+## Repositories
+
+| Component | Responsibility |
 | --- | --- |
-| Documentation | Architecture, contrats, statuts, sécurité et terminologie. |
-| Frontend | Contribution, consultation, revue et visualisation 3D/2D. |
-| Backend | Registre incident-centrique, preuves, audit et publication. |
-| AI worker | Analyse des preuves, propositions et abstention. |
-| Spatial | Référentiels, packages, cartes et validation géométrique. |
-| SDG | Données synthétiques et validation réel/synthétique. |
+| **Documentation** | Architecture, status, safety, reproducibility, roadmap and partnerships. |
+| **Frontend** | Contribution, human review and public 2D/3D exploration. |
+| **Backend** | Incident registry, evidence, orchestration, audit and publication. |
+| **AI worker** | Private analysis, visual anchors, localisation attempts and abstention. |
+| **Spatial** | Headless map builder, geographic packages and temporal perimeter layers. |
+| **SDG** | Optional synthetic-data and simulation research. |
 
-## Données et reconstructions
+Models and datasets are published through the [FireViewer organisation on Hugging Face](https://huggingface.co/fireviewer).
 
-Les datasets Hugging Face sont des artefacts de recherche versionnés. Leur publication ne prouve ni leur intégration dans le runtime, ni leur aptitude à un usage opérationnel.
+## Looking for support and collaborators
 
-Le pack FireViewer de juillet 2026 décrit cinq reconstructions rétrospectives en fenêtres de douze heures. Les géométries marquées `reconstructed` sont dérivées de sources disponibles ; elles ne sont ni des contours officiels, ni des observations directes, ni des prévisions.
+FireViewer is currently maintained with limited independent resources. The project is looking for:
 
-Une timeline de périmètres observés et un pack de reconstruction sont deux familles différentes. Elles ne sont jamais fusionnées ou présentées sous le même niveau de preuve.
+- GPU and CPU compute credits;
+- object-storage and bandwidth support;
+- geospatial / remote-sensing collaboration;
+- wildfire-domain review;
+- reproducible benchmark and evaluation support;
+- research partnerships;
+- grants or sponsorship that can fund infrastructure and sustained development.
 
-## Principes
+Support does not buy influence over scientific conclusions or publication decisions.
 
-- provenance, date, licence et incertitude restent visibles ;
-- observation, reconstruction, déclaration officielle, prévision et simulation restent distinctes ;
-- une sortie automatisée n’est publiée qu’après validation humaine ;
-- l’abstention est obligatoire lorsque la preuve est insuffisante ;
-- aucun modèle génératif ne produit une coordonnée géographique faisant autorité.
+See the canonical [Project Overview](https://github.com/fireviewer/Fireviewer_doc/blob/main/docs/PROJECT_OVERVIEW.md), [Funding Brief](https://github.com/fireviewer/Fireviewer_doc/blob/main/docs/FUNDING_BRIEF.md) and [Support & Partnerships](https://github.com/fireviewer/Fireviewer_doc/blob/main/docs/SUPPORT_AND_PARTNERSHIPS.md).
 
 ## Contact
 
-Contact public, provenance, droits, sécurité et demandes de retrait : [unicornwhodev@gmail.com](mailto:unicornwhodev@gmail.com).
+Research, infrastructure support, sponsorship, provenance, security or data-removal requests:
 
-La visibilité d’un dépôt ou d’un dataset ne remplace jamais sa licence. Les droits applicables sont ceux indiqués dans chaque dépôt, dataset et notice de source.
+**unicornwhodev@gmail.com**
+
+---
+
+### En français
+
+FireViewer est une infrastructure ouverte de **documentation des incendies, reconstruction spatiale, suivi temporel et étude reproductible après événement**. Le projet cherche des partenaires techniques, scientifiques et infrastructure pour franchir les étapes de validation difficiles à financer seul.
