@@ -1,334 +1,419 @@
-# Architecture canonique FireViewer
+# FireViewer — Canonical Architecture
 
-**Statut documentaire :** source de vérité inter-dépôts
+**Document role:** cross-repository source of truth for the current FireViewer architecture.
 
-**Statut du recadrage événementiel :** socle backend, worker, formulaire, revue, registre externe, rétention et projection publique v2 3D/2D `IMPLEMENTED_TESTED_LOCAL` derrière flags ; dépendances et migrations live non vérifiées ; enveloppes, progression, recette déployée et replay complet `PENDING`
+FireViewer is an open research and engineering platform for **wildfire observation, spatial reconstruction, temporal tracking and reproducible post-event analysis**.
 
-**Portée :** frontend, backend, worker IA, spatial, génération de données et publication
+The architecture is organised around a durable chain of evidence and artifacts rather than around one viewer technology.
 
-FireViewer est une plateforme incidente-centrique de documentation, d’analyse supervisée et de représentation spatiale des incendies. Son architecture cible organise les contributions, preuves, sources externes et propositions autour d’événements documentés et versionnés. Elle ne constitue ni un service d’alerte, ni une source officielle, ni un outil de conduite des secours.
+```text
+sources
+  ↓
+evidence + provenance
+  ↓
+analysis / localisation / abstention
+  ↓
+human review
+  ↓
+spatial + temporal incident state
+  ↓
+versioned publication
+  ↓
+replay / datasets / benchmarks / post-event studies
+```
 
-## Dépôts actifs
+The browser viewer is a consumer of this system. It is not the canonical scientific object.
 
-| Dépôt | Responsabilité |
+## 1. Architectural goals
+
+FireViewer is designed to make the following possible:
+
+1. attach observations to stable incident identities;
+2. preserve evidence, time, rights and provenance;
+3. build a reproducible geographic reference independently from the viewer;
+4. represent wildfire evolution without silently inventing missing states;
+5. use AI as a bounded analysis layer with explicit abstention;
+6. require human review before publication;
+7. archive immutable artifacts that can later be replayed and studied independently.
+
+## 2. Core repositories and responsibilities
+
+| Repository | Responsibility |
 | --- | --- |
-| `fireviewer-frontend` | Interface publique, administration, revue humaine et visualisation. |
-| `fireviewer-backend` | Registre incident-centrique, preuves, orchestration, audit et publication. |
-| `fireviewer-ai-worker` | Analyse privée des médias, modèles, stages, abstentions et propositions. |
-| `fireviewer-spatial` | Référentiels, packages, rendus, contrats de caméra et géométrie. |
-| `fireviewer-sdg` | Données synthétiques, annotations, provenance et validation réel/synthétique. |
-| `fireviewer_doc` | Architecture, roadmap, statuts, sécurité, terminologie et contrats communs. |
+| `fireviewer-frontend` | Contribution, public incident exploration, human review and 2D/3D presentation. |
+| `fireviewer-backend` | Incident registry, evidence, orchestration, audit, permissions, review and publication. |
+| `fireviewer-ai-worker` | Private multimodal analysis, visual anchors, localisation attempts, structured proposals and abstention. |
+| `fireviewer-spatial` | Headless map production, spatial packages, temporal perimeter packages and spatial contracts. |
+| `fireviewer-sdg` | Optional synthetic-data/simulation research. It is not a runtime dependency of the FireViewer core. |
+| `Fireviewer_doc` | Cross-repository architecture, terminology, safety, status, reproducibility and partner-facing documentation. |
 
-L’ancien dépôt `charli-dev420/fireviewer` reste une archive technique et documentaire. Il ne porte plus la roadmap active.
+The historical monorepo is not the source of truth for current architecture.
 
-## Principes d’architecture
+## 3. Stable incident identity
 
-### Une identité stable par incident
+The public incident identity remains stable across evidence, spatial packages, timeline revisions and publications.
 
-La route publique canonique est :
+Canonical route:
 
 ```text
 /incident/{fire_id}
 ```
 
-Les épisodes, observations, preuves, propositions, révisions spatiales et publications sont rattachés à cette identité sans fusion silencieuse.
+An incident can contain several episodes, observations and revisions without silently merging their meaning.
 
-### Un événement documenté comme objet métier cible
+## 4. Evidence-first event model
 
-Le flux cible commence par un `EventCandidate`, pas par une image isolée. L’utilisateur fournit :
+The preferred ingestion unit is an event candidate with context rather than an isolated image.
 
-- le point de prise de vue sur la carte ;
-- le moment ou l’intervalle de l’observation ;
-- un message et/ou des preuves facultatives ;
-- les autorisations applicables.
+A candidate may contain:
 
-Le point de prise de vue représente l’observateur ou la caméra. Il reste distinct de la géométrie de flamme, de fumée ou de front produite par l’analyse.
+- observation time or interval;
+- a private viewpoint or source location where appropriate;
+- message/text;
+- one or more media items;
+- source and rights information;
+- external observations already associated by the backend.
 
-L’admission met directement une analyse privée en file. La publication reste une décision séparée.
+The viewpoint describes the observer/camera. It is not automatically the location of active fire.
 
-### Séparation des responsabilités
+## 5. Evidence and provenance layer
 
-Le système distingue :
+Each source and derived artifact belongs to an explicit lineage graph.
 
-1. l’événement candidat et son point de vue ;
-2. le message, le média ou la source originale ;
-3. les artefacts dérivés et leur filiation ;
-4. les sorties de perception ;
-5. les assertions et observations structurées ;
-6. les tentatives de localisation et abstentions ;
-7. les révisions d’événements et enveloppes ;
-8. les décisions de revue ;
-9. les publications.
+```text
+source
+  ↓
+evidence object
+  ↓
+derived artifact
+  ↓
+analysis result
+  ↓
+reviewed state
+```
 
-Une sortie de modèle ne modifie jamais directement un objet public.
+The platform preserves, as applicable:
 
-### Graphe déclaratif, GPU séquentiel
+- source identity and revision;
+- observation/acquisition time;
+- retrieval time;
+- content hash;
+- licence/attribution constraints;
+- CRS and footprint;
+- model/tool revision;
+- parent/derived relationships;
+- review and publication history.
 
-Le plan de contrôle évolue vers un graphe déclaratif de stages. Chaque stage possède :
+See [Provenance and Reproducibility](PROVENANCE_AND_REPRODUCIBILITY.md).
 
-- des capacités requises ;
-- une pré-gate et une post-gate ;
-- des entrées et sorties typées ;
-- un statut explicite ;
-- des règles de reprise ;
-- un profil de cascade, consensus ou shadow mode.
+## 6. Headless spatial map builder
 
-Le graphe ne provoque pas l’exécution parallèle des gros modèles. Le worker conserve un seul modèle lourd chargé à la fois, avec déchargement entre les stages.
+The canonical map-production path is owned by `fireviewer-spatial`.
 
-### Revue humaine
+It is **headless, endpoint-driven and independent of Unity and NVIDIA Omniverse**.
 
-Les décisions restent séparées :
+### 6.1 Request
 
-- fait ;
-- repère visuel ;
-- géométrie ;
-- rapport ;
-- média ;
+A build starts from a geographic centre and requested square side length.
+
+Input geographic coordinates are WGS84 / `EPSG:4326`; production uses Lambert-93 / `EPSG:2154`.
+
+### 6.2 Tile production
+
+The current implementation processes the area on a 500 m tile grid.
+
+Temporary geographic inputs can include:
+
+- MNT;
+- MNS;
+- orthophoto;
+- contextual geographic information required by validated placement rules.
+
+Each tile produces deterministic terrain and packaged contextual artifacts, together with compact provenance receipts.
+
+### 6.3 Package
+
+A completed build contains artifacts such as:
+
+```text
+zone.usda
+zone.blend
+zone.done.json
+zone-plan.json
+zone-context.json
+packages/<tile>/
+shared/prototypes/
+provenance/<tile>/
+```
+
+The active contract prioritises a validated autonomous package. A PNG capture gallery is not part of the canonical production output.
+
+See [Map Builder](MAP_BUILDER.md).
+
+## 7. Backend orchestration
+
+The backend is the boundary between the administration interface and the compute provider.
+
+Conceptually:
+
+```text
+Admin UI
+   ↓
+FireViewer backend
+   ↓
+map job / AI job / source job
+   ↓
+provider-specific worker
+   ↓
+validated result
+   ↓
+private storage / registry
+```
+
+Provider credentials remain server-side. The browser never needs cloud-provider or model-registry secrets.
+
+Map production can run as an ephemeral batch workload rather than a permanently running heavy service.
+
+The provider is an implementation detail below the FireViewer job contract. This helps avoid making the product architecture depend on one compute vendor.
+
+## 8. Temporal wildfire layer
+
+The map is a stable spatial reference. Wildfire evolution is represented separately.
+
+```text
+map build
+   ├── observed state T1
+   ├── observed state T2
+   ├── reviewed interpretation
+   ├── retrospective reconstruction
+   └── optional simulation input/output family
+```
+
+Core semantic rule:
+
+```text
+observed ≠ reconstructed ≠ interpolated ≠ simulated ≠ predicted
+```
+
+Unknown intervals stay unknown. A visual animation may interpolate for display, but that does not create observed intermediate geometry.
+
+See [Fire Evolution Timeline](FIRE_EVOLUTION_TIMELINE.md).
+
+## 9. AI analysis architecture
+
+The AI worker receives private event bundles and returns structured results that remain proposals until reviewed.
+
+The pipeline can include:
+
+- media triage;
+- detection;
+- OCR or speech extraction where relevant;
+- visual anchoring;
+- structured fact extraction;
+- spatial-registration attempts;
+- uncertainty and contradiction handling;
+- explicit abstention.
+
+### 9.1 Model roles
+
+Current and experimental components include FireViewer detector models, pointing/localisation components and external baselines/challengers. Their exact promotion state belongs in [STATUS_MATRIX.md](STATUS_MATRIX.md), not in architectural marketing language.
+
+### 9.2 Abstention
+
+Failure to produce a defensible location is not treated as a pipeline defect that must be hidden.
+
+Examples of valid states include:
+
+- insufficient visual anchor;
+- ambiguous anchor;
+- no visible ground origin;
+- insufficient geometry;
+- unstable camera pose;
+- invalid raycast;
+- uncertainty above the accepted limit.
+
+### 9.3 No autonomous publication
+
+A model cannot independently:
+
+- create a public incident;
+- confirm an active fire;
+- publish a perimeter;
+- turn smoke into a closed fire boundary;
+- turn a simulation into an observation.
+
+## 10. Spatial registration
+
+Ground and UAV localisation remain evidence-driven spatial problems rather than text-generation tasks.
+
+Target ground-view chain:
+
+```text
+incident map package
+→ local render/reference bank
+→ retrieval
+→ metadata / horizon / FOV / relief filters
+→ dense matching
+→ 2D–3D correspondences
+→ robust pose estimation
+→ terrain raycast
+→ uncertainty propagation
+```
+
+Candidate algorithms and models are promoted only through FireViewer-specific benchmarks.
+
+A language model may structure evidence around the process; it is not authorised to invent coordinates.
+
+## 11. Human review and publication
+
+Validation is deliberately decomposed.
+
+A reviewer may need to make separate decisions about:
+
+- factual assertion;
+- source/evidence quality;
+- visual anchor;
+- geometry;
+- uncertainty;
+- temporal interpretation;
+- public wording;
 - publication.
 
-Aucun seuil automatique ne déclenche seul une publication.
+Publication creates a versioned public state. Corrections and retractions create lineage rather than silently overwriting history.
 
-## Architecture logique
+## 12. Public presentation
 
-```mermaid
-graph TD
-    A[Viewpoint, temps, message et preuves] --> B[EventCandidate privé]
-    B --> C[Provenance, droits, empreintes et identité]
-    C --> D{Capacités et sources}
+The frontend provides a browser-oriented representation of the archived state.
 
-    D -->|Source officielle| SO[Assertions officielles versionnées]
-    D -->|Satellite| SA[Acquisition, hotspot ou surface interprétée]
-    D -->|Météo et contexte| WX[Observation ou prévision séparée]
+It may use:
 
-    D -->|Audio| E[VAD et Whisper]
-    D -->|Vidéo| F[RT-DETRv2 - triage]
-    D -->|Image ou keyframe| G[D-FINE - détection précise]
-    D -->|Texte probable| H[OCR CPU]
+- GLB or other web-friendly 3D assets;
+- 2D fallbacks;
+- textual timelines;
+- uncertainty overlays;
+- downloadable packages where authorised.
 
-    F --> G
-    E --> I[Preuves textuelles]
-    G --> J[Détections]
-    H --> K[Indices OCR à corroborer]
+The public client must not reconstruct missing data when an asset is unavailable.
 
-    J --> L[MolmoPoint - pointage primaire]
-    J --> M[DINOv3 multi-tâches - challenger]
-    L --> N[Ancrages visuels]
-    M --> O[Masques, heatmaps et abstention visuelle]
+A browser representation can change over time without invalidating the canonical spatial or temporal package.
 
-    I --> P[Ministral - observations structurées]
-    K --> P
-    N --> P
-    O --> P
-    P --> Q[Validation déterministe]
-    SO --> Q
-    SA --> Q
-    WX --> Q
+## 13. Replay architecture
 
-    Q --> R{Branche spatiale admissible ?}
-    R -->|Non| S[Revue sans géométrie]
-    R -->|Vue sol| T[Banque de rendus de la zone]
-    R -->|Vue UAV| U[Référentiel UAV]
-
-    T --> V[Retrieval puis matching]
-    U --> W[Matchers UAV en benchmark]
-    V --> X[Correspondances 2D-3D]
-    W --> X
-
-    X --> Y[PyCOLMAP - pose et raffinement]
-    Y --> Z[Raycast MNT]
-    Z --> AA[Propagation d’incertitude]
-
-    AA --> AB[Association, contradictions et revue humaine]
-    S --> AB
-    AB --> AC[FireActivityEvent versionné]
-    AC --> AE[Timeline et ActivityEnvelopeRevision]
-    AE --> AD[Publication explicite et versionnée]
-```
-
-Ce graphe reste l’architecture cible complète. Le chemin local testé couvre les événements privés, leur revue, les snapshots, la timeline publique et la projection des événements publiés en texte, 3D et 2D. Les modèles lourds, connecteurs live, enveloppes, progression, LOD avancé et recette déployée ne sont actifs qu’après leurs gates respectives dans `STATUS_MATRIX.md`.
-
-## Pipeline média
-
-### Composants FireViewer à conserver
-
-- D-FINE XLarge : détection principale sur images et keyframes ;
-- RT-DETRv2-R50 : second détecteur et triage vidéo ;
-- MolmoPoint-8B FireViewer : pointage primaire actuel ;
-- Prithvi officiel : branche auxiliaire de surface brûlée lorsque le produit est compatible.
-
-Un composant intégré n’est pas automatiquement considéré comme validé. Son statut est suivi dans `STATUS_MATRIX.md`.
-
-### Migration Qwen vers Ministral
-
-Ministral 3 8B Instruct est la cible retenue pour :
-
-- l’extraction structurée ;
-- la recherche via un courtier borné ;
-- la préparation de rapports privés ;
-- l’arbitrage limité aux sorties textuelles ou structurées.
-
-Ministral ne produit pas de coordonnées, ne valide pas une pose, ne confirme pas automatiquement un incendie et ne publie aucune information.
-
-### Profils de détection
-
-- `production_cascade` : RT-DETRv2 trie la vidéo, D-FINE traite les keyframes retenues ;
-- `validation_quorum` : les détecteurs sont comparés sur les lots de validation ;
-- `shadow_sampling` : le second détecteur est exécuté sur un échantillon ou un cas incertain.
-
-RF-DETR reste un challenger de benchmark.
-
-### Pointage et segmentation
-
-MolmoPoint reste primaire tant que DINOv3 n’est pas entraîné et qualifié.
-
-Le challenger DINOv3 doit produire :
-
-- des masques par instance ;
-- des heatmaps d’ancrage ;
-- une abstention visuelle ;
-- une estimation d’incertitude ;
-- une cohérence masque-point vérifiée.
-
-Les statuts visuels et géométriques sont distincts.
-
-**Perception :**
-
-- `insufficient_visual_anchor`
-- `ambiguous_anchor`
-- `no_visible_ground_origin`
-
-**Géométrie :**
-
-- `insufficient_geometry`
-- `unstable_camera_pose`
-- `invalid_raycast`
-- `uncertainty_above_limit`
-
-SAM sert à l’annotation, à la correction et à la propagation vidéo, pas à la décision finale du runtime.
-
-### OCR
-
-L’OCR fournit des indices à corroborer. Une inscription visible ne confirme jamais seule une localisation, une date ou une source.
-
-L’absence d’EXIF n’annule pas le média. Elle limite uniquement la branche spatiale.
-
-## Registre de preuves
-
-Chaque artefact conserve :
-
-- identifiant ;
-- lot et média parent ;
-- liens de filiation ;
-- URI privée ;
-- empreinte ;
-- format ;
-- modèle et révision ;
-- profil d’inférence ;
-- version du contrat ;
-- statut de validation ;
-- trace d’audit.
-
-Toute observation structurée référence des `evidence_refs` existants.
-
-Une preuve peut soutenir plusieurs événements. Un événement peut être soutenu par plusieurs preuves. La proximité ne constitue ni une identité d’événement, ni une indépendance de source.
-
-## Sources externes
-
-Les connecteurs cibles couvrent notamment :
-
-- communications des préfectures, SDIS/SIS, Sécurité civile, mairies et organismes publics ;
-- Sentinel-1/2 et autres acquisitions d’observation terrestre ;
-- FIRMS et EFFIS pour les détections thermiques ;
-- Copernicus EMS pour les produits de délinéation et de dommage ;
-- Météo-France pour observations et prévisions séparées ;
-- IGN pour les référentiels ;
-- BDIFF pour le bilan rétrospectif.
-
-Chaque artefact externe conserve collection, révision, temps, CRS natif, footprint, licence, attribution, filiation et statut provisoire ou corrigé. Deux produits dérivés du même passage capteur ne sont pas deux corroborations indépendantes.
-
-Le contrat complet est défini dans [`EXTERNAL_SOURCE_CONNECTORS.md`](EXTERNAL_SOURCE_CONNECTORS.md).
-
-## Branche spatiale
-
-### Photos au sol
+Replay is a first-class downstream consumer.
 
 ```text
-package de la zone
-→ banque de rendus locale
-→ retrieval DINOv3
-→ filtres EXIF / horizon / FOV / relief
-→ RoMa v2
-→ points 2D-3D
-→ PyCOLMAP
-→ raycast MNT
-→ propagation d’incertitude
+map package
++ temporal package
++ evidence references
++ processing revisions
++ human decisions
++ publication revision
+        ↓
+replay manifest
+        ↓
+post-event study / dataset / benchmark / independent inspection
 ```
 
-La banque est limitée à la zone de l’incident. Elle ne nécessite pas d’index national pour le pilote.
+A consumer may read these artifacts but must not silently recompute the terrain or historical timeline and still claim to be replaying the same archived incident.
 
-MoGe peut fournir des signaux auxiliaires. Il ne remplace ni les points 2D-3D, ni la pose, ni le raycast.
+See [Replay and Post-Event Studies](REPLAY_AND_POST_EVENT_STUDIES.md).
 
-### Vues UAV
+## 14. Synthetic data and simulation
 
-AerialExtreMatch-RoMa, RoMa v2, AdHoP/OrthoLoC et les autres challengers sont comparés sur les mêmes lots avant toute promotion.
+Synthetic-data research is valuable but deliberately separated from the core incident pipeline.
 
-### Géométrie déterministe
+`fireviewer-sdg` may use NVIDIA Omniverse, Isaac Sim, NuRec or other simulation/reconstruction technologies for bounded R&D campaigns.
 
-PyCOLMAP est la cible pour l’estimation robuste, le raffinement et la covariance locale de pose.
+Those workflows:
 
-L’enveloppe d’incertitude finale intègre aussi :
+- do not make Omniverse a FireViewer runtime dependency;
+- do not turn synthetic cases into real observations;
+- do not replace the measured map builder;
+- must preserve their own provenance and training/evaluation boundaries.
 
-- le pointage ;
-- les intrinsics ;
-- les correspondances ;
-- le modèle de caméra ;
-- le terrain.
+## 15. External sources
 
-Elle n’est appelée « ellipse de confiance » qu’après calibration empirique. Avant cela, le terme `uncertainty_envelope` est utilisé.
+FireViewer can integrate external source families such as official communications, remote sensing, thermal detections, weather observations and geographic reference data.
 
-## Satellite et simulation
+Each connector must preserve:
 
-Les objets suivants restent distincts :
+- provider/collection;
+- observation/acquisition time;
+- retrieval revision;
+- native CRS and footprint where relevant;
+- licence/attribution;
+- source-family identity so derived products are not counted as independent corroboration.
 
-- `observed_hotspot`
-- `observed_burned_perimeter`
-- `human_reviewed_active_zone`
-- `simulated_scenario`
+See [External Source Connectors](EXTERNAL_SOURCE_CONNECTORS.md).
 
-Un hotspot ne confirme pas automatiquement un feu. Une surface brûlée n’est pas une zone active. Une simulation reste hors du pipeline public courant sans décision produit dédiée.
+## 16. Security boundaries
 
-Les couches temporelles cibles restent distinctes : `event`, `front`, `activity_envelope`, `burned_area` et `simulation`. Une enveloppe probable référence les événements qui la soutiennent et ne remplit pas silencieusement les périodes ou zones non observées.
+Key trust boundaries include:
 
-La géométrie 3D de référence n'est pas reconstruite par la simulation. Le
-pipeline spatial produit séparément une carte autonome et, lorsque nécessaire,
-une timeline de périmètres observés liée à son build exact :
+- public browser ↔ backend;
+- backend ↔ private evidence storage;
+- backend ↔ compute providers;
+- backend ↔ external-source providers;
+- AI worker ↔ private evidence;
+- public artifacts ↔ restricted evidence.
+
+Provider secrets, private source URLs and sensitive evidence must not be embedded in public browser bundles or immutable public scene packages.
+
+## 17. Promotion model
+
+Capabilities move through evidence-based gates rather than a single "implemented" flag.
+
+Typical progression:
 
 ```text
-carte mesurée → package OpenUSD immuable + 20 captures de contrôle
-observations → package de périmètres + timeline JSON + vues GLB dérivées
-carte + timeline optionnelle → scene-consumer-input.v1
-scene-consumer-input.v1 → simulation, dataset ou replay externe
+contract
+→ local implementation
+→ local tests
+→ deployed integration
+→ reproducible benchmark/replay
+→ shadow/private use
+→ independent review
+→ limited public promotion
 ```
 
-La carte peut être publiée ou rester `technical_unpublished` pour un travail
-interne. Les GLB permettent le contrôle web mais ne remplacent ni OpenUSD ni la
-timeline. Le consommateur n'a le droit de recalculer ni le terrain ni les
-périmètres, et la valeur entre observations reste indéfinie.
+Field accuracy, provider availability, cost, latency and reliability are never inferred from local unit tests.
 
-## Promotion
+## 18. Funding and sustainability architecture
 
-Ordre de promotion :
+Sustainability is now a project constraint, not an administrative afterthought.
 
-```text
-benchmark hors ligne
-→ replay local
-→ recette GPU
-→ shadow mode
-→ propositions privées
-→ validation indépendante
-→ publication humaine limitée
-```
+FireViewer prioritises support that can be linked to technical outputs:
 
-Toute promotion exige des révisions verrouillées, des contrats versionnés, des artefacts de benchmark, une analyse d’erreurs, un rollback et une décision humaine explicite.
+- CPU credits → reproducible map-build campaigns;
+- GPU credits → fixed benchmark runs and failure analysis;
+- storage → immutable replay and dataset artifacts;
+- engineering support → deployment/recovery/security gates;
+- research collaboration → independent validation and methodology review.
 
-Aucune valeur de précision, de latence, de mémoire ou de coût n’est publiée sans artefact de mesure reproductible.
+Support does not alter the provenance, uncertainty or human-review rules.
+
+See [Support and Partnerships](SUPPORT_AND_PARTNERSHIPS.md).
+
+## 19. Architectural non-goals
+
+FireViewer core is not designed to be:
+
+- an emergency alert network;
+- an automatic wildfire-confirmation service;
+- an evacuation or command system;
+- a certified propagation predictor;
+- a national real-time 3D digital twin;
+- an Omniverse- or Unity-dependent product;
+- a system that replaces uncertainty with visually convincing guesses.
+
+## 20. Canonical related documents
+
+- [Project Overview](PROJECT_OVERVIEW.md)
+- [Map Builder](MAP_BUILDER.md)
+- [Fire Evolution Timeline](FIRE_EVOLUTION_TIMELINE.md)
+- [Replay and Post-Event Studies](REPLAY_AND_POST_EVENT_STUDIES.md)
+- [Provenance and Reproducibility](PROVENANCE_AND_REPRODUCIBILITY.md)
+- [Status Matrix](STATUS_MATRIX.md)
+- [Roadmap](ROADMAP.md)
+- [Safety and Scope](SAFETY_AND_SCOPE.md)
+- [Support and Partnerships](SUPPORT_AND_PARTNERSHIPS.md)
