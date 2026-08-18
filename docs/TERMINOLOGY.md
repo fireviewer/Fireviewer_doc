@@ -1,166 +1,234 @@
-# Terminologie FireViewer
+# FireViewer — Terminology
+
+This glossary defines the meanings used across FireViewer repositories. Terms that look similar in a viewer must remain semantically distinct in contracts and archived artifacts.
 
 ## Incident
 
-Agrégat stable représentant un incendie ou un dossier en cours de rapprochement. Il possède un `fire_id` canonique.
+Stable aggregate representing one wildfire case or a dossier being reconciled. It has a canonical `fire_id`.
 
-## Épisode
+## Episode
 
-Période temporelle distincte au sein d’un même incident, par exemple une réactivation.
+A distinct temporal phase inside the same incident, for example a documented reactivation.
 
 ## Source
 
-Origine d’une observation ou d’un média : utilisateur, organisme, capteur, publication, dataset ou connecteur.
+Origin of information: contributor, organisation, sensor, publication, dataset, imagery provider or connector.
+
+A source is not automatically independent from another source; two services may expose products derived from the same upstream acquisition.
 
 ## `EventCandidate`
 
-Objet privé créé lors d’une contribution. Il contient un point de prise de vue, un moment, un message et/ou des preuves, ainsi que les droits d’analyse. Il peut subsister après une abstention géométrique.
+Private object created during contribution/admission. It can contain a viewpoint, observation time, message, media/evidence references and analysis permissions. It may remain useful even when spatial localisation abstains.
 
 ## `Viewpoint`
 
-Position de l’observateur ou de la caméra. Elle ne représente jamais automatiquement un point de feu, une origine de fumée ou un front.
+Position of the observer or camera. It does not automatically represent active fire, smoke origin or fire-front location.
+
+## Evidence
+
+Immutable or versioned material used to support analysis or review: contributed media, derived frame, archived text, detector output, remote-sensing artifact or spatial reference.
+
+Evidence can have parents. A crop or frame derived from one image is not an independent source.
 
 ## `EvidenceAsset`
 
-Image ou vidéo privée soumise par un contributeur et rattachable à un événement candidat. Le message appartient à `EventCandidate`. Les documents officiels, acquisitions satellite et produits spatiaux sont des révisions d’artefacts externes, pas des uploads de contribution.
+Private contributed media object associated with an event candidate. External official/satellite/geographic products belong to the external-artifact family rather than being treated as user uploads.
 
-## `LocalizationAttempt`
+## Evidence artifact
 
-Tentative rejouable de produire une géométrie d’activité à partir d’un point de vue et de preuves. Elle produit une géométrie avec ses limites ou une abstention typée.
-
-## `FireActivityEvent`
-
-Objet métier stable représentant une activité documentée dans un incident. Ses informations, sa géométrie, son intervalle, son incertitude, ses preuves et sa revue évoluent par révisions.
-
-## `EventRelation`
-
-Relation versionnée entre événements ou candidats : identité proposée, ordre temporel, même front, support, contradiction, remplacement, fusion ou séparation.
-
-## `ActivityEnvelopeRevision`
-
-Enveloppe probable dérivée de plusieurs événements compatibles dans une fenêtre temporelle. Elle ne constitue ni une observation directe, ni une simulation, ni une prédiction.
-
-## `ProgressionDelta`
-
-Différence descriptive entre deux révisions validées. Elle ne remplit pas une période non observée et ne prédit pas la progression future.
-
-## Preuve
-
-Élément immuable utilisé pour soutenir une observation : image ou vidéo de contribution, frame, texte archivé, masque, boîte, produit satellite ou artefact spatial. L’API événementielle v2 n’accepte pas d’upload audio ou document.
-
-Une preuve n’est pas nécessairement indépendante. Deux services peuvent diffuser des produits dérivés d’une même acquisition.
-
-## Artefact de preuve
-
-Fichier ou objet dérivé conservant son origine, son empreinte, son modèle, sa révision et ses parents.
+Derived artifact that preserves its parent references, hash, producing method/model and revision.
 
 ## Observation
 
-Énoncé structuré relié à une ou plusieurs preuves. Elle peut être observée, rapportée, contradictoire, inconnue ou soumise à revue.
+Structured statement tied to one or more evidence references and a time/interval.
 
-## Observation capteur
+An observation can still be uncertain or contradictory.
 
-Mesure ou détection issue d’un capteur avec temps d’acquisition, footprint et qualité. Son centroïde n’est pas automatiquement une position exacte du phénomène.
+## Sensor observation
 
-## Observation interprétée
+Measurement or detection produced by a sensor/product with acquisition time, footprint and quality metadata. Its centroid is not automatically the exact location of the phenomenon.
 
-Produit dérivé par un algorithme ou une analyse humaine, par exemple une surface brûlée. Sa méthode et ses parents restent visibles.
+## Interpreted observation
 
-## Déclaration officielle
+Derived interpretation produced by an algorithm or human analysis, for example a reviewed active zone or burned-area interpretation. Its method and parents remain visible.
 
-Assertion attribuée à une autorité identifiée. Son autorité dépend du type d’assertion et ne confère pas automatiquement une précision spatiale.
+## Official statement
 
-## Référentiel
+Assertion attributed to an identified authority. Official status does not automatically imply exact spatial precision for every statement.
 
-Donnée utilisée pour géocoder, projeter ou contextualiser, par exemple un MNT IGN. Elle ne prouve pas une activité incendie.
+## Geographic reference
 
-## Prévision
+Data used to project, locate or contextualise information, for example a terrain model or orthophoto. A geographic reference does not prove fire activity.
 
-Information produite pour une échéance future à partir d’un run daté. Elle reste séparée des observations.
+## `MapBuild`
 
-## Fait accepté
+Immutable versioned spatial package produced by the canonical FireViewer map builder for a defined request and geographic area.
 
-Observation ayant passé les gates applicables et une décision humaine. Il ne devient public que par une action de publication séparée.
+A map build contains/references its map-package contract, terrain/scene artifacts, used asset bundle and provenance receipts.
 
-## Détection
+## Map builder
 
-Proposition de présence ou de localisation dans l’image, par exemple une boîte feu/fumée. Une détection n’est pas un fait public.
+Headless production pipeline that converts a geographic request and measured source inputs into a portable spatial package.
 
-## Instance
+The canonical FireViewer map builder does not depend on Unity or NVIDIA Omniverse.
 
-Phénomène visuel distinct dans une image : foyer, colonne de fumée ou front visible.
+## Tile
 
-## Ancrage visuel
+Current spatial production unit aligned to the Lambert-93 grid. The canonical active builder uses 500 m tiles.
 
-Point ou ligne dans l’image représentant une origine observable : base de flamme, base de fumée ou front visible.
+## Spatial package
 
-## Abstention visuelle
+Portable output containing the spatial reference required by consumers. Current measured-map packages include OpenUSD and Blender scene representations plus tile/provenance artifacts.
 
-Le modèle ne peut pas proposer un ancrage défendable à partir de l’image.
+## `LocalizationAttempt`
 
-Valeurs possibles :
+Replayable attempt to derive a defensible spatial result from evidence and an authorised spatial reference.
+
+It returns either a geometry with uncertainty/provenance or a typed abstention/failure.
+
+## Pointing
+
+Production of a visual anchor in image coordinates. Pointing is not geolocation.
+
+## Visual anchor
+
+Point or line in an image representing a visible feature such as flame base, smoke-column base or visible front.
+
+## Visual abstention
+
+The model cannot propose a defensible anchor from the image.
+
+Examples:
 
 - `insufficient_visual_anchor`
 - `ambiguous_anchor`
 - `no_visible_ground_origin`
 
-## Abstention géométrique
+## Spatial registration
 
-La branche spatiale ne peut pas produire une position défendable.
+Estimation of the relationship between an image/camera and a georeferenced spatial reference.
 
-Valeurs possibles :
+## Camera pose
+
+Camera position, orientation and model in a versioned metric reference frame.
+
+## Raycast
+
+Intersection of a ray derived from the camera model with the reference terrain/geometry.
+
+## Geometric abstention
+
+The spatial branch cannot produce a defensible location.
+
+Examples:
 
 - `insufficient_geometry`
 - `unstable_camera_pose`
 - `invalid_raycast`
 - `uncertainty_above_limit`
 
-## Pointage
-
-Production d’un ancrage dans les coordonnées de l’image. Le pointage n’est pas une géolocalisation.
-
-## Recalage spatial
-
-Estimation de la relation entre une image et un référentiel géoréférencé.
-
-## Pose caméra
-
-Position, orientation et modèle de caméra dans un repère métrique versionné.
-
-## Raycast
-
-Intersection d’un rayon issu de la caméra avec le MNT de référence.
-
 ## `uncertainty_envelope`
 
-Enveloppe dérivée de plusieurs sources d’incertitude. Elle n’est appelée ellipse de confiance calibrée qu’après validation empirique.
+Geometry representing combined uncertainty from the relevant spatial stages. It should not be called a calibrated confidence ellipse until empirical calibration supports that interpretation.
+
+## `FireActivityEvent`
+
+Stable business object representing documented fire activity inside an incident. Information, geometry, interval, uncertainty, evidence and review evolve through explicit revisions.
+
+## `EventRelation`
+
+Versioned relationship between events/candidates such as temporal order, support, contradiction, replacement, proposed identity, split or merge.
+
+## `ActivityEnvelopeRevision`
+
+Reviewed multi-event interpretation representing a probable activity envelope. It is neither a direct observation nor a simulation/prediction.
+
+## `ProgressionDelta`
+
+Descriptive difference between two accepted revisions/states. It does not fill an unobserved period and does not forecast future propagation.
+
+## Observed state
+
+Temporal state represented as directly supported by an admissible observation/product under its contract.
+
+`Observed` does not mean infallible; it means the state is being represented as observation rather than reconstruction or simulation.
 
 ## `observed_hotspot`
 
-Point ou observation thermique provenant d’un capteur ou d’un produit compatible. Il ne confirme pas automatiquement un feu.
+Thermal point/detection from a compatible sensor/product. It does not automatically confirm an active wildfire or exact fire-front position.
 
 ## `observed_burned_perimeter`
 
-Surface observée comme brûlée à partir d’un produit adapté et revue selon son contrat.
-
-Elle ne représente pas automatiquement la zone active au moment de sa publication.
+Surface observed/interpreted as burned under a compatible reviewed product contract. It does not automatically represent current active fire.
 
 ## `human_reviewed_active_zone`
 
-Zone active proposée puis acceptée ou corrigée humainement.
+Active-zone interpretation accepted or corrected through the human review path. It remains semantically distinct from direct observation and simulation.
+
+## Retrospective reconstruction
+
+Post-event geometry/state derived from historical evidence, area reports, sectors, maps or remote-sensing information.
+
+A reconstruction can improve later understanding but must not be presented as what was directly observed at the historical time.
+
+## Unknown interval
+
+Time interval for which FireViewer has insufficient evidence to represent a canonical intermediate state.
+
+Unknown intervals are intentionally preserved instead of silently interpolated.
+
+## Simulation
+
+State generated by a simulation/scenario model. It is separate from observations and reconstructions.
 
 ## `simulated_scenario`
 
-Résultat d’un modèle de simulation séparé des couches observées.
+Explicitly simulated scenario object/layer with its own model provenance.
 
-## Shadow mode
+## Prediction
 
-Exécution d’un composant sans autorité de production afin de comparer ses sorties.
+Future-oriented model output generated from a dated run and assumptions. Prediction is not part of the canonical observed timeline and FireViewer core is not positioned as a certified forecasting product.
 
-## Gate
+## `PublicationSnapshot`
 
-Contrôle explicite qui autorise, bloque, redirige ou place une étape en revue.
+Immutable versioned public representation produced from reviewed state. Later correction/retraction should create lineage rather than silently overwriting historical publication state.
 
 ## Replay
 
-Réexécution d’un traitement à partir des mêmes entrées, contrats, révisions et paramètres enregistrés.
+Reopening/re-execution context bound to the same recorded inputs, contracts, revisions and parameters.
+
+A FireViewer replay is intended to preserve the exact spatial and temporal reference used historically rather than rebuilding them from current upstream data.
+
+## Replay manifest
+
+Versioned binding that identifies the spatial package, temporal states, evidence references, processing/model revisions and human decision references needed to inspect or reproduce a FireViewer replay.
+
+## Post-event study
+
+New analysis performed from an archived replay after the incident. Its outputs are new derived artifacts and do not rewrite the archived incident or historical timeline.
+
+## Benchmark
+
+Versioned evaluation with fixed inputs/splits, documented metrics and leakage rules. A benchmark result is meaningful only relative to its exact corpus and protocol.
+
+## Shadow mode
+
+Execution of a component without authority to create a publishable result, used for comparison and evidence gathering.
+
+## Gate
+
+Explicit condition that permits, blocks, redirects or sends a capability/output to review.
+
+## Provenance
+
+Information required to understand an artifact's origin, parents, timing, rights, transformations, producing revision and integrity.
+
+## Integrity hash
+
+Digest used to verify that an archived artifact has not changed. A hash proves integrity relative to recorded bytes; it does not prove scientific correctness.
+
+## Reproducibility
+
+Ability to reopen or regenerate an artifact/study from documented inputs, revisions and methods at the level actually claimed by the project.
+
+See [Provenance and Reproducibility](PROVENANCE_AND_REPRODUCIBILITY.md) for FireViewer's reproducibility levels.
