@@ -1,104 +1,192 @@
-# Sécurité et périmètre FireViewer
+# FireViewer — Safety and Scope
 
-## Positionnement
+## Positioning
 
-FireViewer est un projet communautaire expérimental de documentation et de visualisation. Il n’est pas :
+FireViewer is an experimental open research and engineering project for wildfire documentation, spatial reconstruction, temporal tracking and post-event study.
 
-- un service d’alerte ;
-- une source officielle ;
-- un système de commandement ;
-- un outil de conduite des secours ;
-- un substitut aux consignes des autorités ;
-- une preuve légale ou opérationnelle automatique.
+It is **not**:
 
-## Règles de sécurité
+- an emergency alert service;
+- an official wildfire information source;
+- a command-and-control system;
+- a firefighting operations tool;
+- a substitute for instructions from public authorities;
+- a certified wildfire-propagation forecast;
+- an automatic legal, insurance or operational evidence service.
 
-### Aucune confirmation automatique
+These boundaries apply regardless of whether FireViewer receives grants, sponsorship, cloud credits or institutional collaboration.
 
-Un détecteur, un VLM, un produit satellite, un OCR ou une recherche de source ne confirme jamais seul un incendie.
+## No automatic confirmation
 
-### Aucune publication automatique
+A detector, vision-language model, satellite product, OCR result, hotspot or external search result does not confirm a wildfire by itself.
 
-Les sorties IA restent privées jusqu’à une décision humaine explicite. Les faits, géométries, rapports et médias sont validés séparément.
+Evidence types retain their own semantics and confidence boundaries.
 
-L’envoi d’un `EventCandidate` déclenche directement une analyse privée, jamais une publication directe.
+## No automatic publication
 
-### Aucune coordonnée générative
+AI and automated processing outputs remain private proposals until the required human review.
 
-Ministral, MolmoPoint, DINOv3 et les autres modèles génératifs ou visuels ne produisent pas de latitude ou longitude faisant autorité.
+FireViewer separates decisions about:
 
-La position finale, lorsqu’elle est proposée, vient d’une passe géométrique versionnée et vérifiable.
+- factual statements;
+- visual anchors;
+- geometry;
+- uncertainty;
+- reports/text;
+- media publication;
+- incident publication.
 
-### Abstention
+Submitting an event candidate can trigger private analysis, but never direct public publication.
 
-Le système doit pouvoir répondre :
+## No authoritative generated coordinates
 
-- non applicable ;
-- preuve insuffisante ;
-- ancrage visuel ambigu ;
-- géométrie insuffisante ;
-- revue humaine nécessaire ;
-- échec contrôlé.
+A language or vision model is not authorised to invent a latitude/longitude and make it authoritative.
 
-Une abstention n’est pas une erreur à masquer.
+A spatial position, when proposed, must come from a documented spatial method with reviewable evidence, transformation history and uncertainty.
 
-### Absence d’EXIF
+Text-generation components may structure evidence around a localisation attempt; they do not replace geometric validation.
 
-L’absence d’EXIF ne rend pas le média inutile. Elle limite la branche spatiale mais n’empêche pas la détection, la transcription, l’OCR, la chronologie ou la revue.
+## Abstention is a valid result
 
-### OCR et texte visible
+FireViewer must be able to return bounded failure states such as:
 
-Le texte lu dans une image est un indice. Il peut être ancien, ajouté, manipulé ou hors contexte. Il exige une corroboration.
+- insufficient evidence;
+- ambiguous visual anchor;
+- no visible ground origin;
+- insufficient geometry;
+- unstable camera pose;
+- invalid terrain raycast;
+- uncertainty above the accepted threshold;
+- human review required;
+- controlled processing failure.
 
-## Données et consentement
+An abstention is not an error to hide.
 
-- les médias utilisateurs restent privés par défaut ;
-- le consentement et la provenance sont enregistrés ;
-- la modération d’un média est distincte de la validation d’une analyse ;
-- une correction humaine n’entre pas automatiquement dans l’entraînement ;
-- les incidents actifs sont exclus des corpus d’entraînement ;
-- les demandes de retrait doivent pouvoir purger les dérivés concernés.
+## Viewpoint is not fire location
 
-Le point de prise de vue exact est privé par défaut. Son affichage, sa généralisation ou son masquage possède une autorisation distincte de celle du message, du média et de la géométrie d’activité.
+The location of a photographer, camera or reporting source is not automatically the location of active fire.
 
-Un organisme public peut publier un contenu soumis à des droits tiers. La disponibilité en ligne ne vaut ni Licence Ouverte, ni autorisation de republier le média.
+This distinction remains explicit through ingestion, AI analysis and public representation.
 
-## Observation, estimation et simulation
+## Missing EXIF
 
-Les couches suivantes restent séparées :
+Missing EXIF metadata does not make a media item useless.
 
-- observations directes ;
-- surfaces brûlées observées ;
-- zones revues humainement ;
-- enveloppes d’incertitude ;
-- simulations.
+It can still contribute to detection, transcription, OCR, temporal context or human review. Missing metadata simply removes or weakens some spatial methods.
 
-Les déclarations officielles, référentiels et prévisions sont également des classes distinctes.
+## OCR and visible text
 
-Une simulation n’est jamais présentée comme une observation.
+Text visible in an image is evidence, not truth by default. It may be old, manipulated, unrelated or out of context and therefore requires corroboration before it supports a public conclusion.
 
-## Recherche externe
+## Data, privacy and consent
 
-Le worker ne dispose pas d’un réseau libre. Toute recherche passe par un courtier contrôlé avec :
+FireViewer's default posture is conservative:
 
-- outils bornés ;
-- hôtes autorisés ;
-- journalisation ;
-- archivage du contenu ;
-- protection contre les instructions contenues dans les pages récupérées.
+- contributed media is private by default;
+- provenance and applicable consent are recorded;
+- media moderation is separate from analysis validation;
+- human correction does not automatically become training data;
+- active incidents are excluded from training workflows unless a separately reviewed policy explicitly changes that rule;
+- withdrawal/removal requests must be able to affect relevant derivatives where required;
+- exact viewpoints are private by default unless an explicit policy permits broader disclosure.
 
-Les connecteurs conservent la collection, l’identifiant objet, la révision, les temps, le CRS natif, le footprint, la licence et la filiation. Une source officielle ou satellite ne déclenche pas seule une publication.
+Availability on a public website does not automatically grant FireViewer the right to redistribute a third-party image or dataset.
 
-## Gestion des incidents techniques
+## Observation, reconstruction and simulation
 
-Le backend conserve :
+The following classes must remain distinguishable:
 
-- kill switch ;
-- suspension ;
-- audit append-only ;
-- dead letters ;
-- retrait ;
-- rollback ;
-- statuts partiels.
+```text
+observation
+reviewed interpretation
+retrospective reconstruction
+burned-area product
+uncertainty envelope
+simulation
+prediction
+```
 
-Un échec de validation doit être détecté, contenu et journalisé. L’objectif n’est pas de faire disparaître les rejets.
+A simulation is never published as an observation.
+
+A retrospective reconstruction may be useful for post-event study, but it must not be presented as what was directly known in real time.
+
+An observed hotspot is not automatically a closed fire perimeter.
+
+A smoke detection does not define an active-fire boundary.
+
+See [Fire Evolution Timeline](FIRE_EVOLUTION_TIMELINE.md).
+
+## Unknown intervals
+
+If FireViewer has two accepted temporal states separated by a period with no defensible observation, the intermediate state is allowed to remain unknown.
+
+Presentation-layer animation must not silently become canonical intermediate geometry.
+
+## External sources
+
+External-source integrations must be bounded by explicit connector rules.
+
+As applicable, a connector records:
+
+- collection/product;
+- source object/revision;
+- observation/acquisition time;
+- retrieval time;
+- native CRS and footprint;
+- licence and attribution;
+- correction/retraction lineage.
+
+Two products derived from the same upstream acquisition are not automatically independent corroboration.
+
+## Controlled external research
+
+Automated research or retrieval must not provide an unrestricted trust path from arbitrary web content into public incident state.
+
+Where network-enabled research is used, the architecture should rely on bounded tools, allowlisted sources where appropriate, logging, archived source identity and protection against instructions embedded in retrieved content.
+
+## Technical incident handling
+
+FireViewer architecture includes or targets mechanisms such as:
+
+- suspension / kill switch;
+- append-only audit history;
+- dead-letter handling;
+- withdrawal/retraction;
+- partial states;
+- rollback or replacement through explicit revision lineage.
+
+A validation failure should be visible, contained and auditable rather than silently discarded.
+
+## Funding and sponsor independence
+
+Financial or infrastructure support does not change the validation rules.
+
+A sponsor or provider cannot require FireViewer to:
+
+- hide uncertainty;
+- remove provenance;
+- relabel reconstruction as observation;
+- promote a model without benchmark evidence;
+- suppress relevant failure analysis;
+- publish an incident automatically;
+- claim operational readiness without qualification.
+
+Funding attribution and scientific provenance are separate concerns.
+
+## Publication language
+
+Public documentation should use the strongest wording that the evidence supports, and no stronger.
+
+Preferred examples:
+
+- "observed at" when direct observation is defensible;
+- "reconstructed from" for retrospective geometry;
+- "model proposed" for unvalidated model output;
+- "human-reviewed" where a reviewer has validated a defined object;
+- "unknown" when the project lacks sufficient evidence.
+
+Avoid language that turns model confidence or visual plausibility into certainty.
+
+## Emergency context
+
+In an active wildfire emergency, FireViewer must not be presented as a substitute for local emergency services, prefectures, civil-protection authorities, fire services or other competent official sources.
