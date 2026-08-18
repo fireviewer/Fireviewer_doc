@@ -1,153 +1,281 @@
-# Matrice d’acceptation et de replay événementiel
+# FireViewer — Acceptance and Replay Matrix
 
-**Statut global :** socle local testé ; dépendances live, précision terrain, enveloppes, progression et replay complet non validés
+This document defines **what must be demonstrated** before a FireViewer capability is described as reproducible, deployed, benchmarked or ready for broader public/research use.
 
-## Signification
+It complements [STATUS_MATRIX.md](STATUS_MATRIX.md): the status matrix says where a capability is today; this matrix defines the evidence needed to move it forward.
 
-| Statut | Signification |
+## Status meanings
+
+| Status | Meaning |
 | --- | --- |
-| `IMPLEMENTED_TESTED_LOCAL` | Le code et un test ciblé local existent. |
-| `IMPLEMENTED_NOT_LIVE_VERIFIED` | Le code existe, mais la dépendance ou l’environnement réel n’a pas été exercé. |
-| `PENDING` | Le comportement complet ou sa preuve manque. |
+| `implemented_tested_local` | Code exists and targeted local tests have passed. |
+| `implemented_not_live_verified` | Integration exists but the relevant provider/deployed environment has not been fully exercised. |
+| `contract_defined` | Behaviour is specified; full implementation/evidence may be absent. |
+| `pending` | Required implementation or proof is missing. |
+| `blocked` | Promotion is intentionally forbidden until an explicit gate is satisfied. |
 
-Une réussite locale ne prouve ni précision terrain, ni sécurité d’un déploiement, ni disponibilité d’un fournisseur.
+A local success never proves field accuracy, provider availability or operational safety.
 
-## Admission, preuves et dispatcher
+---
 
-| Gate | Statut | Preuve locale | Reste à valider |
-| --- | --- | --- | --- |
-| Refus sans viewpoint ou temps | `IMPLEMENTED_TESTED_LOCAL` | Schémas worker et API négatifs | Recette déployée. |
-| Message sans média | `IMPLEMENTED_TESTED_LOCAL` | Candidat et job créés dans les tests API/dispatcher | Parcours navigateur avec compte réel. |
-| Plusieurs médias | `IMPLEMENTED_TESTED_LOCAL` | Ouverture, upload local, finalisation et rattachement testés ; le contrôle interne matérialise chaque objet par flux dans un fichier temporaire | Vercel Blob réel et charge maximale. |
-| MIME, extension, taille et SHA-256 | `IMPLEMENTED_TESTED_LOCAL` | Cas valides et incohérents couverts, avec calcul de signature et hash par blocs sans lecture intégrale en mémoire | Formats malformés étendus et charge maximale. |
-| Antivirus | `IMPLEMENTED_NOT_LIVE_VERIFIED` | Mode propre réservé aux tests et gate de configuration | Démon ClamAV réel, timeout, quarantaine et reprise. |
-| Idempotence candidat/job | `IMPLEMENTED_TESTED_LOCAL` | Même clé/corps : un candidat et un job ; conflit de corps refusé | Concurrence multi-connexion PostgreSQL. |
-| Job persistant | `IMPLEMENTED_TESTED_LOCAL` | Leases, soumission, polling, reprise et états terminaux testés | RunPod réel, coupure réseau et redémarrage processus. |
-| Réponse distante ambiguë | `IMPLEMENTED_TESTED_LOCAL` | Échec explicite sans resoumission dangereuse | Validation avec transport réel. |
-| Rétention temporaire | `IMPLEMENTED_TESTED_LOCAL` | Seuls les lots expirés non rattachés sont purgés, avec compte et octets audités | Stockage Blob réel et exécution planifiée. |
+# 1. Documentation and governance
 
-## Authentification, rôles et confidentialité
+| Gate | Current state | Acceptance evidence |
+| --- | --- | --- |
+| Canonical project positioning | in refactor | README, architecture, status, roadmap and support docs use the same project definition |
+| Core no longer described as Unity/Omniverse dependent | in refactor | no canonical core document makes either runtime mandatory |
+| SDG remains separate | in refactor | Omniverse/Isaac/NuRec references are clearly scoped to optional synthetic-data R&D |
+| Funding claims are honest | in refactor | no charitable/tax/institutional status is implied; support needs are tied to concrete outputs |
+| Repository documentation remains clean | in refactor | one canonical cross-project source; component repos only keep local implementation docs |
 
-| Gate | Statut | Preuve locale | Reste à valider |
-| --- | --- | --- | --- |
-| Email vérifié obligatoire | `IMPLEMENTED_TESTED_LOCAL` | Claims standard sans `email_verified` recontrôlés via utilisateur actif simulé | Projet Supabase réel et parcours email. |
-| Rôles depuis `app_metadata` uniquement | `IMPLEMENTED_TESTED_LOCAL` | `user_metadata` ignoré et rôles filtrés | Mutation de rôle réelle. |
-| Contributeur interdit de revue | `IMPLEMENTED_TESTED_LOCAL` | Gates backend et frontend ciblées | Test d’intrusion déployé. |
-| Analyste interdit de publication | `IMPLEMENTED_TESTED_LOCAL` | Transition et permissions UI testées | Session Supabase réelle. |
-| Utilisateur analyste + éditeur | `IMPLEMENTED_TESTED_LOCAL` | Les deux gates sont accessibles selon les rôles | Parcours live complet. |
-| Rôle retiré refusé avec JWT ancien | `IMPLEMENTED_TESTED_LOCAL` | Relecture live simulée de `app_metadata.roles` | Retrait de rôle réel et propagation. |
-| Révocation de toutes les sessions au retrait d’un rôle | `PENDING` | Aucun hook d’administration Supabase implémenté | Révocation serveur et recette multi-session. |
-| Jeton récent pour publier | `IMPLEMENTED_TESTED_LOCAL` | Âge d’authentification et session active testés | Politique et réauthentification UX live. |
-| Point de vue absent des réponses contributeur/publiques | `IMPLEMENTED_TESTED_LOCAL` | Reçu réduit et snapshot sans coordonnées exactes | Audit de tous les endpoints déployés. |
-| Consentement au dérivé public obligatoire | `IMPLEMENTED_TESTED_LOCAL` | La publication est refusée lorsque `consent.public_derivative=false` | Parcours éditorial et retrait du consentement sur environnement réel. |
-| Anti-IDOR contribution | `IMPLEMENTED_TESTED_LOCAL` | Lecture d’un candidat tiers refusée | Campagne sécurité complète. |
-| Preuve privée réservée à la revue | `IMPLEMENTED_TESTED_LOCAL` | Rôle élevé, état `VERIFIED`, scan `CLEAN`, URI exacte signée, taille/hash revérifiés, réponse fichier temporaire et nettoyage après réponse | Requêtes HTTP Range, charge vidéo maximale et Blob réel. |
-| Aucune clé secrète Supabase dans le frontend | `IMPLEMENTED_TESTED_LOCAL` | Configuration navigateur limitée à URL et clé publishable | Inspection du bundle déployé. |
+---
 
-## Analyse et revue
+# 2. Canonical map-builder acceptance
 
-| Gate | Statut | Preuve locale | Reste à valider |
-| --- | --- | --- | --- |
-| Viewpoint distinct du point actif | `IMPLEMENTED_TESTED_LOCAL` | Le worker n’émet aucune coordonnée depuis le seul viewpoint | Benchmark terrain indépendant. |
-| Direction sans distance | `IMPLEMENTED_TESTED_LOCAL` | Secteur non publiable ou abstention | Calibration de l’incertitude. |
-| Message seul sans géométrie | `IMPLEMENTED_TESTED_LOCAL` | Abstention conservée sans invention | Valeur analyste sur incidents réels. |
-| Cross-view shadow | `IMPLEMENTED_TESTED_LOCAL` | Le contrat impose `shadow_only`, la persistance utilise l’état distinct `SHADOW` et le rattachement d’incident exclut encore méthode et provenance shadow | Benchmark indépendant avant toute promotion. |
-| Hotspot incapable de créer un incident | `IMPLEMENTED_TESTED_LOCAL` | Contrat worker ciblé | Adaptateurs FIRMS/EFFIS réels. |
-| Déclaration officielle crée seulement un candidat privé | `IMPLEMENTED_TESTED_LOCAL` | Contrat worker ciblé | Ingestion et revue d’une source officielle réelle. |
-| Assertion externe structurée | `IMPLEMENTED_TESTED_LOCAL` | Sémantique par rôle, idempotence, secret et précision testés | Extraction automatique et revue fournisseur réelle. |
-| Persistance méthode/modèle/révision/incertitude | `IMPLEMENTED_TESTED_LOCAL` | Le résultat worker retourne ses ancrages et preuves spatiales ; les ancrages inférés doivent viser le bundle, tandis qu’une preuve spatiale localisée doit exister à l’identique dans l’outbox persistante | Replay de modèles réels et branche spatiale de confiance. |
-| Revue candidat | `IMPLEMENTED_TESTED_LOCAL` | Rejet, demande de preuve et contradiction testés | Correction structurée de faits et géométries. |
-| Rattachement à un incident | `IMPLEMENTED_TESTED_LOCAL` | Rattachement et matérialisation de brouillons sans réanalyse testés | Matching assisté et fusion de candidats. |
-| Validation analyste puis publication éditeur | `IMPLEMENTED_TESTED_LOCAL` | États, rôles, flag et nouvelle révision de snapshot couverts | Remplacement, rollback et UI live. |
-| Plusieurs vues du même événement sans duplication | `PENDING` | Relations disponibles, fixture métier complète absente | Dataset multivue par incident et seuils d’association. |
-| Contradictions conservées jusqu’à résolution | `IMPLEMENTED_TESTED_LOCAL` pour le marquage | Le candidat garde le contexte de contradiction | Graphe multi-source, blocage de fusion et résolution. |
+The measured map package is a core FireViewer artifact.
 
-## Sources externes et géométrie
+## 2.1 Request and planning
 
-| Gate | Statut | Preuve locale | Reste à valider |
-| --- | --- | --- | --- |
-| Domaines exacts et HTTPS | `IMPLEMENTED_TESTED_LOCAL` | URL hors allowlist, wildcard, signature et secret refusés | Redirections, DNS et SSRF avec broker réel. |
-| Licence et attribution obligatoires | `IMPLEMENTED_TESTED_LOCAL` | Enregistrement incomplet refusé | Audit juridique par collection. |
-| Même URL, nouveau hash : nouvelle révision | `IMPLEMENTED_TESTED_LOCAL` | Fixtures de révision et filiation | ETag et produit fournisseur réel. |
-| Même hash, URLs différentes : miroir | `IMPLEMENTED_TESTED_LOCAL` | Fixture miroir locale | Portails réels. |
-| Correction et rétractation immuables | `IMPLEMENTED_TESTED_LOCAL` | Nouvelle révision, filiation et triggers locaux | Triggers PostgreSQL réels et propagation publique. |
-| Même acquisition : une famille de preuve | `IMPLEMENTED_TESTED_LOCAL` | Capteur, plateforme, granule et pixel dédupliqués | Mappage FIRMS/EFFIS réel. |
-| Prévision séparée de l’observation | `IMPLEMENTED_TESTED_LOCAL` | Contraintes de schéma et fixture | AROME/CAMS réels. |
-| CRS incohérent bloquant | `IMPLEMENTED_TESTED_LOCAL` | CRS inconnu refusé, transformation locale contrôlée | Tests d’axes et datums avec produits IGN/Copernicus. |
-| Colonnes PostGIS et GiST | `IMPLEMENTED_NOT_LIVE_VERIFIED` | DDL PostgreSQL compilé et migration présente | Upgrade/downgrade, index et requêtes sur PostGIS réel. |
-| Watermark, lease et backoff | `IMPLEMENTED_TESTED_LOCAL` | Worker périmé refusé, backoff borné et succès testés ; cron privé et CLI raccordés | Déclenchement hébergé et scheduler concurrent multi-processus. |
-| Collecte fournisseur live | `PENDING` ou `IMPLEMENTED_NOT_LIVE_VERIFIED` selon adaptateur | Voir `EXTERNAL_SOURCE_CONNECTORS.md` | Identifiants, quotas, droits, corrections et indisponibilités réels. |
+| Gate | Current state | Acceptance evidence |
+| --- | --- | --- |
+| WGS84 input accepted | `implemented_tested_local` | contract/schema tests and representative request |
+| Lambert-93 production plan | `implemented_tested_local` | tile plan with documented axis order / CRS transformation |
+| 500 m grid consistency | `implemented_tested_local` | deterministic plan for same request/revision |
+| Fixed placements validated | `implemented_tested_local` | invalid placement rejected; valid placement obtains terrain altitude |
 
-## Enveloppes, progression et présentation
+## 2.2 Geographic acquisition
 
-| Gate | Statut | Preuve locale | Reste à valider |
-| --- | --- | --- | --- |
-| Supports d’enveloppe normalisés | `IMPLEMENTED_NOT_LIVE_VERIFIED` | Table et clés étrangères présentes | Service de création et règles de majorité. |
-| Une observation ne ferme pas un périmètre | `PENDING` | Règle contractuelle seulement | Test déterministe du futur moteur. |
-| La fumée seule ne ferme pas une enveloppe | `PENDING` | Garde worker sur les propositions | Test du futur moteur d’enveloppe. |
-| Surface brûlée distincte de l’activité | `PENDING` | Taxonomie et stockage externe séparés | Projection UI et tests de non-confusion. |
-| Progression par deltas observés | `PENDING` | Table présente | Calcul, revue et replay. |
-| Formulaire et reçu frontend | `IMPLEMENTED_TESTED_LOCAL` | Tests composants, types et build locaux | Navigateur contre Supabase/backend/Blob réels. |
-| Revue unifiée frontend | `IMPLEMENTED_TESTED_LOCAL` | Tests de permissions, contrat et rendu local | Recette navigateur avec média volumineux et session réelle. |
-| Projection événementielle 3D et fallback 2D | `IMPLEMENTED_TESTED_LOCAL` | Points, segments et incertitudes v2 suivent l’instant sélectionné ; SVG 2D et texte restent disponibles sans WebGL | Recette navigateur réelle, LOD, accessibilité complète et performance terrain. |
-| Timeline publique v2 | `IMPLEMENTED_TESTED_LOCAL` | Endpoint issu des snapshots non rétractés, réponse fermée, cache court et projection frontend strictement v2 lorsqu’elle est disponible ; aucun mélange géométrique ou temporel v1/v2 | Comparaison shadow v1/v2, replay complet et recette déployée. |
-| Immutabilité défensive des snapshots | `IMPLEMENTED_TESTED_LOCAL` | Géométries canoniques, revérification de `payload_sha256`, payload immuable, suppression interdite et unique rétractation auditée couvertes sur SQLite | Exercices équivalents sur PostgreSQL réel, sauvegarde et restauration. |
-| Artefact OpenAPI versionné | `IMPLEMENTED_TESTED_LOCAL` | `openapi/openapi.json` régénéré contient la timeline publique et les transitions internes, dont la rétractation | Contrôle de dérive en CI et publication éventuelle du SDK. |
-| Rétractation publique v2 | `IMPLEMENTED_TESTED_LOCAL` | Route éditeur, transition vers `RETRACTED`, motif/acteur conservés et timeline vidée | Propagation cache et recette Supabase/PostgreSQL live. |
-| Remplacement et rollback publics v2 | `PENDING` | Schéma de filiation seulement | Actions, restauration et replay. |
+| Gate | Current state | Acceptance evidence |
+| --- | --- | --- |
+| MNT acquisition | `implemented_not_live_verified` | live provider request, receipt, bounds/resolution and failure handling |
+| MNS acquisition | `implemented_not_live_verified` | same |
+| Orthophoto acquisition | `implemented_not_live_verified` | same |
+| Missing/invalid raster cells | implemented path | archived receipt records repair count/method and bounded behaviour |
+| Licence/attribution | source-dependent | provider/product policy recorded before public redistribution |
 
-## Manifeste de replay cible
+## 2.3 Tile build
 
-Le replay complet reste `PENDING`. Son manifeste devra contenir :
+| Gate | Current state | Acceptance evidence |
+| --- | --- | --- |
+| deterministic terrain package | `implemented_tested_local` | repeat run or deterministic fixture comparison |
+| LOD outputs | `implemented_tested_local` | expected files and geometry checks |
+| baked ground texture | `implemented_tested_local` | package references resolve independently |
+| contextual placement | `implemented_tested_local` | algorithm revision and source receipts recorded |
+| prototype bundle integrity | `implemented_tested_local` | hashes validated and unused assets excluded from final package where contract requires |
 
-- `event_candidate_id`, hash et révision de source ;
-- snapshot privé autorisé du `Viewpoint` ;
-- intervalle temporel ;
-- hashes des preuves et artefacts parents ;
-- révisions de contrats, modèles et packages spatiaux ;
-- stages exécutés, ignorés et échoués ;
-- paramètres, seed et profil matériel ;
-- requêtes externes, collection, objet, révision et temps de collecte ;
-- CRS natifs, transformations et datums ;
-- tentatives de localisation et reason codes ;
-- associations, contradictions et supports d’enveloppe ;
-- décisions humaines référencées, sans les rejouer comme sorties de modèle ;
-- snapshot public et identifiant de rollback.
+## 2.4 Zone package
 
-## Incidents et fixtures minimales avant promotion
+Accepted package includes current contract-required files such as:
 
-1. message seul, viewpoint connu, abstention géométrique ;
-2. vue large avec viewpoint, ancrage et raycast ;
-3. vue proche sans distance, secteur ou abstention ;
-4. deux viewpoints soutenant le même événement ;
-5. deux événements distincts proches dans le temps ;
-6. hotspot FIRMS et EFFIS issus de la même acquisition ;
-7. page officielle mise à jour à la même URL ;
-8. surface brûlée et zone active distinctes ;
-9. observation météo et prévision séparées ;
-10. source corrigée puis rétractée ;
-11. migration puis rollback sur copie PostGIS ;
-12. replay d’un incident de référence avec hashes identiques.
+```text
+zone.usda
+zone.blend
+zone.done.json
+zone-plan.json
+zone-context.json
+packages/<tile>/
+shared/prototypes/
+provenance/<tile>/
+```
 
-## Preuves locales enregistrées le 2026-08-03
+| Gate | Current state | Acceptance evidence |
+| --- | --- | --- |
+| `fireviewer.simple-measured-map-package.v2` valid | `implemented_tested_local` | schema/manifest validation |
+| all hashes valid | `implemented_tested_local` | byte-for-byte verification |
+| raw rasters absent from final ZIP | `implemented_tested_local` | archive inventory |
+| package independently reopenable | `pending` for reference incident | reopen on a second environment without rebuilding terrain |
+| final ZIP recoverable from durable storage | `implemented_not_live_verified` | upload + authenticated download + hash verification |
 
-- backend : suite complète `331 passed` ; sous-suites rejouées séparément : `67 passed` sur l’événementiel, la sécurité des preuves, les sources externes, le runtime et la migration, puis `20 passed` sur les gardes HTTP et le contrat OpenAPI ;
-- assertions externes : `3 passed` sur `test_external_claims.py` ;
-- adaptateurs, registre et scheduler externes : `20 passed` sur `test_official_connectors.py`, `test_external_source_registry.py` et `test_external_source_scheduler.py` ; Ruff et mypy strict ciblés réussis ;
-- worker : `59 passed` sur le pipeline événementiel, le handler, les adaptateurs et les contrats associés ;
-- frontend contribution/auth/timeline/3D/revue : `236 passed`, `4 skipped` sur la suite complète ; `29 passed` sur la revue et la projection publique ciblées ; vérification TypeScript et build Vite réussis ;
-- la revue frontend n’a pas été contrôlée visuellement avec une session Supabase réelle ; ses preuves restent des tests jsdom et de contrat ;
-- migration : compilation hors ligne du DDL PostgreSQL réussie, sans exécution sur PostgreSQL/PostGIS.
+**Important:** a gallery of 20 control PNGs is no longer a canonical acceptance requirement. Review renders may exist as derived artifacts, but the map contract is validated from the package itself.
 
-## Gate de promotion
+---
 
-La promotion publique exige encore :
+# 3. Temporal fire-layer acceptance
 
-- migration, sauvegarde et restauration sur une copie PostGIS ;
-- Supabase, Blob, ClamAV et worker réels ;
-- au moins un connecteur fournisseur validé live avec licence ;
-- replay d’un incident de référence ;
-- métriques de localisation en mètres et calibration de l’abstention ;
-- projection publique v2, rollback et parité 2D/3D ;
-- contrôle de dérive OpenAPI en CI et publication éventuelle du contrat consommable ;
-- validation sécurité et décision de promotion documentée.
+| Gate | Current state | Acceptance evidence |
+| --- | --- | --- |
+| observed perimeter normalisation | `implemented_tested_local` | JSON/GeoJSON → canonical EPSG:2154 geometry |
+| reference timeline artifacts | `implemented_tested_local` | USD, normalised JSON, timeline and manifest produced |
+| exact map-build binding | `implemented_tested_local` at contract level | package refuses incompatible base build |
+| unknown intervals preserved | contract/implementation semantics present | no canonical intermediate geometry is invented |
+| derived GLB marked non-authoritative | implemented in spatial semantics | browser view can be regenerated without changing reference data |
+| retrospective reconstruction kept separate | implemented as methodology | `reconstructed` cannot pass observed-perimeter contract |
+| public semantics understandable | `pending` broader review | UI/text clearly separates observed, reconstructed, burned, simulated and unknown states |
+
+---
+
+# 4. Reference replay acceptance
+
+A complete replay is a major FireViewer milestone and is **not yet considered proven** until one end-to-end reference case passes these gates.
+
+## 4.1 Required bindings
+
+A replay manifest should identify:
+
+- stable incident/episode identity;
+- exact map package/build and hash;
+- exact temporal package/state revisions;
+- evidence/source references;
+- relevant licence/privacy constraints;
+- producing tool/model revisions;
+- stage parameters/profiles;
+- localisation attempts and abstentions;
+- human review decisions;
+- public snapshot/retraction lineage.
+
+## 4.2 Replay gates
+
+| Gate | Current state | Acceptance evidence |
+| --- | --- | --- |
+| replay manifest contract | `pending` complete form | schema + fixture covering one full incident |
+| immutable map reference | partial | accepted map package and hash |
+| immutable timeline reference | partial | accepted temporal package and map binding |
+| model/tool revision lock | partial | model manifests and producer revisions resolvable |
+| human-decision references | partial | audit entries linked without pretending decisions are deterministic outputs |
+| independent reopening | `pending` | second environment/reviewer can inspect artifacts |
+| post-event study from replay | `pending` | new study artifact references replay without changing it |
+| integrity after storage round-trip | `pending` full case | remote download hashes match archive manifest |
+
+---
+
+# 5. Event, evidence and publication acceptance
+
+| Gate | Current state | Acceptance evidence |
+| --- | --- | --- |
+| viewpoint distinct from activity geometry | `implemented_tested_local` | API/worker negative tests |
+| message-only candidate accepted | `implemented_tested_local` | candidate/job persists without invented geometry |
+| multi-media candidate | `implemented_tested_local` | bounded upload/finalisation tests |
+| MIME/size/hash validation | `implemented_tested_local` | valid + invalid cases |
+| private evidence access control | `implemented_tested_local` | anti-IDOR / role tests; deployed store test still required |
+| source trust is server-side | `implemented_tested_local` | unregistered source cannot self-declare institutional authority |
+| immutable audit path | `implemented_tested_local` | mutation/rejection tests and hash checks |
+| analyst/editor separation | `implemented_tested_local` | validation and publication are separate actions |
+| public retraction | `implemented_tested_local` | retraction removes active public state while preserving audit lineage |
+| replacement/rollback | `pending` | explicit actions and replay restoration evidence |
+
+---
+
+# 6. AI and localisation acceptance
+
+## 6.1 General AI rules
+
+| Gate | Current state | Acceptance evidence |
+| --- | --- | --- |
+| model output remains proposal | `implemented_tested_local` | no direct publication path |
+| typed abstention | `implemented_tested_local` | reason codes persist through worker/backend |
+| model/revision recorded | `implemented_tested_local` in contracts | archived run resolves exact model revision |
+| evidence references valid | `implemented_tested_local` | output cannot cite absent parent evidence |
+
+## 6.2 Localisation benchmark
+
+Promotion requires a fixed, incident-aware evaluation corpus.
+
+Minimum study should measure where appropriate:
+
+- localisation error in metres;
+- success rate on admissible cases;
+- abstention rate;
+- error conditional on acceptance;
+- failure families by view/profile;
+- calibration or uncertainty quality where a defensible target exists;
+- source/incident leakage controls.
+
+| Gate | Current state | Acceptance evidence |
+| --- | --- | --- |
+| fixed benchmark corpus | `pending` | versioned splits by incident/source |
+| ground-truth/review protocol | `pending` | documented target quality and uncertainty |
+| MolmoPoint reference evaluation | `pending` complete benchmark | archived report |
+| DINOv3 challenger comparison | `benchmark_only` | same corpus/protocol |
+| RoMa / spatial matcher comparison | `benchmark_only` / blocked | same corpus/protocol |
+| PyCOLMAP integration | blocked for promotion | deterministic pose + replay + failure analysis |
+| abstention calibration | `pending` | separate analysis from localisation accuracy |
+
+No component is promoted on a single headline score.
+
+---
+
+# 7. External-source acceptance
+
+| Gate | Current state | Acceptance evidence |
+| --- | --- | --- |
+| HTTPS / bounded domains | `implemented_tested_local` for current connector framework | SSRF/redirect behaviour tested in deployed broker where applicable |
+| licence and attribution required | `implemented_tested_local` in registry | source-specific legal review before redistribution |
+| same URL/new content → revision | `implemented_tested_local` | immutable revision fixture and live-provider example |
+| same acquisition through two services recognised | contract/local logic | provider-specific identity mapping |
+| correction/retraction lineage | `implemented_tested_local` locally | live provider correction exercise where available |
+| CRS/footprint retained | `implemented_tested_local` at contract level | representative provider artifact |
+| scheduler lease/backoff | `implemented_tested_local` | hosted concurrent execution still to validate |
+| at least one live source family | `pending` complete acceptance | credential/quota/downtime/licence evidence |
+
+---
+
+# 8. Deployment, recovery and security acceptance
+
+| Gate | Current state | Acceptance evidence |
+| --- | --- | --- |
+| backend deployed database migration | `implemented_not_live_verified` | migration on representative PostgreSQL/PostGIS environment |
+| backup + restore | partial/local | restored copy passes integrity/audit checks |
+| blob/object storage large artifact path | `implemented_not_live_verified` | large package upload/download/hash cycle |
+| map-job cancellation | `implemented_not_live_verified` | deployed worker cancellation and terminal state |
+| transient provider failure | `pending` representative drill | retry/abort does not create duplicate accepted artifact |
+| secrets absent from browser/artifacts | `implemented_tested_local` | bundle/archive inspection |
+| security incident/retraction path | partial/local | deployed exercise and documented response |
+
+---
+
+# 9. Funding / partnership readiness gates
+
+These gates are not scientific capabilities; they determine whether FireViewer can approach external support programmes with a clear, defensible project package.
+
+| Gate | Current state | Evidence |
+| --- | --- | --- |
+| concise public mission | current refactor | README + Project Overview |
+| technical architecture | current refactor | Architecture + Map Builder + Timeline docs |
+| concrete funding ask | current refactor | Funding Brief + Support and Partnerships |
+| measurable funded outputs | defined | roadmap priorities tied to artifacts/benchmarks |
+| honest maturity statement | defined | Status Matrix |
+| safety boundaries | defined | Safety and Scope |
+| reproducibility doctrine | defined | Provenance and Replay docs |
+| measured infrastructure cost | `pending` | archived real run metrics |
+| public reference case | `pending` | replayable incident + post-event study |
+| stable support mechanism | `pending` | mechanism selected according to legal/program requirements |
+
+---
+
+# 10. Reference incident acceptance checklist
+
+A FireViewer reference case should not be called fully replayable until all applicable items are satisfied:
+
+- [ ] stable incident identity;
+- [ ] exact source/evidence inventory;
+- [ ] accepted measured map package v2;
+- [ ] package independently reopened;
+- [ ] temporal states classified and time-bounded;
+- [ ] unknown intervals preserved;
+- [ ] all canonical hashes verified after storage round-trip;
+- [ ] AI/deterministic processing revisions locked;
+- [ ] abstentions/failures preserved;
+- [ ] human review decisions referenced;
+- [ ] public/retracted snapshots versioned where applicable;
+- [ ] replay manifest validates;
+- [ ] one independent post-event study consumes the replay;
+- [ ] study output does not mutate historical artifacts;
+- [ ] privacy/licence restrictions are documented;
+- [ ] limitations are understandable to an external reviewer.
+
+## Promotion rule
+
+The project uses the following progression as a default:
+
+```text
+contract
+→ implementation
+→ local validation
+→ deployed validation
+→ replay / benchmark evidence
+→ private or shadow use
+→ independent review
+→ limited public promotion
+```
+
+Skipping a gate requires a documented reason; it does not silently upgrade the evidence level.
