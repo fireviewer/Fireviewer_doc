@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use FireViewer software, datasets, models or reproducibility material in research, please cite FireViewer and the specific model/dataset repositories you used."
+title: "FireViewer"
+type: software
+authors:
+  - name: "Unicorn Who Dev"
+    email: "unicornwhodev@gmail.com"
+repository-code: "https://github.com/fireviewer"
+url: "https://github.com/fireviewer/Fireviewer_doc"
+abstract: >-
+  FireViewer is open infrastructure for wildfire observation, spatial
+  reconstruction, temporal tracking and reproducible post-event analysis. It
+  combines provenance-aware evidence handling, headless geospatial production,
+  AI-assisted analysis, human review and replayable incident artifacts while
+  keeping observed, reconstructed, interpolated, simulated and predicted
+  information semantically distinct.
+keywords:
+  - wildfire
+  - geospatial
+  - reproducibility
+  - computer vision
+  - remote sensing
+  - open source
+  - provenance
+  - post-event analysis
