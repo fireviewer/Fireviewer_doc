@@ -16,9 +16,9 @@ This directory is the canonical cross-project documentation for FireViewer.
 
 | Document | Purpose |
 | --- | --- |
-| [Models, Datasets and Benchmarks](MODELS_DATASETS_BENCHMARKS.md) | Active FireViewer checkpoints, public/private dataset relationships, current benchmark evidence and qualification rules. |
+| [Models, Datasets and Benchmarks](MODELS_DATASETS_BENCHMARKS.md) | Active FireViewer checkpoints, current/restricted/legacy dataset relationships, benchmark evidence and qualification rules. |
 
-Hugging Face is the canonical publication location for FireViewer model weights, model cards and dataset cards. This repository documents how those resources fit into the wider FireViewer architecture and which results are considered preliminary or qualified.
+Hugging Face is the canonical publication location for FireViewer model weights, model cards and dataset cards. The [`fireviewer/models`](https://github.com/fireviewer/models) repository provides the detailed Hub inventory and machine-readable lifecycle registries.
 
 ## Funding, grants and partnerships
 
@@ -55,7 +55,10 @@ Hugging Face is the canonical publication location for FireViewer model weights,
 | --- | --- |
 | [Terminology](TERMINOLOGY.md) | Canonical vocabulary used across repositories. |
 | [Repository Documentation Policy](REPOSITORY_DOCUMENTATION_POLICY.md) | Keeps component repositories clean and avoids duplicated project narratives. |
+| [Licensing and Citation](LICENSING.md) | Cross-repository licence scopes, external-artifact boundary and canonical citation metadata. |
 | [Simulation and Dataset Consumer Boundary](SIMULATION_COMPOSITION_RESTART.md) | Compatibility note: simulation/datasets are downstream consumers, not FireViewer core. |
+
+The canonical project citation is also available directly as [`../CITATION.cff`](../CITATION.cff).
 
 ## Core positioning
 
