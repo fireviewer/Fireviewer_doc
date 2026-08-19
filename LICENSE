@@ -1,0 +1,35 @@
+FireViewer documentation repository — licence notice
+
+Copyright 2026 FireViewer contributors.
+
+This repository uses scoped licences because it contains both documentation and
+small executable/support files.
+
+1. Documentation and other non-code content
+
+Unless a file states otherwise, Markdown documentation, diagrams, prose,
+roadmaps, documentation templates and other original non-code content are
+licensed under the Creative Commons Attribution 4.0 International licence
+(CC BY 4.0).
+
+See: LICENSE-DOCS.md
+https://creativecommons.org/licenses/by/4.0/
+
+2. Code and executable scripts
+
+Unless a file states otherwise, original executable code and scripts in this
+repository are licensed under GNU Affero General Public License v3.0 or later
+(AGPL-3.0-or-later), consistent with the FireViewer public code repositories.
+
+See: LICENSE-CODE.md
+https://www.gnu.org/licenses/agpl-3.0.html
+
+3. External and referenced material
+
+This repository does not relicense model weights, datasets, geographic data,
+third-party assets, external source material, trademarks, dependencies or other
+works owned by third parties. Those materials retain their own licences and
+terms.
+
+A documentation link, registry entry or citation to an external artifact is not
+a grant of rights to that artifact.
