@@ -32,8 +32,9 @@ A working code path is not automatically a validated field capability. A publish
 | Human review before publication | `implemented_tested_local` | Review/publication separation is implemented in the event architecture; live multi-role deployment remains separately gated. |
 | Headless map builder core | `implemented_tested_local` | `fireviewer-spatial` contains the canonical map-production code and contracts. |
 | Provider-backed map batch execution | `implemented_not_live_verified` | Lightning-oriented batch-job path and backend contract are documented/implemented; representative live campaign evidence is still required. |
-| Autonomous spatial package | `implemented_tested_local` | OpenUSD/Blender package generation and hashing paths exist; independent reference-build reopening is a current milestone. |
-| PNG capture gallery as production artifact | `historical` | The canonical production path now prioritises the validated ZIP and exposes no required capture gallery. |
+| Autonomous spatial package | `implemented_tested_local` | OpenUSD/Blender package generation, sealing and hashing paths exist; independent reference-build reopening remains a current milestone. |
+| Viewer-first / source-folder publication | `implemented_not_live_verified` | The current Lightning path publishes the browser viewer first and the sealed scientific/source folder separately through Hugging Face/Xet; representative recovery and failure-path validation is still required. |
+| PNG capture gallery as production artifact | `historical` | The canonical production path prioritises validated spatial artifacts and exposes no required capture gallery. |
 | Observed perimeter package | `implemented_tested_local` | Spatial code normalises perimeter geometry and produces reference timeline artifacts. |
 | Full reviewed fire-evolution timeline | `implementation_in_progress` | Temporal contracts and public event timeline exist, but complete observed/reconstructed replay qualification remains incomplete. |
 | Complete reference replay incident | `pending` | Replay doctrine exists; one independently reopened end-to-end reference incident is still required. |
@@ -66,7 +67,9 @@ A working code path is not automatically a validated field capability. A publish
 | Shared prototype bundle and hashing | `implemented_tested_local` | Used to avoid unnecessary duplication in packages. |
 | `zone.usda` generation | `implemented_tested_local` | Independent reopening gate still required for reference incident. |
 | `zone.blend` generation | `implemented_tested_local` | Same independent-reopening requirement. |
-| Large-package storage and delivery | `implemented_not_live_verified` | Provider-specific delivery/recovery requires representative validation. |
+| Sealed source-folder publication | `implemented_not_live_verified` | Folder-native resumable publication exists; representative interruption/recovery evidence remains required. |
+| Browser-viewer publication | `implemented_not_live_verified` | Viewer-first publication exists and is intentionally tracked separately from source-folder publication; representative deployed validation remains required. |
+| Large-package storage and delivery | `implemented_not_live_verified` | Storage, publication and recovery of large sealed artifacts require representative validation. |
 | Map-job cancellation/recovery | `implemented_not_live_verified` | Contracts/path exist; failure-injection on deployed jobs remains important. |
 | Runtime dependence on Unity | `historical` | Not part of canonical map production. |
 | Runtime dependence on Omniverse | `historical` for core | Omniverse may remain in optional SDG research only. |
