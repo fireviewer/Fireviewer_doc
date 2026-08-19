@@ -40,10 +40,11 @@ headless production job
     ├── Blender assembly
     ├── validation
     ├── hashing
-    └── packaging
+    └── sealing
     │
-    ▼
-immutable spatial build
+    ├────► browser viewer publication
+    │
+    └────► scientific/source-folder publication
 ```
 
 The current spatial implementation processes the requested area on a **500 m Lambert-93 tile grid**.
@@ -55,9 +56,9 @@ For each tile, the production path can temporarily acquire:
 - orthophotography;
 - geographic context required by the active placement rules.
 
-These source rasters are processing inputs. They are validated before deletion and are not required in the delivered ZIP.
+These source rasters are processing inputs. They are validated before deletion and are not required in the sealed publication folder once their derived artifacts have passed validation.
 
-## Tile outputs
+## Tile and zone outputs
 
 The spatial repository currently produces, among other artifacts:
 
@@ -68,11 +69,7 @@ The spatial repository currently produces, among other artifacts:
 - compact provenance receipts;
 - hashes needed to validate the package.
 
-The exact implementation and schemas remain owned by `fireviewer/fireviewer-spatial`.
-
-## Zone package
-
-A completed zone contains files such as:
+A completed zone can contain files such as:
 
 ```text
 zone.usda
@@ -81,13 +78,27 @@ zone.done.json
 zone-plan.json
 zone-context.json
 packages/<tile>/
-shared/prototypes/
+payloads/
+shared/prototype-bundles/
 provenance/<tile>/
 ```
 
-`zone.usda` is the unified OpenUSD scene. `zone.blend` is an autonomous Blender representation of the same production result with the required local resources packaged for independent inspection.
+`zone.usda` and `zone.blend` are portable scene representations of the accepted build. The active path prioritises the **validated spatial package and its provenance**, not a generated PNG capture gallery.
 
-The active path prioritises the **validated ZIP package**, not a generated PNG gallery. Production captures are not part of the canonical output contract.
+The exact implementation and schemas remain owned by `fireviewer/fireviewer-spatial`.
+
+## Folder-native publication
+
+The current Lightning batch path does **not create a final ZIP for new map jobs**.
+
+Publication is split deliberately into two stages:
+
+1. the complete browser viewer is published first to the public FireViewer Hugging Face dataset and can become eligible for incident publication;
+2. the sealed scientific/source folder is published separately through Hugging Face/Xet as a resumable artifact.
+
+A failure while publishing the scientific/source folder does not invalidate a browser viewer that was already published successfully. The two publication states remain distinct and must be tracked independently.
+
+This separation prevents long-running source publication from blocking the browser-facing artifact while preserving the complete scientific package as a separate reproducibility object.
 
 ## Why the map build is immutable
 
@@ -102,41 +113,37 @@ map_build_id
 + hashes
 + asset bundle revision
 + processing revision
++ viewer publication identity
++ scientific/source publication identity
 ```
 
 Temporal fire observations, replays, datasets and benchmarks can then refer to that exact build.
 
-This avoids a common reproducibility problem: reopening an old incident against a newly downloaded terrain or imagery layer and unintentionally changing the geometry under the historical observations.
+This avoids a common reproducibility problem: reopening an old incident against newly downloaded terrain or imagery and unintentionally changing the geometry under historical observations.
 
 ## Endpoint-driven execution
 
 The backend is the orchestration boundary exposed to the FireViewer administration interface.
 
-The current deployment model supports asynchronous map jobs with operations equivalent to:
+Map production is asynchronous and provider-specific execution remains below that boundary. A compatible worker or batch platform can host the builder without changing the incident model as long as the output and publication contracts remain satisfied.
 
-```text
-POST /api/v1/admin/map-jobs
-GET  /api/v1/admin/map-jobs/{job_id}
-POST /api/v1/admin/map-jobs/{job_id}/cancel
-GET  /api/v1/admin/map-jobs/{job_id}/download
-```
+The current Lightning-oriented path uses ephemeral batch compute rather than keeping the heavy map-production environment online permanently.
 
-Provider-specific execution details are intentionally below this boundary. A compatible worker or batch platform can host the builder without changing the incident model as long as the output contracts remain satisfied.
-
-The current Lightning-oriented path is an ephemeral batch workload: compute resources are started for the build rather than kept online permanently.
+The current worker separately reports map-job progress, viewer readiness and scientific/source publication state. Consumers should not assume that one final ZIP or one download URL represents the complete publication lifecycle.
 
 ## Separation from the frontend
 
 The browser is not responsible for geographic reconstruction.
 
-The frontend may display derived GLB or other web-friendly representations, but it does not become the canonical source of terrain or temporal geometry.
+The frontend consumes a viewer-oriented representation, but it does not become the canonical source of terrain or scientific provenance.
 
 This separation allows:
 
 - independent package validation;
 - browser technology changes without invalidating archived incidents;
 - future consumers to use the spatial package without reproducing the web application;
-- post-event analysis outside the original FireViewer deployment.
+- post-event analysis outside the original FireViewer deployment;
+- viewer availability to remain distinct from source-folder publication state.
 
 ## Separation from fire evolution
 
@@ -153,15 +160,11 @@ immutable map build
 
 A new fire observation does not require the terrain to be rebuilt.
 
-This is one of the key architectural changes compared with earlier FireViewer experiments.
-
 ## Unity and Omniverse
 
 Unity and NVIDIA Omniverse are **not dependencies of the canonical map-production path**.
 
-Older experiments may still appear in repository history or specialised research documentation. NVIDIA Omniverse can also remain useful inside optional synthetic-data-generation work in `fireviewer-sdg`.
-
-Those experiments do not define the FireViewer core architecture.
+Older experiments may still appear in repository history or specialised research documentation. NVIDIA Omniverse can remain useful inside optional synthetic-data-generation work in `fireviewer-sdg`, but it does not define the current FireViewer map-builder architecture.
 
 ## Validation expectations
 
@@ -177,7 +180,9 @@ A production-quality validation record should distinguish at least:
 - asset references and hashes;
 - package integrity;
 - independent reopening of `zone.usda` / `zone.blend` as required by the active gate;
-- storage and delivery integrity.
+- viewer publication integrity;
+- scientific/source-folder publication integrity;
+- storage and recovery behaviour.
 
 The [Status Matrix](STATUS_MATRIX.md) records which of these gates have actually been exercised.
 
@@ -185,14 +190,16 @@ The [Status Matrix](STATUS_MATRIX.md) records which of these gates have actually
 
 A map build is suitable for replay only if a later consumer can identify:
 
-- the exact package;
-- the contract version;
+- the exact sealed package/folder;
+- the browser viewer artifact when one was published;
+- the package contract version;
 - the spatial reference system;
 - the source receipts;
 - the asset bundle revision;
 - the hashes;
 - the production code or release revision;
-- any repairs or exceptional processing decisions.
+- any repairs or exceptional processing decisions;
+- the publication state of each artifact family.
 
 See [Provenance and Reproducibility](PROVENANCE_AND_REPRODUCIBILITY.md).
 
@@ -201,9 +208,10 @@ See [Provenance and Reproducibility](PROVENANCE_AND_REPRODUCIBILITY.md).
 The map-builder workstream currently prioritises:
 
 1. repeatable deployed builds on representative geographic areas;
-2. package reopening and validation independent from the original worker;
-3. reliable storage and recovery of large immutable artifacts;
-4. a reference incident using one exact map build across temporal states and replay;
-5. documented performance and cost measurements based on archived runs rather than estimates.
+2. independent reopening and validation of sealed spatial packages;
+3. reliable viewer-first and scientific/source-folder publication;
+4. reliable storage and recovery of large immutable artifacts;
+5. a reference incident using one exact map build across temporal states and replay;
+6. simple archived performance, storage and runtime measurements from stable runs.
 
 These priorities are deliberately more important than adding new rendering features.
