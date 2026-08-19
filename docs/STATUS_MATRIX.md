@@ -15,6 +15,7 @@ A working code path is not automatically a validated field capability. A publish
 | `implemented_tested_local` | Code exists and targeted local tests have passed. No deployed/live claim. |
 | `implemented_not_live_verified` | Code/integration exists, but the relevant live provider or deployed environment has not been fully exercised. |
 | `integrated_unbenchmarked` | Connected to a workflow but not scientifically promoted through a FireViewer benchmark. |
+| `benchmark_preliminary` | Benchmark evidence exists, but environment/data/revision controls are not yet strong enough for stable scientific promotion. |
 | `shadow` | Executes without authority to produce a publishable result. |
 | `benchmark_only` | Available only for evaluation/comparison. |
 | `blocked` | Implementation or plan exists but promotion is forbidden until an explicit gate is satisfied. |
@@ -87,12 +88,16 @@ A working code path is not automatically a validated field capability. A publish
 
 These statuses describe FireViewer integration/promotion, not whether an upstream model exists.
 
+The current public model/dataset inventory and benchmark details are documented in [Models, Datasets and Benchmarks](MODELS_DATASETS_BENCHMARKS.md).
+
 | Function | Component | Status |
 | --- | --- | --- |
 | Speech-to-text | Whisper Large V3 Turbo | `integrated_unbenchmarked` |
-| Primary image detection | D-FINE XLarge FireViewer | `integrated_unbenchmarked` |
-| Video triage / secondary detection | RT-DETRv2-R50 FireViewer | `integrated_unbenchmarked` |
-| Visual pointing reference | MolmoPoint-8B FireViewer | `integrated_unbenchmarked` |
+| Primary image detection | D-FINE XLarge FireViewer | `benchmark_preliminary` — integrated; preliminary detection comparison exists but is not scientifically qualified |
+| Video triage / secondary detection | RT-DETRv2-R50 FireViewer | `benchmark_preliminary` — integrated; preliminary detection comparison exists but is not scientifically qualified |
+| Compact detection challenger | RF-DETR Small FireViewer | `benchmark_preliminary` — preliminary detection comparison exists; remains a challenger until common qualification |
+| Large detection challenger | RF-DETR Large FireViewer | `benchmark_only` |
+| Visual pointing reference | MolmoPoint-8B FireViewer | `benchmark_preliminary` — integrated; small public independent benchmark exists |
 | Structured-analysis historical path | Qwen-family integration | `historical` / migration-dependent |
 | Structured-analysis target work | Ministral-family target | `blocked` until integration and qualification evidence |
 | OCR | PP-OCRv6 Small | `blocked` until fully connected/qualified |
@@ -103,7 +108,6 @@ These statuses describe FireViewer integration/promotion, not whether an upstrea
 | Ground/UAV matching candidates | RoMa-family / related matchers | `benchmark_only` or `blocked` depending on path |
 | Deterministic pose | PyCOLMAP | `blocked` for promotion until full integration/benchmark |
 | Auxiliary depth | MoGe | `benchmark_only` |
-| Detection challenger | RF-DETR | `benchmark_only` |
 
 ## Event and backend gates
 
