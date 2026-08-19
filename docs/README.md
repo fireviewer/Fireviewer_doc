@@ -12,6 +12,14 @@ This directory is the canonical cross-project documentation for FireViewer.
 | [Status Matrix](STATUS_MATRIX.md) | What is implemented, locally tested, live-validated, benchmarked or still pending. |
 | [Safety and Scope](SAFETY_AND_SCOPE.md) | Non-goals, safety boundaries and publication principles. |
 
+## Models, datasets and evaluation
+
+| Document | Purpose |
+| --- | --- |
+| [Models, Datasets and Benchmarks](MODELS_DATASETS_BENCHMARKS.md) | Active FireViewer checkpoints, public/private dataset relationships, current benchmark evidence and qualification rules. |
+
+Hugging Face is the canonical publication location for FireViewer model weights, model cards and dataset cards. This repository documents how those resources fit into the wider FireViewer architecture and which results are considered preliminary or qualified.
+
 ## Funding, grants and partnerships
 
 | Document | Purpose |
