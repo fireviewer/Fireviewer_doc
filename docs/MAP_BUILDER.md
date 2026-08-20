@@ -4,13 +4,25 @@
 
 The FireViewer map builder creates a **portable, reproducible spatial reference** for an incident or study area.
 
-Its purpose is not to render a pretty screenshot. It is to produce a versioned geographic package that other FireViewer components can consume without rebuilding terrain from mutable external sources.
+Its role is to produce measured, versioned spatial artifacts that can be viewed, replayed and inspected later without silently rebuilding the terrain from mutable upstream sources.
 
-The active production path is headless and endpoint-driven. It does not depend on Unity or NVIDIA Omniverse.
+The canonical builder is headless and does not depend on Unity or NVIDIA Omniverse.
+
+## Current maturity
+
+The stable Lightning production path is retained as a fallback while a stricter provider-neutral comparison path is being validated.
+
+The newer factual-v2 path is **implemented but not yet promoted as the canonical production provider**. Its promotion requires a controlled live comparison against the retained reference path.
+
+This distinction is important:
+
+```text
+stable fallback ≠ comparison worker ≠ promoted production provider
+```
 
 ## Inputs
 
-A map build starts from:
+A build starts from:
 
 - a geographic centre in WGS84 / `EPSG:4326`;
 - a requested square side length;
@@ -18,7 +30,7 @@ A map build starts from:
 - versioned map-production code and contracts;
 - the geographic sources required by the active production profile.
 
-The production coordinate reference system is `EPSG:2154` (Lambert-93). Vertical reference is documented separately by the spatial package and current production profile.
+Production uses Lambert-93 / `EPSG:2154`.
 
 ## Production model
 
@@ -29,47 +41,30 @@ map request
 backend orchestration
     │
     ▼
-headless production job
+provider-specific batch worker
     │
     ├── geographic acquisition
     ├── tile planning
     ├── terrain processing
     ├── surface/context processing
     ├── object placement
-    ├── OpenUSD assembly
-    ├── Blender assembly
+    ├── OpenUSD / Blender assembly
     ├── validation
     ├── hashing
     └── sealing
     │
-    ├────► browser viewer publication
+    ├────► compact validation evidence
     │
-    └────► scientific/source-folder publication
+    └────► complete browser viewer
 ```
 
 The current spatial implementation processes the requested area on a **500 m Lambert-93 tile grid**.
 
-For each tile, the production path can temporarily acquire:
+Temporary geographic inputs can include MNT, MNS, orthophotography and contextual geographic information required by the active placement rules.
 
-- MNT / terrain elevation;
-- MNS / surface elevation;
-- orthophotography;
-- geographic context required by the active placement rules.
+## Canonical spatial package
 
-These source rasters are processing inputs. They are validated before deletion and are not required in the sealed publication folder once their derived artifacts have passed validation.
-
-## Tile and zone outputs
-
-The spatial repository currently produces, among other artifacts:
-
-- deterministic terrain geometry with multiple LODs;
-- a baked local orthophoto ground texture;
-- context and object information derived from measured surface/terrain differences;
-- references to the versioned assets actually used;
-- compact provenance receipts;
-- hashes needed to validate the package.
-
-A completed zone can contain files such as:
+A completed map build can contain artifacts such as:
 
 ```text
 zone.usda
@@ -83,135 +78,174 @@ shared/prototype-bundles/
 provenance/<tile>/
 ```
 
-`zone.usda` and `zone.blend` are portable scene representations of the accepted build. The active path prioritises the **validated spatial package and its provenance**, not a generated PNG capture gallery.
+These artifacts preserve the measured scene, asset references, provenance and integrity information. They are the reproducible spatial identity of the build.
 
-The exact implementation and schemas remain owned by `fireviewer/fireviewer-spatial`.
+Raw source rasters are processing inputs and do not need to remain in the final portable folder once their derived artifacts have passed the applicable validation rules.
 
-## Folder-native publication
+## factual-v2 placement profile
 
-The current Lightning batch path does **not create a final ZIP for new map jobs**.
+The factual-v2 profile is isolated from the stable fallback so that its behaviour can be compared without silently changing the existing path.
 
-Publication is split deliberately into two stages:
+### Buildings
 
-1. the complete browser viewer is published first to the public FireViewer Hugging Face dataset and can become eligible for incident publication;
-2. the sealed scientific/source folder is published separately through Hugging Face/Xet as a resumable artifact.
+For instantiated buildings:
 
-A failure while publishing the scientific/source folder does not invalidate a browser viewer that was already published successfully. The two publication states remain distinct and must be tracked independently.
+- BD TOPO footprint is the XY geometry authority;
+- MNT provides ground elevation;
+- MNS−MNT provides measured height;
+- a morphology-only HAG candidate without the required footprint confirmation is not instantiated;
+- the discrete visual representation must use a reviewed real USD catalog asset;
+- primitive/procedural replacement buildings are forbidden.
 
-This separation prevents long-running source publication from blocking the browser-facing artifact while preserving the complete scientific package as a separate reproducibility object.
+### Trees
 
-## Why the map build is immutable
+The first controlled comparison deliberately preserves the historical 1 m candidate quantity/status, while allowing position, ground and height to be refined from native 0.5 m MNT/MNS inside the same original 1 m peak cell.
 
-A spatial package should not change just because an upstream geographic service later publishes a new revision.
+This quantity is an estimate of individual crowns, not a certified count of physical stems. No tree quota or viewer thinning is introduced.
 
-Once accepted, the build becomes a referenceable artifact:
+### Context assets
 
-```text
-map_build_id
-+ package contract version
-+ source receipts
-+ hashes
-+ asset bundle revision
-+ processing revision
-+ viewer publication identity
-+ scientific/source publication identity
-```
+A road, rail or hydro feature does not imply the existence of a generic equipment object.
 
-Temporal fire observations, replays, datasets and benchmarks can then refer to that exact build.
+Discrete context objects require an explicit validated placement/source and a reviewed catalog asset.
 
-This avoids a common reproducibility problem: reopening an old incident against newly downloaded terrain or imagery and unintentionally changing the geometry under historical observations.
+Continuous roads, rail and hydro remain a separate class: they may be constructed from their source geometry because they are geographic surfaces or lines rather than invented discrete equipment.
 
-## Endpoint-driven execution
+## Validation campaign model
 
-The backend is the orchestration boundary exposed to the FireViewer administration interface.
+The first provider comparison is intentionally bounded to **exactly 9 tiles**.
 
-Map production is asynchronous and provider-specific execution remains below that boundary. A compatible worker or batch platform can host the builder without changing the incident model as long as the output and publication contracts remain satisfied.
+The same request must be used by both workers. The comparison should verify at least:
 
-The current Lightning-oriented path uses ephemeral batch compute rather than keeping the heavy map-production environment online permanently.
+- the same tile identities/origins;
+- source/hash comparability;
+- building/tree/context counts;
+- XY and height differences;
+- absence of placeholders;
+- viewer completeness;
+- runtime and artifact-size measurements;
+- publication reliability.
 
-The current worker separately reports map-job progress, viewer readiness and scientific/source publication state. Consumers should not assume that one final ZIP or one download URL represents the complete publication lifecycle.
+A third paid run is not automatically implied by the comparison plan.
 
-## Separation from the frontend
+## Folder-native validation evidence
 
-The browser is not responsible for geographic reconstruction.
+Validation evidence is published as ordinary files, not as a ZIP archive.
 
-The frontend consumes a viewer-oriented representation, but it does not become the canonical source of terrain or scientific provenance.
-
-This separation allows:
-
-- independent package validation;
-- browser technology changes without invalidating archived incidents;
-- future consumers to use the spatial package without reproducing the web application;
-- post-event analysis outside the original FireViewer deployment;
-- viewer availability to remain distinct from source-folder publication state.
-
-## Separation from fire evolution
-
-The map is the stable spatial reference. The evolution of an incident is represented separately.
+Canonical layout:
 
 ```text
-immutable map build
-        │
-        ├──── observed perimeter timeline
-        ├──── reconstructed historical timeline
-        ├──── event/localisation layers
-        └──── optional simulation inputs
+validation/<zone_id>/<build_id>/<provider>/
+  validation-summary.json
+  zone-plan.json
+  zone.done.json
+  viewer-scene.v1.json        # when viewer stage is available
+  tiles/<tile_id>/
+    placement-inventory.json
+    tile-receipt.json
+    provenance/
 ```
 
-A new fire observation does not require the terrain to be rebuilt.
+This folder is **comparison evidence only**. It is not another map and it is not the browser viewer.
 
-## Unity and Omniverse
+## Complete browser viewer
 
-Unity and NVIDIA Omniverse are **not dependencies of the canonical map-production path**.
+The browser viewer is a derived representation of the same accepted map build, but it is required to remain **complete**.
 
-Older experiments may still appear in repository history or specialised research documentation. NVIDIA Omniverse can remain useful inside optional synthetic-data-generation work in `fireviewer-sdg`, but it does not define the current FireViewer map-builder architecture.
+Canonical public layout:
 
-## Validation expectations
+```text
+maps/<zone_id>/<build_id>/runtime/
+  viewer.glb
+  viewer-scene.v1.json
+```
 
-A successful local unit test does not prove that a live map build is valid.
+The viewer contract requires:
 
-A production-quality validation record should distinguish at least:
+- `policy = fail_closed_exact_visual_scene`;
+- `mesh_coverage = complete`;
+- exact logical counts for buildings, trees and context assets;
+- zero placeholder instances;
+- no missing or extra canonical logical objects;
+- matching hash and byte count for the exported GLB.
 
-- source acquisition success;
-- CRS and axis-order correctness;
-- tile completeness;
-- terrain validity;
-- repaired or missing raster cells;
-- asset references and hashes;
-- package integrity;
-- independent reopening of `zone.usda` / `zone.blend` as required by the active gate;
-- viewer publication integrity;
-- scientific/source-folder publication integrity;
-- storage and recovery behaviour.
+Runtime optimisation may use instancing, shared meshes/textures and other representation-level optimisations, but it must not remove logical objects or move them away from their factual placement.
 
-The [Status Matrix](STATUS_MATRIX.md) records which of these gates have actually been exercised.
+A simplified viewer that silently drops parts of the map is not the canonical public viewer.
+
+## Hugging Face publication
+
+The public measured-scene repository is:
+
+`fireviewer/simple-measured-scenes-v1`
+
+It can contain both complete runtime viewers and compact validation evidence.
+
+The backend records immutable viewer identity using repository, revision, path, hash, size and completeness metadata.
+
+The existence of a public GLB is not equivalent to incident publication. Attaching/replacing the active map of an incident remains an explicit, versioned backend action.
+
+## Backend and provider boundary
+
+The backend remains the orchestration and durable-state boundary. The heavy worker is provider-specific and ephemeral.
+
+```text
+frontend
+   ↓
+backend
+   ↓
+map job contract
+   ↓
+compute provider
+   ↓
+validated/public artifacts
+```
+
+Provider credentials remain server-side. The frontend does not need cloud-provider, model-registry or publication secrets.
+
+The compute provider is an implementation detail below the map-job contract and can change without redefining incident identity or publication semantics.
+
+## Stable fallback and promotion rule
+
+The stable Lightning production path remains available until factual-v2 passes representative live validation.
+
+A new provider/profile must not be promoted merely because:
+
+- its image builds successfully;
+- unit tests exist;
+- a GPU is attached;
+- it produces visually plausible output.
+
+Promotion requires evidence tied to the exact build, inputs, sources and published artifacts.
+
+## Known remaining work
+
+Independent of the first comparison, the following remain separate workstreams:
+
+- review/qualification of dimension-aware real-asset selection;
+- future canopy/individual-tree treatment beyond the controlled first comparison;
+- final continuous road/rail/hydro integration checks;
+- provider-neutral production callbacks and recovery behaviour;
+- complete scientific/source-folder publication from the promoted provider;
+- archived runtime, cost and storage measurements;
+- independent reopening/replay of a reference build.
 
 ## Reproducibility contract
 
-A map build is suitable for replay only if a later consumer can identify:
+A map build is suitable for replay only if a later consumer can identify, as applicable:
 
-- the exact sealed package/folder;
-- the browser viewer artifact when one was published;
-- the package contract version;
-- the spatial reference system;
-- the source receipts;
-- the asset bundle revision;
-- the hashes;
-- the production code or release revision;
-- any repairs or exceptional processing decisions;
-- the publication state of each artifact family.
+- the exact spatial package/folder;
+- the exact browser viewer;
+- package/placement contract revisions;
+- source receipts and hashes;
+- coordinate reference systems;
+- asset bundle revision;
+- production code/image revision;
+- repairs or exceptional processing decisions;
+- publication state of each artifact family.
 
-See [Provenance and Reproducibility](PROVENANCE_AND_REPRODUCIBILITY.md).
+See [Provenance and Reproducibility](PROVENANCE_AND_REPRODUCIBILITY.md) and [Status Matrix](STATUS_MATRIX.md).
 
-## Current priorities
+## Non-goals
 
-The map-builder workstream currently prioritises:
-
-1. repeatable deployed builds on representative geographic areas;
-2. independent reopening and validation of sealed spatial packages;
-3. reliable viewer-first and scientific/source-folder publication;
-4. reliable storage and recovery of large immutable artifacts;
-5. a reference incident using one exact map build across temporal states and replay;
-6. simple archived performance, storage and runtime measurements from stable runs.
-
-These priorities are deliberately more important than adding new rendering features.
+The map builder is not a wildfire propagation predictor, an emergency command system or a mechanism for replacing missing geographic evidence with plausible-looking geometry.
