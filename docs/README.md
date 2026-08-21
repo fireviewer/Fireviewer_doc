@@ -2,6 +2,15 @@
 
 This directory is the canonical cross-project documentation for FireViewer.
 
+## Public and development documentation
+
+| Scope | Canonical location |
+| --- | --- |
+| Public project narrative, architecture, safety, status, contracts and roadmap | This `fireviewer_doc` repository |
+| Component setup, implementation notes, audits, tests and operational runbooks | The `docs/` directory of the repository that owns the component |
+
+Component repositories link back here instead of copying the public narrative. See the [Repository Documentation Policy](REPOSITORY_DOCUMENTATION_POLICY.md) for the complete rule.
+
 ## Start here
 
 | Document | Purpose |
