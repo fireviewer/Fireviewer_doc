@@ -115,6 +115,12 @@ From another repository, use stable links to the canonical FireViewer documentat
 
 Vendored contract copies must identify their canonical source/version and be updated intentionally.
 
+`Fireviewer_doc/repositories/` must not be used as a mirror of component
+developer documentation. Setup notes, implementation details, audits, tests and
+runbooks remain beside their code in the owning repository and are linked from
+the [developer documentation index](development/README.md). This prevents stale
+public snapshots from being mistaken for current operational instructions.
+
 ## Status claims
 
 Repository documentation should use the meanings in [STATUS_MATRIX.md](STATUS_MATRIX.md).
