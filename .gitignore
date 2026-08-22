@@ -28,3 +28,14 @@ weights/
 *.tar
 *.7z
 *.log
+
+# Public documentation is intentionally concise.  Detailed plans, contracts,
+# ADRs, status material and development notes remain local and untracked.
+docs/**
+!docs/
+!docs/public/
+!docs/public/README.md
+!docs/FUNDING_BRIEF.md
+!docs/REPOSITORY_DOCUMENTATION_POLICY.md
+!docs/LICENSING.md
+templates/
