@@ -2,6 +2,13 @@
 .env.*
 !.env.example
 
+# Working documentation is deliberately local and never part of the public
+# project narrative or component source documentation.
+.local/
+docs/local/
+docs/work/
+docs/private/
+
 # Local or generated payloads do not belong in the documentation repository.
 artifacts/
 datasets/

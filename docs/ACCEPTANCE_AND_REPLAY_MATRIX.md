@@ -184,7 +184,7 @@ Minimum study should measure where appropriate:
 | --- | --- | --- |
 | fixed benchmark corpus | `pending` | versioned splits by incident/source |
 | ground-truth/review protocol | `pending` | documented target quality and uncertainty |
-| MolmoPoint reference evaluation | `pending` complete benchmark | archived report |
+| visual-pointing reference evaluation | `pending` — no current public FireViewer pointing checkpoint | archived report with immutable model, corpus and abstention evidence |
 | DINOv3 challenger comparison | `benchmark_only` | same corpus/protocol |
 | RoMa / spatial matcher comparison | `benchmark_only` / blocked | same corpus/protocol |
 | PyCOLMAP integration | blocked for promotion | deterministic pose + replay + failure analysis |

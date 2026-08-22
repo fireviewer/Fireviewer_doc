@@ -1,10 +1,12 @@
 # Public FireViewer documentation
 
-This index contains the canonical, project-wide material intended for users,
+This is the tracked, canonical project-wide material intended for users,
 partners, reviewers and contributors evaluating FireViewer.
 
 The documents keep their stable paths one level above this index so existing
-public links do not break.
+public links do not break. It deliberately excludes working notes, raw logs,
+machine-specific instructions, private incident material and unqualified
+experiment reports; those remain local and are never part of this index.
 
 ## Project and safety
 

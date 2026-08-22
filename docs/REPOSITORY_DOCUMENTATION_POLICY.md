@@ -8,6 +8,20 @@ The project should not copy the full architecture, funding narrative or cross-pr
 
 The goal is to avoid documentation drift, stale branches and duplicated claims.
 
+## Three documentation scopes
+
+| Scope | Versioned / public? | Allowed content |
+| --- | --- | --- |
+| Public project documentation | Yes | Project positioning, architecture, stable contracts, safety boundaries, status, roadmap, contribution entry points and support material. |
+| Component source documentation | Yes | Portable installation, source-level APIs/contracts, tests and contributor guidance needed to work with the open repository. |
+| Working documentation | No | Exploratory plans, raw logs, local/provider runbooks, machine paths, incident research, unpublished results, draft decisions and operational receipts. |
+
+Working documentation belongs in the local workspace at
+`fireviewer-work/documentation/`, or in an ignored repository-local
+`docs/local/`, `docs/work/`, `docs/private/` or `.local/` directory. It must
+not be linked from GitHub, copied into a public README or committed under a
+different name.
+
 ## Canonical source of truth
 
 `fireviewer/Fireviewer_doc` owns the cross-project narrative and policy:
@@ -25,7 +39,7 @@ The goal is to avoid documentation drift, stale branches and duplicated claims.
 
 Repository-local documentation must not redefine these subjects independently.
 
-## Repository-local responsibility
+## Versioned component documentation
 
 | Repository | Local documentation should focus on |
 | --- | --- |
@@ -45,7 +59,8 @@ A repository README should answer:
 5. what its current limitations are;
 6. where to find the canonical project documentation.
 
-It should not duplicate a 20-page project overview.
+It should not duplicate a 20-page project overview or contain working material
+that only makes sense on one machine or in one private environment.
 
 ## Public doctrine
 
@@ -104,8 +119,14 @@ Do not commit:
 - credentials/tokens;
 - personal local paths;
 - runtime volumes.
+- working notes, raw experiment output, local deployment receipts or private
+  incident material.
 
 Git contains code, schemas, small fixtures and documentation. Heavy reproducible artifacts live in their designated artifact/data stores.
+
+The ignored local-documentation paths are part of this boundary. Moving a
+working note into a public Markdown file to bypass the ignore rule is not
+allowed.
 
 ## Linking policy
 
@@ -120,6 +141,10 @@ developer documentation. Setup notes, implementation details, audits, tests and
 runbooks remain beside their code in the owning repository and are linked from
 the [developer documentation index](development/README.md). This prevents stale
 public snapshots from being mistaken for current operational instructions.
+
+Only portable contributor-facing material may remain beside public source code.
+Machine-specific runbooks, raw audits, unreviewed experiment reports and local
+paths are working documentation and stay outside Git.
 
 ## Status claims
 

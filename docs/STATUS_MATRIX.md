@@ -100,7 +100,7 @@ The current public model/dataset inventory and benchmark details are documented 
 | Video triage / secondary detection | RT-DETRv2-R50 FireViewer | `benchmark_preliminary` — integrated; preliminary detection comparison exists but is not scientifically qualified |
 | Compact detection challenger | RF-DETR Small FireViewer | `benchmark_preliminary` — preliminary detection comparison exists; remains a challenger until common qualification |
 | Large detection challenger | RF-DETR Large FireViewer | `benchmark_only` |
-| Visual pointing reference | MolmoPoint-8B FireViewer | `benchmark_preliminary` — integrated; small public independent benchmark exists |
+| Visual pointing | No current public FireViewer checkpoint | `blocked` — a replacement requires a rebuilt corpus and independent benchmark before promotion |
 | Structured-analysis historical path | Qwen-family integration | `historical` / migration-dependent |
 | Structured-analysis target work | Ministral-family target | `blocked` until integration and qualification evidence |
 | OCR | PP-OCRv6 Small | `blocked` until fully connected/qualified |

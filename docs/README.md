@@ -2,17 +2,20 @@
 
 This directory is the canonical cross-project documentation for FireViewer.
 
-## Public and developer documentation
+## Public, component and local working documentation
 
 | Scope | Canonical location |
 | --- | --- |
 | Public project narrative, architecture, safety, status, contracts and roadmap | [Public documentation index](public/README.md) |
-| Component setup, implementation notes, audits, tests and operational runbooks | [Developer documentation index](development/README.md), linking to the owning repository |
+| Portable, versioned component setup and contributor information | [Component documentation index](development/README.md), linking to the owning repository |
+| Working notes, exploratory plans, raw validation logs, local deployment notes and machine-specific paths | Local-only `fireviewer-work/documentation/` outside this Git repository, or an ignored `docs/local/`, `docs/work/` or `docs/private/` directory |
 
-Component repositories link back here instead of copying the public narrative.
-This repository no longer keeps duplicated snapshots of component developer
-documents. See the [Repository Documentation Policy](REPOSITORY_DOCUMENTATION_POLICY.md)
-for the complete rule.
+Everything linked from this page is intended to be versioned and publicly
+readable. Working documentation is not linked, copied or mirrored into Git.
+Component repositories link back here instead of copying the public narrative;
+their tracked documentation must remain portable and useful to contributors.
+See the [Repository Documentation Policy](REPOSITORY_DOCUMENTATION_POLICY.md)
+for the complete publication rule.
 
 ## Start here
 
@@ -28,7 +31,7 @@ for the complete rule.
 
 | Document | Purpose |
 | --- | --- |
-| [Models, Datasets and Benchmarks](MODELS_DATASETS_BENCHMARKS.md) | Active FireViewer checkpoints, current/restricted/legacy dataset relationships, benchmark evidence and qualification rules. |
+| [Models, Datasets and Benchmarks](MODELS_DATASETS_BENCHMARKS.md) | Publicly visible Hub snapshot, immutable revisions and the qualification boundary for model/data claims. |
 
 Hugging Face is the canonical publication location for FireViewer model weights, model cards and dataset cards. The [`fireviewer/models`](https://github.com/fireviewer/models) repository provides the detailed Hub inventory and machine-readable lifecycle registries.
 

@@ -145,7 +145,7 @@ Depending on their status in [STATUS_MATRIX.md](STATUS_MATRIX.md), evaluation ca
 
 - FireViewer D-FINE detector;
 - FireViewer RT-DETRv2 detector;
-- MolmoPoint-based visual pointing;
+- a future visual-pointing candidate, selected only after an external benchmark;
 - DINOv3 challenger work;
 - RoMa-family matching;
 - PyCOLMAP pose estimation;
@@ -244,8 +244,9 @@ The following research streams continue in parallel but do not override P1–P7.
 
 ## R2 — Visual anchors and segmentation
 
-- MolmoPoint remains a current reference component where applicable;
-- DINOv3 segmentation/pointing work remains a challenger path;
+- no FireViewer pointing checkpoint is current; a replacement remains blocked
+  until the dataset and external evaluation are independently reviewed;
+- DINOv3 segmentation/pointing work remains a research/challenger path;
 - SAM is primarily an annotation/correction tool unless separately promoted.
 
 ## R3 — Ground-view spatial registration
