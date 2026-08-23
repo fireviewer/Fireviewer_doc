@@ -29,12 +29,18 @@ weights/
 *.7z
 *.log
 
-# Public documentation is intentionally concise.  Detailed plans, contracts,
-# ADRs, status material and development notes remain local and untracked.
+# The public set documents stable architecture, safety, governance, repository
+# roles, and a dated capability boundary. Internal plans, runbooks, ADRs, and
+# project tracking remain local and untracked.
 docs/**
 !docs/
 !docs/public/
 !docs/public/README.md
+!docs/public/ARCHITECTURE.md
+!docs/public/EVIDENCE_AND_REVIEW.md
+!docs/public/DATA_GOVERNANCE.md
+!docs/public/STATUS.md
+!docs/public/REPOSITORIES.md
 !docs/FUNDING_BRIEF.md
 !docs/REPOSITORY_DOCUMENTATION_POLICY.md
 !docs/LICENSING.md

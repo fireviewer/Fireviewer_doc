@@ -1,16 +1,31 @@
 # FireViewer public documentation policy
 
-Public FireViewer repositories publish concise documentation in **English**:
-their purpose, safety boundary, licence, public contact point, and—where
-relevant—an auditable public registry.
+FireViewer's tracked public documentation is written in **English**. It should
+be complete enough to explain the product, architecture, evidence and review
+model, data policy, safety boundaries, repository roles, licensing, and current
+verified maturity.
 
-Detailed development documentation remains local and may be written in French.
-It includes implementation notes, plans, roadmaps, contracts, ADRs, test logs,
-status matrices, provider runbooks, machine paths, private evidence, and raw
-research material.
+Completeness does not require publishing operationally sensitive or unstable
+working material. Detailed development notes may remain local and may be
+written in French. Local-only material includes provider runbooks, cloud
+identifiers, credentials, machine paths, private evidence, raw logs, internal
+plans, unfinished research notes, and project-management tracking.
+
+Code-adjacent public documentation may describe stable interfaces, contracts,
+validation commands, and safety invariants needed to understand or contribute
+to a repository. It must not imply deployment, operational qualification, or
+scientific validation without independently publishable evidence.
+
+Public status statements must distinguish:
+
+- source code or a contract being present;
+- an integration being configured or deployed behind a guard;
+- a feature being enabled;
+- a real end-to-end path being accepted;
+- a scientific or operational claim being independently validated.
 
 Local working material must not be copied into a public repository under a new
-name. Public documents must not imply deployment, operational qualification,
-or scientific validation without independently publishable evidence.
+name. Public documents must not contain secrets, private evidence, personal
+machine paths, provider identifiers, or unsupported performance claims.
 
 The public documentation contact is **unicornwhodev@gmail.com**.
