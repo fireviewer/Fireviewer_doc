@@ -19,6 +19,7 @@ CPU acquisition and normalisation
 - video keyframe extraction
 - provisional visual detections
 - upload location and camera metadata
+- CDSE/CLMS/Sentinel and NASA FIRMS observations
                          |
                          v
 Deterministic geographic stage
@@ -53,6 +54,9 @@ Managed multimodal supervisor
 PointAssessment + policy gate + human review
                          |
                          v
+Deterministic Part.4 daily affected/active GeoJSON
+                         |
+                         v
 versioned event record and reviewed spatial products
 ```
 
@@ -72,6 +76,13 @@ may be analysed in memory but are not retained as a shadow article archive.
 Video is reduced to selected keyframes before visual analysis. The provisional
 YOLO stage supplies visual boxes and scores only. It does not localise the fire
 and does not publish an event.
+
+Official satellite acquisition is structured rather than web-scraped. CDSE
+STAC discovers immutable products. The current CPU path decodes CLMS daily
+burn-scar pixels and Sentinel-3 SLSTR FRP vegetation-fire points; NASA FIRMS
+provides MODIS and VIIRS pixel footprints. Sentinel-2 can be materialised as a
+signed six-band input for optional analysis. Raw Sentinel-3 files are ephemeral,
+while retained satellite rasters follow their separate storage policy.
 
 ### Deterministic geography
 
@@ -121,6 +132,12 @@ The backend owns durable incident records, immutable evidence revisions,
 assessment receipts, audit events, review state, and publication gates. A
 deployed worker is not automatically enabled. High-impact routes are protected
 by independent feature flags and authentication requirements.
+
+Part.4 produces one dated `affected`/`active` GeoJSON candidate from observed
+polygonal masks and the previous generated daily state. Thermal or supervised
+GPS points can report consistency or contradiction, but point buffering and
+boundary interpolation are forbidden. The published reference perimeter is
+loaded only after output hashes are frozen and is used solely for evaluation.
 
 ### Frontend and spatial products
 
