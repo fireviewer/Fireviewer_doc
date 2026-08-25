@@ -135,11 +135,21 @@ assessment receipts, audit events, review state, and publication gates. A
 deployed worker is not automatically enabled. High-impact routes are protected
 by independent feature flags and authentication requirements.
 
-Part.4 produces one dated `affected`/`active` GeoJSON candidate from observed
-polygonal masks and the previous generated daily state. Thermal or supervised
-GPS points can report consistency or contradiction, but point buffering and
-boundary interpolation are forbidden. The published reference perimeter is
-loaded only after output hashes are frozen and is used solely for evaluation.
+Part.4 3.1 reconstructs a dated fire state on an adaptive EPSG:2154 probability
+grid. It combines normalized affected, active, observable, thermal, camera, and
+official spatial observations with the previous generated state, then derives
+EPSG:4326 `affected`, `active`, and uncertainty GeoJSON. A point or thermal
+footprint may create only bounded probabilistic support; it is never promoted
+directly to a boundary. Observations from one product lineage contribute once
+per cell, while genuinely independent sensor families remain distinguishable.
+
+The output keeps `prediction=bounded_probability_state`: this means a bounded
+reconstruction between intermittent observations, not an operational future
+forecast. Its embedded fusion profile is immutable, allowlisted, and identified
+by SHA-256 in the state, perimeter, raster manifest, and receipt. The current
+baseline profile is uncalibrated and therefore never automatically publishable.
+The published reference perimeter is loaded only after output hashes are frozen
+and is used solely for evaluation.
 
 ### Frontend and spatial products
 

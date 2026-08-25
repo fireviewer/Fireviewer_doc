@@ -1,6 +1,6 @@
 # Current implementation status
 
-**Public status snapshot: 24 August 2026.**
+**Public status snapshot: 26 August 2026.**
 
 This page distinguishes source code, guarded cloud integration, and real
 end-to-end acceptance. A repository, container image, configured adapter, or
@@ -20,7 +20,7 @@ deployed scale-to-zero service is not evidence of an enabled production path.
 | Final multimodal assessment | Managed and simulated supervisor modes, strict JSON assessment, contradiction handling, competing-point proposals, and abstention are implemented. Simulated output cannot be publication-eligible. | The final managed provider and operational cost envelope still require an authorised live end-to-end pilot. |
 | Publication policy | Eligibility requires `accept`, calibrated confidence above 0.85, managed-VL mode, no hard contradiction, and no missing required evidence. Backend wiring and audit receipts exist. | Event pipeline, event-v2, and publication are independent guarded features; this snapshot does not claim that unattended public publication is enabled. |
 | Backend and frontend | Incident/evidence/review APIs and contribution, review, 2D/3D exploration, and spatial-production interfaces exist. | Production authentication, public availability, and the complete contribution-to-publication journey are not claimed qualified by this page. |
-| Spatial products | Deterministic measured-map and observed-timeline tooling, portable-package contracts, provenance, and validation gates exist as a separate subsystem. Part.4 now builds daily `affected` and `active` GeoJSON only from georeferenced observed masks and prior generated daily state. Accepted GPS and thermal points can corroborate or contradict a mask but are never buffered into geometry. | Real incident/day output must still be frozen and compared with the held-out published perimeter. Model output never substitutes for the deterministic geometry step. |
+| Spatial products | Deterministic measured-map tooling remains separate. Part.4 3.1 reconstructs daily `affected`, `active`, observable, and uncertainty state on an adaptive probability grid. Its allowlisted profile identity is embedded in the state, perimeter, COG manifest, and receipt. Observations are accumulated by product lineage without counting pixels or keyframes as independent sources; thermal and camera points remain bounded support rather than exact boundaries. | The baseline fusion profile remains explicitly uncalibrated and cannot auto-publish. Real incident/day outputs must still be frozen and evaluated against held-out references before any qualification claim. Model output never substitutes for deterministic geometry. |
 | Map production | The provider-neutral Map Builder supports resumable tile shards, deterministic checkpoint ownership, a dependent final assembler, direct tiled-viewer packages, and an asset-free mode. Cloud launch, storage, and publication remain adapters outside the spatial engine. | A successful unit test or cloud job does not by itself qualify every map size, source condition, browser, or publication path. Production acceptance remains map- and environment-specific. |
 | Synthetic data | Synthetic scenario, asset, and simulation tooling is maintained separately from real-event evidence. | Synthetic validation never proves real-event geographic or operational quality. |
 
