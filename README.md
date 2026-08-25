@@ -69,6 +69,7 @@ component and trust-boundary view.
 | [Architecture](docs/public/ARCHITECTURE.md) | Components, data flow, provider boundaries, and separation from map production. |
 | [Evidence and review](docs/public/EVIDENCE_AND_REVIEW.md) | Evidence contracts, geographic candidates, model arbitration, and publication policy. |
 | [Data governance](docs/public/DATA_GOVERNANCE.md) | Retention, provenance, rights, privacy, and removal requests. |
+| [Map Builder](docs/public/MAP_BUILDER.md) | Provider-neutral production contract, tiled viewer, resumable workers, and publication boundary. |
 | [Current status](docs/public/STATUS.md) | Implemented capabilities, guarded integrations, and remaining acceptance gaps. |
 | [Repository guide](docs/public/REPOSITORIES.md) | Repository roles, current public availability, and authoritative sources. |
 | [Funding and collaboration](docs/FUNDING_BRIEF.md) | Ways to support or collaborate with the project. |

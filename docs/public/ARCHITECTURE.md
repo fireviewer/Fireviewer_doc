@@ -81,8 +81,10 @@ Official satellite acquisition is structured rather than web-scraped. CDSE
 STAC discovers immutable products. The current CPU path decodes CLMS daily
 burn-scar pixels and Sentinel-3 SLSTR FRP vegetation-fire points; NASA FIRMS
 provides MODIS and VIIRS pixel footprints. Sentinel-2 can be materialised as a
-signed six-band input for optional analysis. Raw Sentinel-3 files are ephemeral,
-while retained satellite rasters follow their separate storage policy.
+signed six-band input and compared across a bounded pre/post window. Sentinel-1
+can provide a bounded VV/VH radar-change second opinion through an explicit
+openEO adapter. Raw transient products are ephemeral, while retained satellite
+rasters follow their separate storage policy.
 
 ### Deterministic geography
 
@@ -140,6 +142,15 @@ boundary interpolation are forbidden. The published reference perimeter is
 loaded only after output hashes are frozen and is used solely for evaluation.
 
 ### Frontend and spatial products
+
+The Map Builder is provider-neutral. It receives an immutable request, uses a
+caller-provided scratch directory, and emits a versioned output package. Large
+requests may be split into disjoint resumable tile shards followed by one final
+assembler. The browser package is tiled directly: it combines a lightweight
+far view, shared prototype namespaces, terrain tiles, placement payloads, and a
+catalogue for progressive loading. A monolithic GLB is not the production
+contract. Cloud compute, storage, and publication are execution adapters and do
+not alter the spatial engine.
 
 The frontend provides contribution, review, and public exploration surfaces.
 The spatial component consumes reviewed geographic packages to build map and

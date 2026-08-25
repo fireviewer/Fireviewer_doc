@@ -39,9 +39,13 @@ docs/**
 !docs/public/ARCHITECTURE.md
 !docs/public/EVIDENCE_AND_REVIEW.md
 !docs/public/DATA_GOVERNANCE.md
+!docs/public/MAP_BUILDER.md
 !docs/public/STATUS.md
 !docs/public/REPOSITORIES.md
 !docs/FUNDING_BRIEF.md
 !docs/REPOSITORY_DOCUMENTATION_POLICY.md
 !docs/LICENSING.md
-templates/
+templates/**
+!templates/organization-profile/
+!templates/organization-profile/github-metadata.yaml
+!templates/storage-layout.local.example.json

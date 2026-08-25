@@ -10,6 +10,7 @@ remain under development.
 - [Architecture](ARCHITECTURE.md)
 - [Evidence, geographic candidates, and review](EVIDENCE_AND_REVIEW.md)
 - [Data governance and privacy](DATA_GOVERNANCE.md)
+- [Map Builder](MAP_BUILDER.md)
 - [Current implementation status](STATUS.md)
 - [Repository and publication guide](REPOSITORIES.md)
 - [Project overview](../../README.md)
