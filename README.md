@@ -1,112 +1,113 @@
 # FireViewer
 
-**Evidence-centred infrastructure for documenting, reviewing, mapping, and
-studying wildfire events.**
+**Evidence-centred infrastructure for documenting, reviewing, mapping and studying wildfire events.**
 
-FireViewer is an independent research and engineering project maintained by
-**Unicorn Who Dev**. It combines public sources, contributed media, official
-geographic products, deterministic spatial calculations, machine-assisted
-analysis, and human review while keeping provenance and uncertainty visible.
+FireViewer is an independent research and engineering project maintained by **Unicorn Who Dev**. It combines public and official sources, authorised contributions, deterministic geographic processing, machine-assisted analysis and human review while keeping provenance, uncertainty and revision history explicit.
 
-> FireViewer is not an emergency alert service, an official wildfire source,
-> an incident-command tool, or a certified fire-propagation predictor. In an
-> emergency, follow the relevant authorities and emergency services.
+> FireViewer is not an emergency alert service, an official wildfire source, an incident-command system or a certified fire-propagation predictor. In an emergency, follow the competent authorities and emergency services.
 
 ## Purpose
 
-Wildfire information is fragmented across official bulletins, press reports,
-photos, videos, satellite products, maps, and first-hand contributions.
-FireViewer is designed to preserve the relationship between a published claim
-and the evidence used to support it.
+Wildfire information is fragmented across official bulletins, public reporting, photos, videos, satellite products, maps and first-hand contributions. FireViewer is designed to preserve the relationship between a published claim and the evidence used to support it.
 
 The project aims to provide:
 
-- incident pages with source-backed facts and clearly dated revisions;
+- incident records with source-backed facts and dated revisions;
 - visual and geographic evidence with immutable provenance references;
-- candidate fire points with uncertainty, contradiction, and review status;
-- temporal geographic layers that distinguish observations from reconstruction;
-- reproducible spatial packages for public exploration and post-event study;
-- explicit abstention whenever the available evidence is insufficient.
+- geographic candidates with uncertainty, contradiction and review status;
+- observed and reconstructed temporal geographic layers;
+- reproducible measured-map packages for exploration and post-event study;
+- explicit abstention when the available evidence is insufficient.
 
 ## System at a glance
 
 ```text
-public sources + user-authorised media + official geographic products
-                              |
-                              v
-                 acquisition and normalisation
-                              |
-                              v
-        visual observations + deterministic geographic hypotheses
-                              |
-                              v
-             versioned EventEvidence and event memory
-                              |
-                              v
-          compact point dossier + multimodal assessment
-                              |
-                              v
-                policy gate and human review
-                              |
-                              v
-       versioned incident facts and spatial representations
+public / official sources + authorised media
+                    |
+                    v
+        acquisition and provenance
+                    |
+                    v
+     visual observations and evidence
+                    |
+                    v
+ deterministic geographic hypotheses
+                    |
+                    v
+ versioned EventEvidence + event history
+                    |
+                    v
+ compact candidate dossier + multimodal assessment
+                    |
+                    v
+       policy gate and human review
+                    |
+                    v
+       deterministic Part.4 3.2 state
+                    |
+                    v
+ reviewed event record + spatial products
 ```
 
-Detectors can identify visual regions, but they do not create geographic
-truth. Candidate coordinates come from a separate deterministic geographic
-stage using the documented camera position, orientation and field of view when
-available, terrain, map references, satellite observations, and prior event
-states. A multimodal model may assess a candidate; it may not silently replace
-its coordinates.
+Detectors identify image regions; they do not create geographic truth. Geographic candidates are produced by a separate deterministic stage using documented camera position and accuracy, orientation and field of view when available, terrain, maps, satellite references and earlier reviewed event states.
 
-Read the [public architecture](docs/public/ARCHITECTURE.md) for the complete
-component and trust-boundary view.
+The final multimodal supervisor may support, reject or abstain on a supplied candidate. It may not silently replace the original point. Publication remains a backend policy decision.
 
-## Public documentation
+## Current deterministic fire-state reconstruction
+
+The active documented reconstruction is **Part.4 3.2**, algorithm line `3.2.0`. It normalises georeferenced observations onto an adaptive EPSG:2154 probability grid and derives EPSG:4326 `affected`, `active` and uncertainty products.
+
+The current baseline fusion profile is `part4-baseline-v3-provenance`. It is explicitly **uncalibrated**, so its output remains ineligible for unattended publication. Calibration and holdout evaluation are isolated workflows and a future qualified profile must pass the documented gates before it can authorise any automatic component update.
+
+## Documentation
 
 | Document | Scope |
 | --- | --- |
-| [Architecture](docs/public/ARCHITECTURE.md) | Components, data flow, provider boundaries, and separation from map production. |
-| [Evidence and review](docs/public/EVIDENCE_AND_REVIEW.md) | Evidence contracts, geographic candidates, model arbitration, and publication policy. |
-| [Data governance](docs/public/DATA_GOVERNANCE.md) | Retention, provenance, rights, privacy, and removal requests. |
-| [Map Builder](docs/public/MAP_BUILDER.md) | Provider-neutral production contract, tiled viewer, resumable workers, and publication boundary. |
-| [Current status](docs/public/STATUS.md) | Implemented capabilities, guarded integrations, and remaining acceptance gaps. |
-| [Repository guide](docs/public/REPOSITORIES.md) | Repository roles, current public availability, and authoritative sources. |
-| [Funding and collaboration](docs/FUNDING_BRIEF.md) | Ways to support or collaborate with the project. |
-| [Licensing and citation](docs/LICENSING.md) | Code, documentation, model, dataset, and upstream-asset licensing boundaries. |
+| [Architecture](docs/public/ARCHITECTURE.md) | Components, data flow, provider boundaries and Part.4 3.2. |
+| [Evidence and review](docs/public/EVIDENCE_AND_REVIEW.md) | Evidence contracts, geographic candidates, model arbitration and publication policy. |
+| [Current status](docs/public/STATUS.md) | Dated implemented capabilities, guarded integrations and remaining acceptance gaps. |
+| [Resources](docs/public/RESOURCES.md) | Active, research, restricted, measured-map, synthetic and legacy resource classes. |
+| [Repository guide](docs/public/REPOSITORIES.md) | Repository roles, visibility and authoritative locations. |
+| [Map Builder](docs/public/MAP_BUILDER.md) | Provider-neutral measured-map production, resumable workers and viewer compatibility. |
+| [Data governance](docs/public/DATA_GOVERNANCE.md) | Retention, provenance, rights, privacy and removal requests. |
+| [Funding and collaboration](docs/FUNDING_BRIEF.md) | Ways to support or collaborate with FireViewer. |
+| [Licensing and citation](docs/LICENSING.md) | Code, documentation, models, datasets and upstream-rights boundaries. |
 | [Documentation policy](docs/REPOSITORY_DOCUMENTATION_POLICY.md) | Rules for public documentation and local working material. |
 
-Model cards, dataset cards, weights, and hosted artifacts are published through
-the [FireViewer Hugging Face organisation](https://huggingface.co/fireviewer).
-GitHub documentation never overrides the licence or limitations of an upstream
-resource.
+Model cards, dataset cards, weights, measured map packages and hosted artifacts are published through the [FireViewer Hugging Face organisation](https://huggingface.co/fireviewer). Hugging Face cards and immutable revisions are authoritative for hosted resources.
+
+## Measured maps and viewer compatibility
+
+Real measured map packages are hosted in [`fireviewer/simple-measured-scenes-v1`](https://huggingface.co/datasets/fireviewer/simple-measured-scenes-v1).
+
+Published map directories, filenames and package paths are compatibility-sensitive because the FireViewer viewer can consume them directly. **Documentation maintenance must not rename, move, flatten or reorganise existing published map packages without an explicit migration contract and coordinated consumer update.**
+
+Synthetic datasets, Omniverse reproductions, validation fixtures and cloud-migration baselines are separate artifact families and must not be presented as measured-map productions.
+
+## Legacy resources
+
+Historical `firewarning-*` slugs, manifest identifiers and source namespaces are retained where compatibility or provenance requires them. They do not designate a separate active project.
+
+Deprecated, superseded, incomplete and low-quality historical model checkpoints are kept out of the active public model list. When retained, they are consolidated in a private legacy archive for reproducibility and provenance rather than promoted as current FireViewer models.
 
 ## Current maturity
 
-FireViewer is an active research MVP. Core contracts, evidence services,
-geographic hypothesis generation, source-acquisition components, review
-surfaces, and spatial tooling exist. Several cloud adapters and scale-to-zero
-service shells have also been prepared or deployed behind safeguards.
+FireViewer is an active research MVP. Core evidence contracts, bounded acquisition, deterministic geographic hypotheses, satellite evidence, event-memory retrieval, multimodal review, Part.4 3.2 reconstruction and measured-map tooling exist.
 
-The complete real-data path has **not** yet been qualified as an unattended
-production pipeline. Publication features remain guarded, optional GPU stages
-are not assumed to be running, and missing camera or satellite evidence must
-produce uncertainty or abstention. See the dated [status page](docs/public/STATUS.md)
-for the precise boundary.
+The complete real-data path has **not** been qualified as an unattended production service. Optional providers remain separately gated, the baseline Part.4 profile is uncalibrated, and publication safeguards remain enabled by default.
+
+See the dated [current status](docs/public/STATUS.md) for the precise boundary.
 
 ## Core principles
 
-- Preserve source, time, rights, revision, hash, and uncertainty.
-- Separate observation, claim, reconstruction, simulation, and prediction.
-- Keep raw third-party content only as long as needed for bounded processing.
+- Preserve source, time, rights, revision, hash and uncertainty.
+- Separate observation, claim, geographic hypothesis, reconstruction, simulation, prediction and publication.
 - Never treat a detector box as a geographic coordinate.
-- Never let a simulated model output become publication-eligible.
-- Keep the original point JSON immutable; a proposed correction is a competing
-  JSON object with its own evidence and review trail.
-- Prefer `abstain` to a precise-looking answer unsupported by evidence.
+- Never treat a thermal footprint as an exact fire boundary.
+- Never let a simulated output become real-event evidence.
+- Keep corrections as competing, referenced revisions rather than silent overwrites.
+- Prefer `abstain` or `unknown` to unsupported precision.
 
 ## Contact
 
-For research collaboration, infrastructure support, security reports,
-provenance questions, rights concerns, or data-removal requests, contact
-**unicornwhodev@gmail.com**.
+For research collaboration, infrastructure support, security reports, provenance questions, rights concerns or data-removal requests: **unicornwhodev@gmail.com**.

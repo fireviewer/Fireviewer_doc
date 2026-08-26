@@ -2,10 +2,7 @@
 
 ## Design objective
 
-FireViewer turns heterogeneous wildfire observations into reviewable evidence
-and versioned geographic representations. The system is incident-centred: a
-photo, article, satellite item, or model output is never treated as an isolated
-fact and never becomes publication authority by itself.
+FireViewer turns heterogeneous wildfire observations into reviewable evidence and versioned geographic representations. The system is incident-centred: a photo, article, satellite item or model output is never treated as an isolated fact and never becomes publication authority by itself.
 
 ## End-to-end flow
 
@@ -19,19 +16,19 @@ CPU acquisition and normalisation
 - video keyframe extraction
 - provisional visual detections
 - upload location and camera metadata
-- CDSE/CLMS/Sentinel and NASA FIRMS observations
+- CDSE / CLMS / Sentinel and NASA FIRMS observations
                          |
                          v
 Deterministic geographic stage
-- map and geocoding references
-- camera ray and field-of-view constraints
+- maps and geocoding references
+- camera ray / field-of-view constraints
 - terrain and visibility checks
-- satellite and prior-front consistency
-- zero, one, or several candidate GPS points
+- satellite and prior-event consistency
+- zero, one or several geographic candidates
                          |
                          v
-Optional accelerated evidence stage
-- visual and satellite embeddings
+Optional accelerated evidence
+- visual / satellite embeddings
 - cross-view comparison
 - remote-sensing encoders or segmentation
                          |
@@ -42,144 +39,121 @@ EventEvidence + spatio-temporal event memory
 CPU evidence assembly
 - retrieve relevant history
 - select a compact evidence set
-- build one PointEvidenceBundle per candidate
+- build PointEvidenceBundle per candidate
                          |
                          v
-Managed multimodal supervisor
-- compare the supplied candidate with its evidence
-- report support, contradictions, and missing evidence
-- accept, reject, or abstain
+Managed multimodal assessment
+- support / contradiction / missing evidence
+- accept / reject / abstain
                          |
                          v
 PointAssessment + policy gate + human review
                          |
                          v
-Deterministic Part.4 daily affected/active GeoJSON
+Part.4 3.2 deterministic fire-state reconstruction
                          |
                          v
-versioned event record and reviewed spatial products
+versioned event record + reviewed spatial products
 ```
 
-Providers are interchangeable behind explicit contracts. A CPU stage can run
-without an accelerated stage; a missing optional provider must reduce evidence
-quality or cause abstention rather than be silently replaced by invented data.
+Providers are interchangeable behind explicit contracts. Missing optional evidence must reduce confidence or produce abstention rather than be silently replaced by invented data.
 
-## Component responsibilities
+## Acquisition and normalisation
 
-### Acquisition and normalisation
+The acquisition layer discovers official information, public reporting and eligible media. It records source identity, retrieval time, publisher, URL, hashes and processing outcomes. Complete scraped articles, copied public-media binaries and full transcripts are not intended to become a durable shadow archive.
 
-The acquisition layer discovers official information, public reporting, and
-eligible media. It records source identity, retrieval time, publisher, URL,
-content hashes, and processing outcomes. Public page contents and transcripts
-may be analysed in memory but are not retained as a shadow article archive.
+Video is reduced to immutable selected keyframes before visual analysis. Visual detectors provide boxes, classes and scores only.
 
-Video is reduced to selected keyframes before visual analysis. The provisional
-YOLO stage supplies visual boxes and scores only. It does not localise the fire
-and does not publish an event.
+Official satellite acquisition is structured rather than treated as arbitrary web evidence. Current CPU paths include CLMS burn-scar products, Sentinel-3 FRP observations, NASA FIRMS MODIS/VIIRS footprints, Sentinel-2 materialisation/change and bounded Sentinel-1 radar change. Raw transient products and retained derivatives follow separate storage and rights rules.
 
-Official satellite acquisition is structured rather than web-scraped. CDSE
-STAC discovers immutable products. The current CPU path decodes CLMS daily
-burn-scar pixels and Sentinel-3 SLSTR FRP vegetation-fire points; NASA FIRMS
-provides MODIS and VIIRS pixel footprints. Sentinel-2 can be materialised as a
-signed six-band input and compared across a bounded pre/post window. Sentinel-1
-can provide a bounded VV/VH radar-change second opinion through an explicit
-openEO adapter. Raw transient products are ephemeral, while retained satellite
-rasters follow their separate storage policy.
+## Deterministic geography
 
-### Deterministic geography
+Geographic hypotheses are built separately from object detection. Inputs can include:
 
-Geographic hypotheses are built separately from object detection. Inputs can
-include:
-
-- the upload position and declared horizontal accuracy;
-- capture time, heading, pitch, roll, and field of view;
+- upload position and declared horizontal accuracy;
+- capture time, heading, pitch, roll and field of view;
 - image-space observations and their uncertainty;
 - terrain elevation and line-of-sight calculations;
-- map, geocoding, satellite, and official geographic references;
+- map, geocoding, satellite and official geographic references;
 - earlier reviewed fire states and perimeters.
 
-If essential camera metadata is missing, the correct result is a larger search
-region, a low-confidence hypothesis, or `abstain`. The historical front is a
-prior, not an absolute veto: spotting and secondary ignitions can occur outside
-the dominant direction of travel.
+If essential camera information is missing, the correct result can be a larger search region, low-confidence candidate or `abstain`.
 
-### Optional accelerated evidence
+## Event memory and evidence assembly
 
-Satellite encoders, cross-view localisation, embeddings, and heavier vision
-models can be attached as elastic providers. They enrich evidence and rank
-matches; they do not bypass deterministic geographic constraints or the review
-policy. No public documentation assumes that a paid GPU endpoint is active.
+Evidence is stored by event, time, geographic distance, type, revision and source. Spatial and temporal filtering happens before semantic retrieval. Summaries keep references to immutable evidence rather than silently replacing earlier event states.
 
-### Event memory and evidence assembly
+The final multimodal provider receives a bounded candidate dossier rather than an uncontrolled dump of all event media.
 
-Evidence is stored by event, time, geographic distance, type, revision, and
-source. Spatial and temporal filtering happens before semantic retrieval. Each
-summary assertion keeps references to the immutable evidence from which it was
-derived; a new snapshot does not silently overwrite an earlier state.
+## Multimodal assessment
 
-The evidence assembler selects a bounded, relevant dossier for one candidate
-point. The final supervisor is not given every raw image from an incident.
+The supervisor evaluates a supplied geographic candidate against its evidence bundle. It returns structured support, contradictions, missing evidence and an `accept`, `reject` or `abstain` verdict.
 
-### Multimodal assessment
+Its score is not publication confidence. Calibration and deterministic backend policy remain separate.
 
-The final vision-language provider receives the candidate and its compact
-evidence dossier. It returns structured support, contradictions, missing
-evidence, and an `accept`, `reject`, or `abstain` verdict. Its confidence is not
-publication confidence: a separate calibrator and deterministic policy decide
-whether the result may proceed automatically.
+A correction cannot silently mutate the original candidate. It is represented as a competing referenced object with its own provenance and review trail.
 
-### Backend, review, and publication
+## Part.4 3.2 fire-state reconstruction
 
-The backend owns durable incident records, immutable evidence revisions,
-assessment receipts, audit events, review state, and publication gates. A
-deployed worker is not automatically enabled. High-impact routes are protected
-by independent feature flags and authentication requirements.
+The current deterministic reconstruction line is **Part.4 3.2**, algorithm version `3.2.0`.
 
-Part.4 3.1 reconstructs a dated fire state on an adaptive EPSG:2154 probability
-grid. It combines normalized affected, active, observable, thermal, camera, and
-official spatial observations with the previous generated state, then derives
-EPSG:4326 `affected`, `active`, and uncertainty GeoJSON. A point or thermal
-footprint may create only bounded probabilistic support; it is never promoted
-directly to a boundary. Observations from one product lineage contribute once
-per cell, while genuinely independent sensor families remain distinguishable.
+It normalises georeferenced observations onto an adaptive EPSG:2154 probability grid and produces EPSG:4326 `affected`, `active` and uncertainty geometry. Thermal footprints, camera intersections and other point evidence contribute bounded probabilistic support; none is promoted directly into an exact boundary.
 
-The output keeps `prediction=bounded_probability_state`: this means a bounded
-reconstruction between intermittent observations, not an operational future
-forecast. Its embedded fusion profile is immutable, allowlisted, and identified
-by SHA-256 in the state, perimeter, raster manifest, and receipt. The current
-baseline profile is uncalibrated and therefore never automatically publishable.
-The published reference perimeter is loaded only after output hashes are frozen
-and is used solely for evaluation.
+Observations from one product lineage contribute without masquerading as independent sources. Multiple probability buckets from the same product can preserve spatial variation while remaining one lineage and one independent source family.
 
-### Frontend and spatial products
+The current baseline profile is `part4-baseline-v3-provenance`. Its identity and SHA-256 are embedded in reconstruction artifacts and receipts.
 
-The Map Builder is provider-neutral. It receives an immutable request, uses a
-caller-provided scratch directory, and emits a versioned output package. Large
-requests may be split into disjoint resumable tile shards followed by one final
-assembler. The browser package is tiled directly: it combines a lightweight
-far view, shared prototype namespaces, terrain tiles, placement payloads, and a
-catalogue for progressive loading. A monolithic GLB is not the production
-contract. Cloud compute, storage, and publication are execution adapters and do
-not alter the spatial engine.
+### Probability and provenance rasters
 
-The frontend provides contribution, review, and public exploration surfaces.
-The spatial component consumes reviewed geographic packages to build map and
-temporal layers. Map production remains a separate deterministic subsystem;
-the detector and multimodal supervisor do not author the final map geometry.
+Part.4 3.2 can retain aligned Cloud-Optimized GeoTIFF products:
+
+- probability bands for `affected`, `active` and `observable`;
+- provenance bands for direct observation support, multi-source support, prior/interpolated support and uncertainty support.
+
+The products share an aligned grid, input identity, algorithm revision, fusion-profile identity and immutable receipts.
+
+### Calibration boundary
+
+Calibration is an offline CPU workflow separated from incident publication. It can use immutable private Hugging Face dataset revisions, incident-grouped splits, frozen predictions, threshold/profile screening, confidence calibration and isolated holdout evaluation.
+
+The prediction must be frozen before a held-out reference is opened. Calibration and holdout resources remain separate and the calibrator must not inspect holdout material during fitting.
+
+**No France profile is currently qualified.** The baseline remains uncalibrated and cannot authorise unattended publication.
+
+## Backend and publication
+
+The backend owns durable incident records, immutable evidence revisions, assessment receipts, audit events, review state and publication gates. A deployed worker is not automatically enabled and model output cannot publish directly.
+
+A future qualified profile can authorise only the components explicitly allowed by the qualification contract. Active geometry remains separately guarded.
+
+## Measured maps and spatial products
+
+Map creation remains a separate deterministic subsystem from Part.4 fire-state reconstruction.
+
+The provider-neutral Map Builder receives an immutable request, uses a caller-provided scratch directory and emits a versioned package. Large requests can be split into disjoint resumable tile shards followed by one final assembler.
+
+The browser package is tiled and can combine a lightweight far view, shared prototype namespaces, terrain tiles, placement payloads and a catalogue for progressive loading. Viewer derivatives do not replace authoritative geographic artifacts.
+
+Real measured packages are hosted in `fireviewer/simple-measured-scenes-v1`. Their published paths are compatibility-sensitive because the viewer can consume them directly. Documentation cleanup must not reorganise those paths.
+
+The repository-side `reference/map-builder-reference-v1` directory is a semantic validation/migration baseline, **not a production map**. It remains separate from hosted measured-map products.
+
+## Synthetic data
+
+Synthetic scenarios, rendered observations and Omniverse reproduction material are maintained separately from real-event evidence and measured-map production.
+
+A synthetic result can support development or evaluation but cannot become evidence of a real wildfire state.
 
 ## Trust boundaries
 
-- External sources are untrusted until parsed, bounded, attributed, and hashed.
-- Uploaded media require explicit authorisation and malware controls before
-  durable handling.
+- External sources are untrusted until bounded, attributed and hashed.
+- Uploaded media require explicit authorisation and independent handling controls.
 - Model outputs are derived evidence, never source evidence.
+- Geographic hypotheses are separate from visual detections.
 - Simulation and synthetic data remain labelled and separate from real events.
 - Publication is a backend policy decision, not a model tool call.
-- Every sensitive service follows least privilege and may remain disabled even
-  when its code or deployment exists.
+- Sensitive services follow least privilege and may remain disabled even when code exists.
 
 ## What this architecture does not claim
 
-It does not claim real-time alerting, official incident status, operational
-readiness, certified geographic accuracy, autonomous perimeter generation, or
-validated fire-spread prediction.
+It does not claim real-time alerting, official incident status, operational readiness, certified geographic accuracy, autonomous publication or validated future fire-spread prediction.

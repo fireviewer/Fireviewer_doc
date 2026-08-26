@@ -2,63 +2,74 @@
 
 ## Authoritative locations
 
-- [FireViewer documentation](https://github.com/fireviewer/Fireviewer_doc) is
-  the canonical public project description.
-- [FireViewer on Hugging Face](https://huggingface.co/fireviewer) is
-  authoritative for publicly visible model and dataset cards, hosted weights,
-  revisions, and artifact visibility.
-- Component repositories are authoritative for their code and machine-readable
-  contracts.
-- Incident evidence tickets and reviewed backend records are authoritative for
-  the provenance of an incident-page claim.
+- [FireViewer documentation](https://github.com/fireviewer/Fireviewer_doc) is the canonical public project description.
+- [FireViewer on Hugging Face](https://huggingface.co/fireviewer) is authoritative for hosted model/dataset cards, weights, measured-map packages, immutable revisions and artifact visibility.
+- Component repositories are authoritative for their code and machine-readable contracts.
+- Incident evidence tickets and reviewed backend records are authoritative for the provenance of an incident-page claim.
 
-No README proves that a service is deployed, enabled, funded, scientifically
-qualified, or accepted on real data.
+No README proves that a service is deployed, enabled, funded, scientifically qualified or accepted on real data.
 
 ## Component map
 
-| Component | Responsibility | Public GitHub availability on 24 August 2026 |
+| Component | Responsibility | GitHub visibility on 26 August 2026 |
 | --- | --- | --- |
-| [`Fireviewer_doc`](https://github.com/fireviewer/Fireviewer_doc) | Canonical public documentation, licensing, safety, and status boundary. | Public |
-| [`fireviewer-ai-worker`](https://github.com/fireviewer/fireviewer-ai-worker) | Evidence acquisition, visual processing, deterministic geographic hypotheses, optional provider adapters, dossier assembly, and point assessment. | Public |
-| `fireviewer-backend` | Incident registry, durable evidence, review, audit, orchestration, authentication boundaries, and publication gates. | Private |
-| `fireviewer-frontend` | Contribution, human review, incident exploration, and 2D/3D interfaces. | Private |
-| [`fireviewer-spatial`](https://github.com/fireviewer/fireviewer-spatial) | Deterministic measured-map production, portable spatial packages, observed temporal layers, and validation contracts. | Public |
-| [`fireviewer-sdg`](https://github.com/fireviewer/fireviewer-sdg) | Synthetic-data generation, simulation research, and real/synthetic separation. | Public |
-| `models` | Small Git registry describing publicly visible Hugging Face resources; it does not host model weights or datasets. | Private |
-| [Organisation profile](https://github.com/fireviewer) | Public entry point and links to currently accessible project resources. | Public |
+| [`Fireviewer_doc`](https://github.com/fireviewer/Fireviewer_doc) | Canonical architecture, safety, data governance, current status and resource/repository guides. | Public |
+| [`fireviewer-ai-worker`](https://github.com/fireviewer/fireviewer-ai-worker) | Evidence acquisition, visual processing, satellite evidence, deterministic geographic hypotheses, event dossiers and point assessment. | Public |
+| `fireviewer-backend` | Incident registry, durable evidence, review, audit, orchestration, Part.4 3.2 reconstruction/calibration and publication gates. | Private |
+| `fireviewer-frontend` | Contribution, human review, incident exploration and 2D/3D interfaces. | Private |
+| [`fireviewer-spatial`](https://github.com/fireviewer/fireviewer-spatial) | Deterministic measured-map production, portable spatial packages, observed temporal layers and validation contracts. | Public |
+| [`fireviewer-sdg`](https://github.com/fireviewer/fireviewer-sdg) | Synthetic-data generation, simulation research and real/synthetic separation. | Public |
+| `models` | Small machine-readable/narrative registry of the public Hugging Face snapshot and resource-status policy; no weights or datasets. | Private |
+| [Organisation profile](https://github.com/fireviewer) | Public entry point and links to currently accessible resources. | Public |
 
-Repository visibility is an access decision, not a maturity level. Private
-components are included here to explain the architecture; their source is not
-presented as publicly accessible.
+Repository visibility is an access decision, not a maturity level.
 
-## Public model and dataset snapshot
+## Hugging Face resource boundary
 
-The unauthenticated Hugging Face API returned the following on 24 August 2026:
+The authenticated organisation inventory inspected on 26 August 2026 exposes:
 
-- **1 public model**: `fireviewer/rtdetr-v2-r50-fire-smoke`;
+- **1 public model checkpoint**: `fireviewer/rtdetr-v2-r50-fire-smoke`;
 - **8 public dataset repositories**.
 
-The model is a visual object detector. Its existence does not mean that it is
-deployed, geographically localising, scientifically qualified, or authorised
-to publish an incident.
+This is a public-visibility snapshot, not a statement about every private research artifact or historical checkpoint.
 
-The registry snapshot should always record immutable Hugging Face revisions.
-Private, deleted, draft, or locally stored resources must not be inferred from
-the public API.
+Private/restricted resources are used when rights do not support public redistribution, when material is research-only, or when artifacts are retained only for provenance. Deprecated, superseded, incomplete and low-quality model checkpoints are consolidated in a private legacy archive when retained and are not part of the active public model list.
+
+See [Resources](RESOURCES.md) for the classification rules.
+
+## Measured maps
+
+The canonical hosted repository for real measured map builds is:
+
+[`fireviewer/simple-measured-scenes-v1`](https://huggingface.co/datasets/fireviewer/simple-measured-scenes-v1)
+
+Published map paths are treated as compatibility-sensitive interfaces because the viewer and other consumers may resolve them directly. Documentation cleanup must **not** rename, move or reorganise existing map packages.
+
+`fireviewer-spatial/reference/map-builder-reference-v1` is a validation/migration baseline, not a production map. It remains in place because moving it is unnecessary for documentation cleanup and could break references; documentation should simply classify it correctly.
+
+Synthetic Omniverse datasets and historical reproduction packs are separate resources and must not be listed as measured maps.
+
+## Historical names
+
+Some code namespaces, Hub slugs, archive names and manifests still contain `firewarning`. These names are retained for compatibility and provenance. The active project identity is **FireViewer**.
+
+Renaming a compatibility identifier is not a documentation cleanup task unless all consumers and immutable references have a migration path.
 
 ## Repository documentation standard
 
 Every component README should state:
 
 1. the component's role and non-goals;
-2. its place in the evidence flow;
-3. the public capabilities visible in its source;
-4. the difference between implemented, guarded, and accepted behavior;
+2. its place in the evidence or spatial flow;
+3. capabilities visible in the source;
+4. the difference between implemented, guarded and accepted behaviour;
 5. safe local validation commands where applicable;
-6. security, privacy, provenance, and licensing boundaries;
-7. the canonical documentation and contact links.
+6. security, privacy, provenance and licensing boundaries;
+7. the canonical documentation and contact links;
+8. whether any names/paths are compatibility-sensitive or legacy.
 
-Operational runbooks, resource identifiers, private evidence, provider tokens,
-machine paths, internal roadmaps, and raw validation logs do not belong in the
-public documentation set.
+Operational runbooks, provider secrets, private evidence, machine-specific paths, internal roadmaps and raw validation logs do not belong in the public documentation set.
+
+## Update rule
+
+When code changes a public architectural contract, update the canonical documentation in the same release window. In particular, Part.4 documentation must use the current **3.2** nomenclature introduced by the provenance/calibration update rather than the earlier 3.1 label.
