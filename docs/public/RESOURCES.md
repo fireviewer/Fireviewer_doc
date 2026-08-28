@@ -103,7 +103,7 @@ Resource status and pipeline status are different concepts:
 - a **measured map** can be valid geography without asserting any wildfire state;
 - a **synthetic** dataset can be high quality without becoming real-world evidence.
 
-The current deterministic event reconstruction is Part.4 **3.2**. Its baseline profile remains uncalibrated regardless of which public or private research resources exist.
+As of 28 August 2026, the deterministic event reconstruction is Part.4 **3.3**, using the uncalibrated `part4-framed-v1` profile. This implementation update does not reclassify resources or refresh the dated Hub inventory above; resource visibility and pipeline qualification remain separate.
 
 ## Update procedure
 

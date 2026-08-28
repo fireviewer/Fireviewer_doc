@@ -109,6 +109,21 @@ All other results are held for human review. Reviewers may accept the original,
 reject it, abstain, or submit a competing JSON correction. Review never erases
 the source candidate or its earlier assessment.
 
+## Daily-state review is a separate decision
+
+Point assessment is not approval of a complete daily perimeter. Part.4 first
+freezes a deterministic state, its inputs, profile identity and competing
+geometry proposals. The geometry reviewer assesses that frozen result without
+mutating its coordinates or promoting a competing proposal into a parent.
+
+An operator correction appends a private revision and marks dependent states
+stale; it does not erase history or silently trigger a bulk replay. Any
+affected-component release additionally requires a qualified component
+profile and the backend publication gates. The current baseline is
+uncalibrated. Active geometry is not accepted by the affected-component sink.
+
+See [Daily reconstruction](RECONSTRUCTION.md) for state and evaluation semantics.
+
 ## Failure and abstention
 
 Provider timeouts, malformed responses, unsupported media, missing camera

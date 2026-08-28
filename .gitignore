@@ -38,6 +38,8 @@ docs/**
 !docs/public/README.md
 !docs/public/ARCHITECTURE.md
 !docs/public/EVIDENCE_AND_REVIEW.md
+!docs/public/RECONSTRUCTION.md
+!docs/public/RESOURCES.md
 !docs/public/DATA_GOVERNANCE.md
 !docs/public/MAP_BUILDER.md
 !docs/public/STATUS.md

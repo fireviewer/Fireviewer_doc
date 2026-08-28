@@ -6,55 +6,28 @@ FireViewer turns heterogeneous wildfire observations into reviewable evidence an
 
 ## End-to-end flow
 
-```text
-public pages / official feeds / authorised uploads
-                         |
-                         v
-CPU acquisition and normalisation
-- bounded web and media discovery
-- source tickets and provenance
-- video keyframe extraction
-- provisional visual detections
-- upload location and camera metadata
-- CDSE / CLMS / Sentinel and NASA FIRMS observations
-                         |
-                         v
-Deterministic geographic stage
-- maps and geocoding references
-- camera ray / field-of-view constraints
-- terrain and visibility checks
-- satellite and prior-event consistency
-- zero, one or several geographic candidates
-                         |
-                         v
-Optional accelerated evidence
-- visual / satellite embeddings
-- cross-view comparison
-- remote-sensing encoders or segmentation
-                         |
-                         v
-EventEvidence + spatio-temporal event memory
-                         |
-                         v
-CPU evidence assembly
-- retrieve relevant history
-- select a compact evidence set
-- build PointEvidenceBundle per candidate
-                         |
-                         v
-Managed multimodal assessment
-- support / contradiction / missing evidence
-- accept / reject / abstain
-                         |
-                         v
-PointAssessment + policy gate + human review
-                         |
-                         v
-Part.4 3.2 deterministic fire-state reconstruction
-                         |
-                         v
-versioned event record + reviewed spatial products
+```mermaid
+flowchart TD
+    sources["Public pages, official products and authorised uploads"] --> acquisition["Part.2: bounded acquisition and provenance"]
+    acquisition --> visual["Images, keyframes and provisional detections"]
+    visual --> geography["Part.3: deterministic geographic hypotheses"]
+    acquisition --> satellite["Normalised satellite evidence"]
+    geography --> dossier["EventEvidence, history and point dossier"]
+    optional["Optional accelerated evidence; explicit provider gates"] -.-> dossier
+    dossier --> assessment["Multimodal point assessment or abstention"]
+    assessment --> fusion["Backend Part.4 3.3: daily reconstruction"]
+    satellite --> fusion
+    seed["Private dated administrative seed"] --> fusion
+    parent["Admissible parent and restored grids"] --> fusion
+    fusion --> frozen["Frozen state, uncertainty and competing proposals"]
+    frozen --> review["Geometry and human review; publication gates"]
+    review --> viewer["Versioned incident and 2D or 3D views"]
+    maps["Part.1: independent measured map packages"] --> viewer
+    frozen --> evaluation["Separate evaluation after freeze"]
+    references["Evaluation references"] --> evaluation
 ```
+
+The graph shows component boundaries, not proof that every path is enabled or accepted end to end. Evaluation references never enter reconstruction.
 
 Providers are interchangeable behind explicit contracts. Missing optional evidence must reduce confidence or produce abstention rather than be silently replaced by invented data.
 
@@ -93,19 +66,23 @@ Its score is not publication confidence. Calibration and deterministic backend p
 
 A correction cannot silently mutate the original candidate. It is represented as a competing referenced object with its own provenance and review trail.
 
-## Part.4 3.2 fire-state reconstruction
+## Part.4 3.3 fire-state reconstruction
 
-The current deterministic reconstruction line is **Part.4 3.2**, algorithm version `3.2.0`.
+The current deterministic reconstruction line is **Part.4 3.3**, algorithm version `3.3.0`.
 
 It normalises georeferenced observations onto an adaptive EPSG:2154 probability grid and produces EPSG:4326 `affected`, `active` and uncertainty geometry. Thermal footprints, camera intersections and other point evidence contribute bounded probabilistic support; none is promoted directly into an exact boundary.
 
 Observations from one product lineage contribute without masquerading as independent sources. Multiple probability buckets from the same product can preserve spatial variation while remaining one lineage and one independent source family.
 
-The current baseline profile is `part4-baseline-v3-provenance`. Its identity and SHA-256 are embedded in reconstruction artifacts and receipts.
+The current baseline profile is `part4-framed-v1` (version `1.0.0`). Its identity and SHA-256 are embedded in reconstruction artifacts and receipts.
+
+Initialization is a private dated affected contour, not an implicit active area. Checkpoints preserve probability grids and per-lineage contributions. Disputed extensions remain separate; accepted operator corrections append revisions and mark descendants stale without silently replaying history. Satellite availability, acquisition time and state cutoff remain distinct.
+
+The seeded historical protocol excludes its initialization contour from scoring and compares later frozen states with an unchanged-seed baseline. Calibration and holdout data remain isolated. See [Daily reconstruction](RECONSTRUCTION.md) for the complete state, satellite and evaluation boundary.
 
 ### Probability and provenance rasters
 
-Part.4 3.2 can retain aligned Cloud-Optimized GeoTIFF products:
+Part.4 3.3 can retain aligned Cloud-Optimized GeoTIFF products:
 
 - probability bands for `affected`, `active` and `observable`;
 - provenance bands for direct observation support, multi-source support, prior/interpolated support and uncertainty support.

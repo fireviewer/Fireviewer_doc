@@ -15,7 +15,7 @@ No README proves that a service is deployed, enabled, funded, scientifically qua
 | --- | --- | --- |
 | [`Fireviewer_doc`](https://github.com/fireviewer/Fireviewer_doc) | Canonical architecture, safety, data governance, current status and resource/repository guides. | Public |
 | [`fireviewer-ai-worker`](https://github.com/fireviewer/fireviewer-ai-worker) | Evidence acquisition, visual processing, satellite evidence, deterministic geographic hypotheses, event dossiers and point assessment. | Public |
-| `fireviewer-backend` | Incident registry, durable evidence, review, audit, orchestration, Part.4 3.2 reconstruction/calibration and publication gates. | Private |
+| `fireviewer-backend` | Incident registry, durable evidence, review, audit, orchestration, Part.4 3.3 reconstruction/calibration and publication gates. | Private |
 | `fireviewer-frontend` | Contribution, human review, incident exploration and 2D/3D interfaces. | Private |
 | [`fireviewer-spatial`](https://github.com/fireviewer/fireviewer-spatial) | Deterministic measured-map production, portable spatial packages, observed temporal layers and validation contracts. | Public |
 | [`fireviewer-sdg`](https://github.com/fireviewer/fireviewer-sdg) | Synthetic-data generation, simulation research and real/synthetic separation. | Public |
@@ -72,4 +72,4 @@ Operational runbooks, provider secrets, private evidence, machine-specific paths
 
 ## Update rule
 
-When code changes a public architectural contract, update the canonical documentation in the same release window. In particular, Part.4 documentation must use the current **3.2** nomenclature introduced by the provenance/calibration update rather than the earlier 3.1 label.
+When code changes a public architectural contract, update the canonical documentation in the same release window. As of 28 August 2026, the current Part.4 line is **3.3**, adding dated administrative initialization and restorable state chains to the earlier provenance/calibration implementation. See [Daily reconstruction](RECONSTRUCTION.md) for its qualification boundary.

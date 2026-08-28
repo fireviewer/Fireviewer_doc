@@ -79,4 +79,4 @@ Public source repositories contain code, portable contracts, small validation fi
 
 ## Relationship to Part.4
 
-Map creation is separate from **Part.4 3.2** fire-state reconstruction. The map defines measured geographic context; Part.4 reconstructs dated wildfire state from reviewed observations. Neither should be presented as the other.
+Map creation is separate from **Part.4 3.3** fire-state reconstruction. The map defines measured geographic context; Part.4 reconstructs dated wildfire state from reviewed observations. Neither should be presented as the other.
