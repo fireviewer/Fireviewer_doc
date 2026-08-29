@@ -7,24 +7,49 @@ FireViewer turns heterogeneous wildfire observations into reviewable evidence an
 ## End-to-end flow
 
 ```mermaid
-flowchart TD
-    sources["Public pages, official products and authorised uploads"] --> acquisition["Part.2: bounded acquisition and provenance"]
-    acquisition --> visual["Images, keyframes and provisional detections"]
-    visual --> geography["Part.3: deterministic geographic hypotheses"]
-    acquisition --> satellite["Normalised satellite evidence"]
-    geography --> dossier["EventEvidence, history and point dossier"]
-    optional["Optional accelerated evidence; explicit provider gates"] -.-> dossier
-    dossier --> assessment["Multimodal point assessment or abstention"]
-    assessment --> fusion["Backend Part.4 3.3: daily reconstruction"]
-    satellite --> fusion
-    seed["Private dated administrative seed"] --> fusion
-    parent["Admissible parent and restored grids"] --> fusion
-    fusion --> frozen["Frozen state, uncertainty and competing proposals"]
-    frozen --> review["Geometry and human review; publication gates"]
-    review --> viewer["Versioned incident and 2D or 3D views"]
-    maps["Part.1: independent measured map packages"] --> viewer
-    frozen --> evaluation["Separate evaluation after freeze"]
-    references["Evaluation references"] --> evaluation
+flowchart TB
+
+    subgraph P1["Part.1 — Measured spatial context"]
+        MAPSRC["Measured geographic sources"]
+        MAP["Map Builder"]
+        USD["Versioned OpenUSD / viewer package"]
+        MAPSRC --> MAP --> USD
+    end
+
+    subgraph P2["Part.2 — Evidence"]
+        SOURCES["Official · public · authorised sources"]
+        ACQ["Bounded acquisition"]
+        EVIDENCE["Versioned evidence<br/>time · provenance · rights"]
+        SAT["Normalised satellite observations"]
+        SOURCES --> ACQ --> EVIDENCE
+        ACQ --> SAT
+    end
+
+    subgraph P3["Part.3 — Geographic reasoning"]
+        GEO["Deterministic geographic hypotheses"]
+        DOSSIER["PointEvidenceBundle + event history"]
+        ASSESS["Multimodal assessment<br/>accept · reject · abstain"]
+        GEO --> DOSSIER --> ASSESS
+    end
+
+    subgraph P4["Part.4 — Daily reconstruction"]
+        SEED["Private dated affected-area seed"]
+        FUSION["Part.4 3.3 deterministic fusion"]
+        STATE["Affected · active · observable · uncertainty"]
+        REVIEW["Frozen state · review · revisions"]
+        SEED --> FUSION --> STATE --> REVIEW
+    end
+
+    EVIDENCE --> GEO
+    EVIDENCE --> FUSION
+    SAT --> FUSION
+    ASSESS --> FUSION
+
+    REVIEW --> VIEW["Versioned incident view"]
+    USD --> VIEW
+
+    REVIEW --> EVALUATION["Isolated evaluation"]
+    REFERENCES["Evaluation references"] --> EVALUATION
 ```
 
 The graph shows component boundaries, not proof that every path is enabled or accepted end to end. Evaluation references never enter reconstruction.
@@ -38,6 +63,18 @@ The acquisition layer discovers official information, public reporting and eligi
 Video is reduced to immutable selected keyframes before visual analysis. Visual detectors provide boxes, classes and scores only.
 
 Official satellite acquisition is structured rather than treated as arbitrary web evidence. Current CPU paths include CLMS burn-scar products, Sentinel-3 FRP observations, NASA FIRMS MODIS/VIIRS footprints, Sentinel-2 materialisation/change and bounded Sentinel-1 radar change. Raw transient products and retained derivatives follow separate storage and rights rules.
+
+### Historical admissibility
+
+Retrospective reconstruction distinguishes **acquisition time**, **provider publication or availability time**, **FireViewer retrieval time** and the **state cutoff** being reconstructed.
+
+A product discovered during a later replay is admissible only when its recorded availability is compatible with that historical cutoff.
+
+Unknown or late availability does not become historical evidence by inference.
+
+Likewise, missing coverage, cloud, no-data and absence of a valid positive detection are different states and must not automatically become evidence that fire was absent.
+
+This boundary matters particularly for satellite and archive-corpus workflows, where the present-day catalog can contain products or revisions that did not yet exist at the historical date being evaluated.
 
 ## Deterministic geography
 

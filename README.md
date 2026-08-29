@@ -19,6 +19,14 @@ The project aims to provide:
 - reproducible measured-map packages for exploration and post-event study;
 - explicit abstention when the available evidence is insufficient.
 
+## Why FireViewer exists
+
+FireViewer started during the wildfire in Die, France, where its maintainer grew up and where part of his family still lives.
+
+The first goal was simply to make fragmented information easier to understand: official updates, maps, photographs, videos and geographic data.
+
+As the project developed, the problem became broader: preserving not only a final representation of an incident, but the evidence, uncertainty and processing history needed to understand how that representation was obtained.
+
 ## System at a glance
 
 ```mermaid
@@ -52,6 +60,12 @@ The current baseline fusion profile is `part4-framed-v1` (version `1.0.0`). It i
 
 Initialization is a private dated affected contour, not an active-area assertion. Checkpoints retain probability grids and lineage; corrections append revisions without silently rewriting history. Seed-conditioned historical reconstruction is distinct from autonomous discovery, live-provider acceptance and scientific qualification.
 
+Historical reconstruction also preserves **temporal admissibility**.
+
+A source or satellite product that can be accessed today is not automatically treated as evidence that was available at an earlier state cutoff.
+
+Acquisition time, publication or product-availability time and FireViewer retrieval time remain separate. Unknown, unavailable or late information is kept explicit rather than silently converted into historical evidence.
+
 ## Documentation
 
 | Document | Scope |
@@ -64,6 +78,9 @@ Initialization is a private dated affected contour, not an active-area assertion
 | [Repository guide](docs/public/REPOSITORIES.md) | Repository roles, visibility and authoritative locations. |
 | [Map Builder](docs/public/MAP_BUILDER.md) | Provider-neutral measured-map production, resumable workers and viewer compatibility. |
 | [Data governance](docs/public/DATA_GOVERNANCE.md) | Retention, provenance, rights, privacy and removal requests. |
+| [Governance](GOVERNANCE.md) | How FireViewer is currently run and how the future association relates to technical governance. |
+| [Contributing](https://github.com/fireviewer/.github/blob/main/CONTRIBUTING.md) | How to contribute and which project boundaries matter when changing the system. |
+| [Security](https://github.com/fireviewer/.github/blob/main/SECURITY.md) | Vulnerability reporting and evidence-integrity security policy. |
 | [Funding and collaboration](docs/FUNDING_BRIEF.md) | Ways to support or collaborate with FireViewer. |
 | [Licensing and citation](docs/LICENSING.md) | Code, documentation, models, datasets and upstream-rights boundaries. |
 | [Documentation policy](docs/REPOSITORY_DOCUMENTATION_POLICY.md) | Rules for public documentation and local working material. |
@@ -101,6 +118,21 @@ See the dated [current status](docs/public/STATUS.md) for the precise boundary.
 - Never let a simulated output become real-event evidence.
 - Keep corrections as competing, referenced revisions rather than silent overwrites.
 - Prefer `abstain` or `unknown` to unsupported precision.
+
+## Governance and participation
+
+FireViewer currently uses a maintainer-led technical governance model.
+
+A French non-profit association is being created to provide administrative and financial stewardship. It does not automatically replace technical decision-making.
+
+The governance model is documented in [GOVERNANCE.md](GOVERNANCE.md).
+
+Community policies:
+
+- [Contributing](https://github.com/fireviewer/.github/blob/main/CONTRIBUTING.md)
+- [Code of Conduct](https://github.com/fireviewer/.github/blob/main/CODE_OF_CONDUCT.md)
+- [Security](https://github.com/fireviewer/.github/blob/main/SECURITY.md)
+- [Support](https://github.com/fireviewer/.github/blob/main/SUPPORT.md)
 
 ## Contact
 

@@ -10,6 +10,38 @@ The engine writes temporary work below the provided scratch root and emits autho
 
 The completion receipt is written last. Artifacts without that receipt form an incomplete build and must not be presented as a valid measured-map production.
 
+```mermaid
+flowchart TB
+    REQUEST["Immutable map request<br/>zone · profile · builder revision"]
+
+    REQUEST --> TERRAIN["Terrain / elevation"]
+    REQUEST --> GROUND["Orthophoto / ground material"]
+    REQUEST --> ASSETS["Measured asset placements"]
+    REQUEST --> SOURCE["Source revisions · rights · provenance"]
+
+    TERRAIN --> SHARDS["Deterministic tile shards"]
+    GROUND --> SHARDS
+    ASSETS --> SHARDS
+    SOURCE --> SHARDS
+
+    SHARDS --> CHECKPOINTS["Resumable checkpoints"]
+    CHECKPOINTS --> ASSEMBLER["Single final assembler"]
+
+    ASSEMBLER --> USD["OpenUSD scene"]
+    ASSEMBLER --> VIEWER["Tiled web-view package"]
+    ASSEMBLER --> MANIFEST["Manifest · hashes · provenance"]
+    ASSEMBLER --> VALIDATION["Validation receipts"]
+
+    USD --> PACKAGE["Versioned measured-map package"]
+    VIEWER --> PACKAGE
+    MANIFEST --> PACKAGE
+    VALIDATION --> PACKAGE
+
+    PACKAGE --> RECEIPT["Terminal completion receipt"]
+```
+
+The diagram shows the package-production boundary. Wildfire observations, Part.4 state reconstruction and simulation are not Map Builder inputs and do not rewrite the measured map.
+
 ## Tiled viewer
 
 The production viewer is a tiled package rather than one mandatory monolithic GLB. A package can contain:

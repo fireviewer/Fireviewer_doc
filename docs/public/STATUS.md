@@ -1,6 +1,6 @@
 # Current implementation status
 
-**Public status snapshot: 28 August 2026.**
+**Public status snapshot: 29 August 2026.**
 
 This page distinguishes source code, guarded integration and real end-to-end acceptance. A repository, container image, configured adapter or deployed scale-to-zero service is not evidence that a production path is enabled or scientifically qualified.
 
@@ -12,7 +12,7 @@ This page distinguishes source code, guarded integration and real end-to-end acc
 | Video | Keyframe selection and CPU service/container paths exist with durable derivative metadata. | Cross-platform runtime acceptance and a complete real uploaded-video journey remain to be accepted. |
 | Visual detection | A provisional CPU visual-detection stage emits image-space boxes and scores. The public RT-DETR checkpoint is a documented reference detector on Hugging Face. | Visual detection is not geographic localisation and no detector is publication authority. Runtime promotion remains separately gated. |
 | Deterministic geography | Upload location, declared accuracy, camera orientation/FOV fields, maps, terrain/DEM, visibility and history-aware geographic-hypothesis contracts are implemented. Missing inputs can force uncertainty or abstention. | Real-candidate acceptance with complete camera metadata, durable terrain, satellite evidence and historical-front comparison is still required. |
-| Satellite observations | CDSE/CLMS/Sentinel and NASA FIRMS paths cover CLMS burn-scar masks, Sentinel-3 FRP, Sentinel-2 materialisation/change, bounded Sentinel-1 radar change and MODIS/VIIRS thermal footprints. Derived observations keep time, geometry, accuracy, source revision and attribution. | Real credentialed provider acceptance and quality qualification remain separate from code and synthetic tests. Optional GPU evidence is not assumed active. |
+| Satellite observations | CDSE/CLMS/Sentinel and NASA FIRMS paths cover CLMS burn-scar masks, Sentinel-3 FRP, Sentinel-2 materialisation/change, bounded Sentinel-1 radar change and MODIS/VIIRS thermal footprints. Derived observations keep time, geometry, accuracy, source revision and attribution. Historical corpus readers also preserve source and product availability relative to the evaluated state cutoff instead of assuming present-day discoverability. | Real credentialed provider acceptance and quality qualification remain separate from code and synthetic tests. Optional GPU evidence is not assumed active. |
 | Sentinel-2 corpus integrity | The bounded reader verifies COG encoding against the same original SAFE product, excludes invalid spectra, preserves source availability and supports identity-checked repair of archived AOIs. | Correct radiometry does not recover missing pre-fire pixels, select every optimal pair or calibrate change probabilities. |
 | Historical reconstruction evaluation | Private immutable corpus revisions, incident-level replay/resume, prediction freeze and separate seeded evaluation are implemented. Initial contours are excluded from scoring; competing outputs are not retrospectively selected. | Seed-conditioned replay is not autonomous discovery, live-provider acceptance or holdout qualification. Episode scope, cumulative extent and multiple quality metrics remain distinct. |
 | Event memory and dossier assembly | Spatio-temporal retrieval, durable evidence reads, evidence selection and compact `PointEvidenceBundle` construction exist. | Retrieval quality and evidence sufficiency need validation on genuine multi-source events. |
@@ -26,17 +26,17 @@ This page distinguishes source code, guarded integration and real end-to-end acc
 | Synthetic data | Synthetic scenario, asset and simulation tooling is maintained separately from real-event evidence. | Synthetic validation never proves real-event geographic or operational quality. |
 | Legacy resources | Deprecated, superseded, incomplete and low-quality checkpoints can be retained in a private consolidated archive for provenance. Historical `firewarning-*` identifiers remain where compatibility requires them. | Legacy artifacts must not be consumed as active runtime models without re-evaluation and explicit promotion into a dedicated repository. |
 
-## Part.4 version note
+## Current Part.4 line
 
-The provenance/calibration update of 26 August 2026 advanced Part.4 to algorithm
-line `3.2.0`. The implementation documented on 28 August is **Part.4 3.3**,
-algorithm `3.3.0`, with the uncalibrated `part4-framed-v1` profile. It adds dated
-administrative initialization, restorable state chains, spatial admission and
-explicit correction revisions.
+The currently documented reconstruction line is **Part.4 3.3**, algorithm `3.3.0`, using the uncalibrated `part4-framed-v1` profile.
 
-See [Daily reconstruction](RECONSTRUCTION.md) for initialization, state
-products, review and evaluation semantics. Detailed private campaign evidence
-and internal execution records are not published on this page.
+Part.4 3.3 adds dated administrative spatial initialization, restorable probability and provenance state chains, explicit spatial-admission rules and append-only correction revisions.
+
+Earlier 3.2 artifacts remain part of the project's development history but are not the current reconstruction contract.
+
+No currently registered affected-component profile is qualified for unattended publication.
+
+See [Daily reconstruction](RECONSTRUCTION.md) for the current state, review and evaluation semantics.
 
 ## Safe interpretation
 

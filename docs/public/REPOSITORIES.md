@@ -11,8 +11,9 @@ No README proves that a service is deployed, enabled, funded, scientifically qua
 
 ## Component map
 
-| Component | Responsibility | GitHub visibility on 26 August 2026 |
+| Component | Responsibility | GitHub visibility on 29 August 2026 |
 | --- | --- | --- |
+| [`.github`](https://github.com/fireviewer/.github) | Organisation profile and shared contribution, conduct, security and support policies. | Public |
 | [`Fireviewer_doc`](https://github.com/fireviewer/Fireviewer_doc) | Canonical architecture, safety, data governance, current status and resource/repository guides. | Public |
 | [`fireviewer-ai-worker`](https://github.com/fireviewer/fireviewer-ai-worker) | Evidence acquisition, visual processing, satellite evidence, deterministic geographic hypotheses, event dossiers and point assessment. | Public |
 | `fireviewer-backend` | Incident registry, durable evidence, review, audit, orchestration, Part.4 3.3 reconstruction/calibration and publication gates. | Private |
@@ -70,6 +71,25 @@ Every component README should state:
 
 Operational runbooks, provider secrets, private evidence, machine-specific paths, internal roadmaps and raw validation logs do not belong in the public documentation set.
 
+## Community and governance
+
+FireViewer is currently small, so project-wide community policies are kept in one place rather than copied and slowly diverging across every repository.
+
+Shared policies:
+
+- [Contributing](https://github.com/fireviewer/.github/blob/main/CONTRIBUTING.md)
+- [Code of Conduct](https://github.com/fireviewer/.github/blob/main/CODE_OF_CONDUCT.md)
+- [Security](https://github.com/fireviewer/.github/blob/main/SECURITY.md)
+- [Support](https://github.com/fireviewer/.github/blob/main/SUPPORT.md)
+
+Technical governance is documented in [`GOVERNANCE.md`](../../GOVERNANCE.md).
+
+FireViewer currently uses maintainer-led technical governance.
+
+A French non-profit association is being created to provide administrative and financial stewardship. It does not replace the technical governance model unless a later public decision explicitly changes that structure.
+
+Repositories with a component-specific security note may retain a local `SECURITY.md`, but it should point back to the project-wide policy rather than define a separate incompatible process.
+
 ## Update rule
 
-When code changes a public architectural contract, update the canonical documentation in the same release window. As of 28 August 2026, the current Part.4 line is **3.3**, adding dated administrative initialization and restorable state chains to the earlier provenance/calibration implementation. See [Daily reconstruction](RECONSTRUCTION.md) for its qualification boundary.
+When code changes a public architectural contract, update the canonical documentation in the same release window. As of 29 August 2026, the current Part.4 line is **3.3**, adding dated administrative initialization and restorable state chains to the earlier provenance/calibration implementation. See [Daily reconstruction](RECONSTRUCTION.md) for its qualification boundary.
