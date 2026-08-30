@@ -28,6 +28,53 @@ An administrative seed contains a position and an estimated **affected** contour
 
 The current line is **3.3.0**, with profile `part4-framed-v1` version `1.0.0`. The profile is allowlisted, identified by SHA-256 and **uncalibrated**. Its output cannot authorize unattended publication.
 
+## Separate reviewed hindsight protocol
+
+Completed incidents can use a second, explicitly hindsight-constrained protocol.
+It does not replace the causal Part.4 path and its products cannot be scored as
+information that was available during the event.
+
+```mermaid
+flowchart LR
+    RAW["Dated photos, maps and satellite sources"] --> WORKER["FireViewer visual grounding and geographic projection"]
+    WORKER --> PACKS["One immutable worker data pack per day<br/>including explicit abstention"]
+    DEM["Pinned immutable DEM"] --> TERRAIN["Automatic terrain morphology partition"]
+    FINAL["Final official affected envelope"] --> ASSEMBLY["Automatic multi-day dossier assembly"]
+    PACKS --> ASSEMBLY
+    TERRAIN --> ASSEMBLY
+    ASSEMBLY --> CANDIDATES["Deterministic daily candidates"]
+    PREVIOUS["Previous reviewed day"] --> CANDIDATES
+    CANDIDATES --> REVIEW["Model or operator selects a candidate ID"]
+    REVIEW --> FREEZE["Immutable J1 / J2 / ... GeoJSON"]
+    FREEZE --> PREVIOUS
+```
+
+The final perimeter is recorded as a constraint, not concealed as ordinary input.
+Smoke is never converted directly into affected area. FireViewer's existing worker
+grounds visual observations, projects them against camera and terrain references and
+can abstain when geometry is insufficient. A pinned DEM is partitioned automatically
+into connected elevation/aspect morphology units. The reviewer neither prepares these
+inputs nor edits a polygon; it selects one supplied candidate with evidence references
+and rationale. Evidence discovered after a day's state time remains labelled as
+hindsight evidence.
+
+Every accepted day is cumulative, retains the exact previous reviewed geometry and
+must remain inside the final envelope. The offline output declares
+`hindsight_constrained: true`, `comparable_to_causal_reconstruction: false` and
+`eligible_for_automatic_publication: false`.
+
+The date range can contain up to 366 days. Days without new admissible evidence remain
+in the chain as explicit no-change candidates, so `J1`, `J2`, and later files describe
+the complete reviewed sequence rather than a two-day special case.
+
+Assembly requires one declared, hashed worker pack for every calendar date in that
+range. A worker may abstain and return a valid pack with zero projected geometry; this
+still proves that the day was processed. Omitting a day, reusing a batch across two
+days, or placing a dated observation in the wrong daily pack is rejected. The backend
+test dataset stores three independent JSON packs under
+`tests/fixtures/retrospective_daily_packs/`, including an abstention pack for day 2.
+Those files are synthetic test inputs and are not evidence for a real incident.
+
 ## Four distinct outputs
 
 | Product | Meaning |
