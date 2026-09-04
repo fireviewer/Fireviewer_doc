@@ -11,7 +11,7 @@ No README proves that a service is deployed, enabled, funded, scientifically qua
 
 ## Component map
 
-| Component | Responsibility | GitHub visibility on 29 August 2026 |
+| Component | Responsibility | GitHub visibility on 4 September 2026 |
 | --- | --- | --- |
 | [`.github`](https://github.com/fireviewer/.github) | Organisation profile and shared contribution, conduct, security and support policies. | Public |
 | [`Fireviewer_doc`](https://github.com/fireviewer/Fireviewer_doc) | Canonical architecture, safety, data governance, current status and resource/repository guides. | Public |
@@ -19,6 +19,7 @@ No README proves that a service is deployed, enabled, funded, scientifically qua
 | `fireviewer-backend` | Incident registry, durable evidence, review, audit, orchestration, Part.4 3.3 reconstruction/calibration and publication gates. | Private |
 | `fireviewer-frontend` | Contribution, human review, incident exploration and 2D/3D interfaces. | Private |
 | [`fireviewer-spatial`](https://github.com/fireviewer/fireviewer-spatial) | Deterministic measured-map production, portable spatial packages, observed temporal layers and validation contracts. | Public |
+| [`fireviewer-unreal`](https://github.com/fireviewer/fireviewer-unreal) | Source-only Unreal Engine consumer for portable map contracts, guarded map assembly and local visual review. It contains no Unreal content library, dataset, model or generated reproduction. | Public |
 | [`fireviewer-sdg`](https://github.com/fireviewer/fireviewer-sdg) | Synthetic-data generation, simulation research and real/synthetic separation. | Public |
 | `models` | Small machine-readable/narrative registry of the public Hugging Face snapshot and resource-status policy; no weights or datasets. | Private |
 | [Organisation profile](https://github.com/fireviewer) | Public entry point and links to currently accessible resources. | Public |
@@ -27,10 +28,10 @@ Repository visibility is an access decision, not a maturity level.
 
 ## Hugging Face resource boundary
 
-The authenticated organisation inventory inspected on 26 August 2026 exposes:
+The anonymous public organisation inventory inspected on 4 September 2026 exposes:
 
-- **1 public model checkpoint**: `fireviewer/rtdetr-v2-r50-fire-smoke`;
-- **8 public dataset repositories**.
+- **2 public model checkpoints**: `fireviewer/rtdetr-v2-r50-fire-smoke` and `fireviewer/dfine-large-fire-smoke-v7`;
+- **7 public dataset repositories**.
 
 This is a public-visibility snapshot, not a statement about every private research artifact or historical checkpoint.
 
@@ -71,6 +72,12 @@ Every component README should state:
 
 Operational runbooks, provider secrets, private evidence, machine-specific paths, internal roadmaps and raw validation logs do not belong in the public documentation set.
 
+Git repositories are source-only publication surfaces. Datasets, weights,
+checkpoints, imported 3D assets, measured-map packages and reproduction outputs
+remain outside Git. One fully synthetic incident configuration fixture is kept
+in `fireviewer-unreal` to document the JSON/GeoJSON contract without publishing
+real incident data. See [Repository hygiene](REPOSITORY_HYGIENE.md).
+
 ## Community and governance
 
 FireViewer is currently small, so project-wide community policies are kept in one place rather than copied and slowly diverging across every repository.
@@ -92,4 +99,4 @@ Repositories with a component-specific security note may retain a local `SECURIT
 
 ## Update rule
 
-When code changes a public architectural contract, update the canonical documentation in the same release window. As of 29 August 2026, the current Part.4 line is **3.3**, adding dated administrative initialization and restorable state chains to the earlier provenance/calibration implementation. See [Daily reconstruction](RECONSTRUCTION.md) for its qualification boundary.
+When code changes a public architectural contract, update the canonical documentation in the same release window. As of 4 September 2026, the current Part.4 line is **3.3**, adding dated administrative initialization and restorable state chains to the earlier provenance/calibration implementation. See [Daily reconstruction](RECONSTRUCTION.md) for its qualification boundary.

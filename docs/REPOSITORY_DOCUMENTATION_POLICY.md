@@ -28,4 +28,18 @@ Local working material must not be copied into a public repository under a new
 name. Public documents must not contain secrets, private evidence, personal
 machine paths, provider identifiers, or unsupported performance claims.
 
+Git repositories are source publications. They may retain small synthetic
+contract/configuration fixtures, including one explicitly synthetic incident
+example, but must not contain datasets, model weights or checkpoints, source
+imagery, imported 3D asset libraries, measured-map packages, reproduction
+outputs, renders, caches or build products. See
+[`docs/public/REPOSITORY_HYGIENE.md`](public/REPOSITORY_HYGIENE.md) for the
+complete boundary and pre-publication gates.
+
+Cleanup must be reference-aware. Generated, duplicated and unreferenced
+obsolete files may be removed after consumer checks. Compatibility identifiers,
+legacy adapters and published paths are retained until an explicit migration
+updates every consumer; a deprecated-looking name is not sufficient evidence
+for deletion.
+
 The public documentation contact is **unicornwhodev@gmail.com**.

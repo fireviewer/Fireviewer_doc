@@ -2,7 +2,7 @@ schema_version: 2
 generated_for: fireviewer
 overall_status: READY_FOR_REVIEW
 remote_write_performed: false
-verified_at: "2026-08-18"
+verified_at: "2026-09-04"
 
 organization:
   login: fireviewer
@@ -40,7 +40,7 @@ repositories:
 
   - repository: fireviewer/fireviewer-ai-worker
     proposed:
-      description: "Private FireViewer AI analysis worker for evidence processing, visual anchors, localisation attempts, provenance and explicit abstention."
+      description: "FireViewer AI analysis worker for evidence processing, visual anchors, localisation attempts, provenance and explicit abstention."
       homepage: "https://huggingface.co/fireviewer"
       topics:
         - fireviewer
@@ -105,5 +105,18 @@ repositories:
         - openusd
         - blender
         - lidar
+        - reproducibility
+        - provenance
+
+  - repository: fireviewer/fireviewer-unreal
+    proposed:
+      description: "Source-only Unreal Engine adapter for FireViewer measured-map contracts, guarded assembly and local visual review."
+      homepage: "https://github.com/fireviewer/fireviewer-unreal"
+      topics:
+        - fireviewer
+        - wildfire
+        - unreal-engine
+        - geospatial
+        - openusd
         - reproducibility
         - provenance

@@ -62,6 +62,32 @@ Source metatiles remain assigned deterministically so shared downloads are not d
 
 The same engine can support an asset-free profile. An asset-free build keeps an explicitly empty prototype namespace, including across resume, instead of inventing placeholder assets.
 
+## Unreal Engine source adapter
+
+The public Unreal path is split across three source repositories:
+
+- [`fireviewer-spatial`](https://github.com/fireviewer/fireviewer-spatial)
+  defines portable map-export and asset-variant contracts;
+- [`fireviewer-unreal`](https://github.com/fireviewer/fireviewer-unreal)
+  consumes those contracts in an Unreal Engine project and commandlets;
+- `fireviewer-backend` contains an optional `aws_unreal` job adapter for a
+  separately configured, self-terminating Windows worker.
+
+The backend adapter is disabled unless its explicit provider and deployment
+configuration are supplied. Cloud account, image, template, bucket and machine
+identifiers remain operator configuration and are not committed.
+
+`fireviewer-unreal` is deliberately source-only. Unreal content libraries,
+imported assets, datasets, models, built projects, generated maps, captures and
+reproduction outputs remain outside Git. The repository keeps one small,
+invented incident example as JSON/GeoJSON configuration so the public contract
+can be understood and tested without publishing a real incident or a produced
+scene.
+
+Source presence establishes an integration contract; it does not prove that an
+Unreal build, cloud worker, visual result or public deployment has been
+accepted.
+
 ## Validation boundary
 
 Validation can check:
@@ -108,6 +134,8 @@ The repository directory `fireviewer-spatial/reference/map-builder-reference-v1`
 Source rasters, generated production packages, checkpoints, private evidence, credentials, provider identifiers and operator runbooks do not belong in Git.
 
 Public source repositories contain code, portable contracts, small validation fixtures and concise documentation. Heavy measured-map artifacts remain in designated artifact storage.
+
+Repository cleanup follows the [source publication and hygiene boundary](REPOSITORY_HYGIENE.md). Compatibility paths and active legacy adapters are not removed merely because their names look old.
 
 ## Relationship to Part.4
 

@@ -148,6 +148,18 @@ The provider-neutral Map Builder receives an immutable request, uses a caller-pr
 
 The browser package is tiled and can combine a lightweight far view, shared prototype namespaces, terrain tiles, placement payloads and a catalogue for progressive loading. Viewer derivatives do not replace authoritative geographic artifacts.
 
+`fireviewer-spatial` owns the portable export contracts. The source-only
+`fireviewer-unreal` project consumes those contracts for Unreal Engine assembly
+and local visual review. A guarded backend `aws_unreal` adapter can address a
+separately configured self-terminating Windows worker; it is disabled by
+default and keeps cloud identifiers out of source control.
+
+The Unreal repository includes one invented JSON/GeoJSON incident fixture for
+contract testing. It contains no real incident evidence, imported content
+library, dataset, model, generated map or reproduction output. Presence of
+these source paths does not establish packaged-build, cloud-runtime, visual or
+production acceptance.
+
 Real measured packages are hosted in `fireviewer/simple-measured-scenes-v1`. Their published paths are compatibility-sensitive because the viewer can consume them directly. Documentation cleanup must not reorganise those paths.
 
 The repository-side `reference/map-builder-reference-v1` directory is a semantic validation/migration baseline, **not a production map**. It remains separate from hosted measured-map products.
@@ -167,6 +179,8 @@ A synthetic result can support development or evaluation but cannot become evide
 - Simulation and synthetic data remain labelled and separate from real events.
 - Publication is a backend policy decision, not a model tool call.
 - Sensitive services follow least privilege and may remain disabled even when code exists.
+- Git repositories contain source and bounded synthetic fixtures, not datasets,
+  weights, private incident material, asset libraries or reproduction outputs.
 
 ## What this architecture does not claim
 

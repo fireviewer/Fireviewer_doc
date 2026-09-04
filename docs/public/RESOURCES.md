@@ -1,6 +1,6 @@
 # FireViewer resource status
 
-**Snapshot: 26 August 2026.**
+**Snapshot: 4 September 2026.**
 
 This page defines how FireViewer describes models, datasets, maps, simulations and retained historical artifacts. It prevents a resource from becoming "active" merely because a file, checkpoint or repository still exists.
 
@@ -18,13 +18,14 @@ This page defines how FireViewer describes models, datasets, maps, simulations a
 
 ## Public Hugging Face snapshot
 
-The authenticated FireViewer organisation inventory inspected on 26 August 2026 exposes **1 public model** and **8 public datasets**.
+The anonymous public FireViewer organisation inventory inspected on 4 September 2026 exposes **2 public models** and **7 public datasets**.
 
-### Public model
+### Public models
 
 | Resource | Role | FireViewer status |
 | --- | --- | --- |
 | [`fireviewer/rtdetr-v2-r50-fire-smoke`](https://huggingface.co/fireviewer/rtdetr-v2-r50-fire-smoke) | Visible smoke/flame object detection | **Public reference detector**; not publication authority and not automatically promoted into every runtime. |
+| [`fireviewer/dfine-large-fire-smoke-v7`](https://huggingface.co/fireviewer/dfine-large-fire-smoke-v7) | Visible smoke/flame object detection research | **Public research detector**; public visibility does not establish runtime promotion, scientific qualification or publication authority. |
 
 ### Public datasets and hosted artifacts
 
@@ -35,7 +36,6 @@ The authenticated FireViewer organisation inventory inspected on 26 August 2026 
 | [`dinov3-cross-view-fireviewer-v1-dataset`](https://huggingface.co/datasets/fireviewer/dinov3-cross-view-fireviewer-v1-dataset) | Cross-view registration/localisation research | Public research |
 | [`prithvi-burnscars-training-dataset-v1`](https://huggingface.co/datasets/fireviewer/prithvi-burnscars-training-dataset-v1) | Burn-scar segmentation materialisation | Public research; burn scar is not active fire |
 | [`firewarning-train-bundles-v1`](https://huggingface.co/datasets/fireviewer/firewarning-train-bundles-v1) | Historical reproducible training packages | Public archive / legacy training inputs |
-| [`firewarning-training-corpus`](https://huggingface.co/datasets/fireviewer/firewarning-training-corpus) | Critical evaluation/reference packages | Public evaluation |
 | [`dataset-from-simulations`](https://huggingface.co/datasets/fireviewer/dataset-from-simulations) | Omniverse-generated observations | Public synthetic |
 | [`simple-measured-scenes-v1`](https://huggingface.co/datasets/fireviewer/simple-measured-scenes-v1) | Versioned real measured geographic packages | **Measured map** |
 
@@ -71,6 +71,10 @@ These resources can support development and evaluation, but their outputs must r
 
 Private datasets can be retained when one or more upstream sources do not provide sufficiently explicit redistribution rights or when a campaign is intentionally research-only.
 
+`fireviewer/firewarning-training-corpus` is outside the anonymous public
+inventory and is classified as private/restricted evaluation material. Its
+absence from the public table is intentional.
+
 Identified examples include private DINOv3 campaign archives and the restricted SegFormer baseline dataset. Private access never broadens upstream redistribution rights.
 
 ## Legacy model archive
@@ -103,7 +107,7 @@ Resource status and pipeline status are different concepts:
 - a **measured map** can be valid geography without asserting any wildfire state;
 - a **synthetic** dataset can be high quality without becoming real-world evidence.
 
-As of 28 August 2026, the deterministic event reconstruction is Part.4 **3.3**, using the uncalibrated `part4-framed-v1` profile. This implementation update does not reclassify resources or refresh the dated Hub inventory above; resource visibility and pipeline qualification remain separate.
+As of 4 September 2026, the deterministic event reconstruction is Part.4 **3.3**, using the uncalibrated `part4-framed-v1` profile. Resource visibility and pipeline qualification remain separate.
 
 ## Update procedure
 

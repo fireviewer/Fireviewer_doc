@@ -76,6 +76,7 @@ Acquisition time, publication or product-availability time and FireViewer retrie
 | [Current status](docs/public/STATUS.md) | Dated implemented capabilities, guarded integrations and remaining acceptance gaps. |
 | [Resources](docs/public/RESOURCES.md) | Active, research, restricted, measured-map, synthetic and legacy resource classes. |
 | [Repository guide](docs/public/REPOSITORIES.md) | Repository roles, visibility and authoritative locations. |
+| [Repository hygiene](docs/public/REPOSITORY_HYGIENE.md) | Git payload boundary, synthetic incident example, cleanup and pre-publication gates. |
 | [Map Builder](docs/public/MAP_BUILDER.md) | Provider-neutral measured-map production, resumable workers and viewer compatibility. |
 | [Data governance](docs/public/DATA_GOVERNANCE.md) | Retention, provenance, rights, privacy and removal requests. |
 | [Governance](GOVERNANCE.md) | How FireViewer is currently run and how the future association relates to technical governance. |
