@@ -13,9 +13,9 @@ authoritative place for datasets, weights and produced geographic packages.
 - documentation, licences and provenance notices;
 - tiny source-authored geometry fixtures when a test cannot express the same
   contract as ordinary code;
-- one clearly labelled synthetic incident configuration example in
-  `fireviewer-unreal`, including JSON and GeoJSON inputs but no captured media,
-  generated result or real incident data.
+- one clearly labelled synthetic incident configuration example in the local,
+  unpublished `fireviewer-unreal` working tree, including JSON and GeoJSON
+  inputs but no captured media, generated result or real incident data.
 
 All examples must use invented identifiers, non-personal metadata and generic
 coordinates. An example is never eligible for incident publication.

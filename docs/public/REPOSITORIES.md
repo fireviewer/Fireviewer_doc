@@ -19,7 +19,7 @@ No README proves that a service is deployed, enabled, funded, scientifically qua
 | `fireviewer-backend` | Incident registry, durable evidence, review, audit, orchestration, Part.4 3.3 reconstruction/calibration and publication gates. | Private |
 | `fireviewer-frontend` | Contribution, human review, incident exploration and 2D/3D interfaces. | Private |
 | [`fireviewer-spatial`](https://github.com/fireviewer/fireviewer-spatial) | Deterministic measured-map production, portable spatial packages, observed temporal layers and validation contracts. | Public |
-| [`fireviewer-unreal`](https://github.com/fireviewer/fireviewer-unreal) | Source-only Unreal Engine consumer for portable map contracts, guarded map assembly and local visual review. It contains no Unreal content library, dataset, model or generated reproduction. | Public |
+| `fireviewer-unreal` | Source-only Unreal Engine consumer prepared locally for portable map contracts, guarded map assembly and local visual review. Its publication is paused; it contains no Unreal content library, dataset, model or generated reproduction. | Local only; not published |
 | [`fireviewer-sdg`](https://github.com/fireviewer/fireviewer-sdg) | Synthetic-data generation, simulation research and real/synthetic separation. | Public |
 | `models` | Small machine-readable/narrative registry of the public Hugging Face snapshot and resource-status policy; no weights or datasets. | Private |
 | [Organisation profile](https://github.com/fireviewer) | Public entry point and links to currently accessible resources. | Public |
@@ -75,8 +75,9 @@ Operational runbooks, provider secrets, private evidence, machine-specific paths
 Git repositories are source-only publication surfaces. Datasets, weights,
 checkpoints, imported 3D assets, measured-map packages and reproduction outputs
 remain outside Git. One fully synthetic incident configuration fixture is kept
-in `fireviewer-unreal` to document the JSON/GeoJSON contract without publishing
-real incident data. See [Repository hygiene](REPOSITORY_HYGIENE.md).
+in the local, unpublished `fireviewer-unreal` working tree to document the
+JSON/GeoJSON contract without publishing real incident data. See
+[Repository hygiene](REPOSITORY_HYGIENE.md).
 
 ## Community and governance
 

@@ -149,16 +149,17 @@ The provider-neutral Map Builder receives an immutable request, uses a caller-pr
 The browser package is tiled and can combine a lightweight far view, shared prototype namespaces, terrain tiles, placement payloads and a catalogue for progressive loading. Viewer derivatives do not replace authoritative geographic artifacts.
 
 `fireviewer-spatial` owns the portable export contracts. The source-only
-`fireviewer-unreal` project consumes those contracts for Unreal Engine assembly
-and local visual review. A guarded backend `aws_unreal` adapter can address a
+local, unpublished `fireviewer-unreal` working tree consumes those contracts
+for Unreal Engine assembly and local visual review. Its publication is paused.
+A guarded backend `aws_unreal` adapter can address a
 separately configured self-terminating Windows worker; it is disabled by
 default and keeps cloud identifiers out of source control.
 
-The Unreal repository includes one invented JSON/GeoJSON incident fixture for
-contract testing. It contains no real incident evidence, imported content
-library, dataset, model, generated map or reproduction output. Presence of
-these source paths does not establish packaged-build, cloud-runtime, visual or
-production acceptance.
+The local Unreal working tree includes one invented JSON/GeoJSON incident
+fixture for contract testing. It contains no real incident evidence, imported
+content library, dataset, model, generated map or reproduction output. Presence
+of these source paths does not establish packaged-build, cloud-runtime, visual
+or production acceptance.
 
 Real measured packages are hosted in `fireviewer/simple-measured-scenes-v1`. Their published paths are compatibility-sensitive because the viewer can consume them directly. Documentation cleanup must not reorganise those paths.
 

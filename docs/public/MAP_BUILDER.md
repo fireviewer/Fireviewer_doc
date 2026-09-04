@@ -64,12 +64,13 @@ The same engine can support an asset-free profile. An asset-free build keeps an 
 
 ## Unreal Engine source adapter
 
-The public Unreal path is split across three source repositories:
+The Unreal integration is split across two published source repositories and
+one local source tree whose publication is currently paused:
 
 - [`fireviewer-spatial`](https://github.com/fireviewer/fireviewer-spatial)
   defines portable map-export and asset-variant contracts;
-- [`fireviewer-unreal`](https://github.com/fireviewer/fireviewer-unreal)
-  consumes those contracts in an Unreal Engine project and commandlets;
+- the unpublished local `fireviewer-unreal` working tree consumes those
+  contracts in an Unreal Engine project and commandlets;
 - `fireviewer-backend` contains an optional `aws_unreal` job adapter for a
   separately configured, self-terminating Windows worker.
 
@@ -77,12 +78,12 @@ The backend adapter is disabled unless its explicit provider and deployment
 configuration are supplied. Cloud account, image, template, bucket and machine
 identifiers remain operator configuration and are not committed.
 
-`fireviewer-unreal` is deliberately source-only. Unreal content libraries,
-imported assets, datasets, models, built projects, generated maps, captures and
-reproduction outputs remain outside Git. The repository keeps one small,
-invented incident example as JSON/GeoJSON configuration so the public contract
-can be understood and tested without publishing a real incident or a produced
-scene.
+The local `fireviewer-unreal` tree is deliberately source-only. Unreal content
+libraries, imported assets, datasets, models, built projects, generated maps,
+captures and reproduction outputs remain outside Git. The repository keeps one
+small, invented incident example as JSON/GeoJSON configuration so the
+integration contract can be understood and tested without publishing a real
+incident or a produced scene.
 
 Source presence establishes an integration contract; it does not prove that an
 Unreal build, cloud worker, visual result or public deployment has been
