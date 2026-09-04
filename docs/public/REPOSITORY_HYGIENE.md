@@ -78,6 +78,12 @@ legacy 3D generator, loaders and fallback viewers were removed with the old
 generated payload. Retained compatibility paths are not evidence of active
 models or production maps; future cleanup must migrate their consumers first.
 
+These decisions describe the current branch tips. They do not claim that old
+objects have already been removed from reachable Git history. Purging a prior
+artifact from every branch and tag requires a separately approved, coordinated
+history rewrite and force-push; affected clones must then be replaced or
+carefully repaired.
+
 ## Pre-publication gates
 
 Before every publication lot:
