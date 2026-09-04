@@ -13,19 +13,25 @@ authoritative place for datasets, weights and produced geographic packages.
 - documentation, licences and provenance notices;
 - tiny source-authored geometry fixtures when a test cannot express the same
   contract as ordinary code;
+- one bounded, source-backed Die / Justin demonstration in the private
+  frontend/backend repositories, limited to authored JSON/GeoJSON,
+  presentation data and public citations needed to exercise the incident
+  interface; it contains no source media, private evidence, training material,
+  model output or produced scene;
 - one clearly labelled synthetic incident configuration example in the local,
   unpublished `fireviewer-unreal` working tree, including JSON and GeoJSON
   inputs but no captured media, generated result or real incident data.
 
-All examples must use invented identifiers, non-personal metadata and generic
-coordinates. An example is never eligible for incident publication.
+Synthetic examples use invented identifiers, non-personal metadata and generic
+coordinates. The retained source-backed demonstration is explicitly labelled
+as a historical demonstration and does not establish live operational status.
 
 ## Forbidden in Git
 
 - credentials, tokens, private keys, populated environment files or provider
   secrets;
-- personal information, private incident evidence or non-public infrastructure
-  identifiers;
+- personal information, private incident evidence, unapproved real-incident
+  corpora or non-public infrastructure identifiers;
 - datasets, source imagery, annotations, training corpora or cached downloads;
 - model weights, checkpoints, optimiser state or training outputs;
 - imported or converted 3D asset libraries, licensed binary content or engine
@@ -59,15 +65,18 @@ recovery and rights checks.
 
 The 4 September 2026 publication review removed or excluded Unreal editor/user
 settings, hard-coded local engine paths, local real-incident helper scripts,
-one-off reviewed catalogue admission code, old real-incident request examples
-and generated content/output roots. The ignored local artifact trees were not
-deleted.
+one-off reviewed catalogue admission code, old real-incident request examples,
+the ai-worker multi-incident media corpus and five additional packaged backend
+retrospectives. The ignored local artifact trees were not deleted. Die / Justin
+is the only retained source-backed incident demonstration; its source media and
+reproduction artifacts remain outside Git.
 
-Referenced `firewarning-*` identifiers, explicit legacy adapters, the frontend's
-declared legacy map fallback and `fireviewer-spatial/reference/map-builder-reference-v1`
-remain because they still have compatibility or validation consumers. They are
-not evidence of active models or production maps. Future cleanup must migrate
-those consumers first.
+Referenced `firewarning-*` identifiers, explicit legacy adapters and
+`fireviewer-spatial/reference/map-builder-reference-v1` remain because they
+still have compatibility or validation consumers. The frontend's unreferenced
+legacy 3D generator, loaders and fallback viewers were removed with the old
+generated payload. Retained compatibility paths are not evidence of active
+models or production maps; future cleanup must migrate their consumers first.
 
 ## Pre-publication gates
 
@@ -76,7 +85,7 @@ Before every publication lot:
 1. review the exact staged file list and diff;
 2. enumerate ignored-but-tracked files, payload extensions and large blobs;
 3. scan staged content for credentials, private identifiers, personal paths and
-   real incident material;
+   unapproved real-incident material;
 4. verify that configuration examples contain placeholders only;
 5. run the relevant unit, contract and documentation checks;
 6. perform a security review of changed source code;

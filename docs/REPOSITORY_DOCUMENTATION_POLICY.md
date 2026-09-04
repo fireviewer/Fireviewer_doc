@@ -29,8 +29,12 @@ name. Public documents must not contain secrets, private evidence, personal
 machine paths, provider identifiers, or unsupported performance claims.
 
 Git repositories are source publications. They may retain small synthetic
-contract/configuration fixtures, including one explicitly synthetic incident
-example, but must not contain datasets, model weights or checkpoints, source
+contract/configuration fixtures and one reviewed source-backed incident
+demonstration in the private frontend/backend repositories. The demonstration
+is limited to authored JSON/GeoJSON, presentation data and public citations;
+source media and reproduction artifacts remain outside Git. A separate
+synthetic incident fixture is kept only in the unpublished Unreal working tree.
+Repositories must not contain datasets, model weights or checkpoints, source
 imagery, imported 3D asset libraries, measured-map packages, reproduction
 outputs, renders, caches or build products. See
 [`docs/public/REPOSITORY_HYGIENE.md`](public/REPOSITORY_HYGIENE.md) for the

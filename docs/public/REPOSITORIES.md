@@ -74,9 +74,12 @@ Operational runbooks, provider secrets, private evidence, machine-specific paths
 
 Git repositories are source-only publication surfaces. Datasets, weights,
 checkpoints, imported 3D assets, measured-map packages and reproduction outputs
-remain outside Git. One fully synthetic incident configuration fixture is kept
-in the local, unpublished `fireviewer-unreal` working tree to document the
-JSON/GeoJSON contract without publishing real incident data. See
+remain outside Git. The private frontend/backend retain one bounded,
+source-backed Die / Justin demonstration made from authored JSON/GeoJSON and
+public citations, without source media or reproduction outputs. No other
+packaged retrospective or multi-incident corpus is retained. A separate fully
+synthetic incident configuration fixture remains in the local, unpublished
+`fireviewer-unreal` working tree to document the JSON/GeoJSON contract. See
 [Repository hygiene](REPOSITORY_HYGIENE.md).
 
 ## Community and governance
