@@ -27,6 +27,20 @@ The first goal was simply to make fragmented information easier to understand: o
 
 As the project developed, the problem became broader: preserving not only a final representation of an incident, but the evidence, uncertainty and processing history needed to understand how that representation was obtained.
 
+## Published incident atlas
+
+The [incident site](https://fireviewer.vercel.app/incendies) provides eleven
+published terrain views, eight with incident geometry, as verified on
+6 September 2026. Die / Justin includes a 59-day documentary sequence, dated
+sources and ground-photo markers across its plan and relief views.
+
+![Progress of the FireViewer web map interface](docs/public/images/web-maps-2026-09-06/viewer-progress.png)
+
+See [Web atlas: visual progress and published coverage](docs/public/WEB_MAPS.md)
+for a capture of every territory, source dates and remaining coverage limits.
+This documentary release does not qualify the separate automatic reconstruction
+pipeline.
+
 ## System at a glance
 
 ```mermaid
@@ -78,6 +92,7 @@ Acquisition time, publication or product-availability time and FireViewer retrie
 | [Repository guide](docs/public/REPOSITORIES.md) | Repository roles, visibility and authoritative locations. |
 | [Repository hygiene](docs/public/REPOSITORY_HYGIENE.md) | Git payload boundary, synthetic incident example, cleanup and pre-publication gates. |
 | [Map Builder](docs/public/MAP_BUILDER.md) | Provider-neutral measured-map production, resumable workers and viewer compatibility. |
+| [Web atlas](docs/public/WEB_MAPS.md) | Visual progress, eleven map captures and published incident-layer coverage. |
 | [Data governance](docs/public/DATA_GOVERNANCE.md) | Retention, provenance, rights, privacy and removal requests. |
 | [Governance](GOVERNANCE.md) | How FireViewer is currently run and how the future association relates to technical governance. |
 | [Contributing](https://github.com/fireviewer/.github/blob/main/CONTRIBUTING.md) | How to contribute and which project boundaries matter when changing the system. |

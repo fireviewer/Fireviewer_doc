@@ -45,6 +45,10 @@ docs/**
 !docs/public/STATUS.md
 !docs/public/REPOSITORIES.md
 !docs/public/REPOSITORY_HYGIENE.md
+!docs/public/WEB_MAPS.md
+!docs/public/images/
+!docs/public/images/web-maps-2026-09-06/
+!docs/public/images/web-maps-2026-09-06/*.png
 !docs/FUNDING_BRIEF.md
 !docs/REPOSITORY_DOCUMENTATION_POLICY.md
 !docs/LICENSING.md

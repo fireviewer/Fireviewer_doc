@@ -32,11 +32,15 @@ Git repositories are source publications. They may retain small synthetic
 contract/configuration fixtures and one reviewed source-backed incident
 demonstration in the private frontend/backend repositories. The demonstration
 is limited to authored JSON/GeoJSON, presentation data and public citations;
-source media and reproduction artifacts remain outside Git. A separate
+source media and reproduction artifacts remain outside Git. The owner-authorised
+September 2026 incident-site release additionally includes bounded public web
+presentation data (cited JSON/GeoJSON and small attributed display derivatives)
+needed by the deployed frontend. The requested atlas screenshots are a selected
+documentation exception, not permission to publish raw capture archives. A separate
 synthetic incident fixture is kept only in the unpublished Unreal working tree.
 Repositories must not contain datasets, model weights or checkpoints, source
 imagery, imported 3D asset libraries, measured-map packages, reproduction
-outputs, renders, caches or build products. See
+outputs, unrelated renders, caches or build products. See
 [`docs/public/REPOSITORY_HYGIENE.md`](public/REPOSITORY_HYGIENE.md) for the
 complete boundary and pre-publication gates.
 

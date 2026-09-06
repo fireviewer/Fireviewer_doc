@@ -13,6 +13,7 @@ Project governance and community policies are linked from this index but remain 
 - [Daily reconstruction and isolated evaluation](RECONSTRUCTION.md)
 - [Data governance and privacy](DATA_GOVERNANCE.md)
 - [Map Builder](MAP_BUILDER.md)
+- [Web atlas: visual progress and published coverage](WEB_MAPS.md)
 - [Resource status](RESOURCES.md)
 - [Current implementation status](STATUS.md)
 - [Repository and publication guide](REPOSITORIES.md)

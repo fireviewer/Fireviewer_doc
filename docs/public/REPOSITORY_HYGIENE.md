@@ -11,6 +11,11 @@ authoritative place for datasets, weights and produced geographic packages.
 - portable configuration templates with empty or example-only values;
 - schemas and small machine-readable contract fixtures;
 - documentation, licences and provenance notices;
+- the owner-authorised September 2026 incident web release: bounded static
+  documentary JSON/GeoJSON, public citations and attributed display derivatives
+  required by the frontend; this does not admit the underlying source archives;
+- the selected public atlas screenshots explicitly requested for documentation,
+  with attribution, capture context and coverage limits;
 - tiny source-authored geometry fixtures when a test cannot express the same
   contract as ordinary code;
 - one bounded, source-backed Die / Justin demonstration in the private
@@ -36,8 +41,8 @@ as a historical demonstration and does not establish live operational status.
 - model weights, checkpoints, optimiser state or training outputs;
 - imported or converted 3D asset libraries, licensed binary content or engine
   packages;
-- measured-map productions, reproduction packs, render outputs, captures,
-  generated catalogues or validation results;
+- measured-map productions, reproduction packs, raw render/capture archives,
+  generated production catalogues or private validation results;
 - build products, caches, scratch directories and machine-specific settings.
 
 A public URL does not by itself grant redistribution rights. Third-party inputs
@@ -69,7 +74,11 @@ one-off reviewed catalogue admission code, old real-incident request examples,
 the ai-worker multi-incident media corpus and five additional packaged backend
 retrospectives. The ignored local artifact trees were not deleted. Die / Justin
 is the only retained source-backed incident demonstration; its source media and
-reproduction artifacts remain outside Git.
+reproduction artifacts remain outside Git. The subsequent incident-site work
+authorised a static public web release and selected documentation screenshots,
+as described above and in the [web atlas gallery](WEB_MAPS.md). This bounded
+exception does not move measured terrain packages, private evidence or raw
+satellite/source archives into Git.
 
 Referenced `firewarning-*` identifiers, explicit legacy adapters and
 `fireviewer-spatial/reference/map-builder-reference-v1` remain because they

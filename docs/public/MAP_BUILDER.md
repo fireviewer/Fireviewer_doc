@@ -107,6 +107,12 @@ A successful synthetic test, container run or cloud replay does not prove every 
 
 ## Measured-map publication
 
+The incident website also consumes **immutable web terrain releases** through a
+public catalogue. On 6 September 2026, all eleven registered territories loaded
+in the public browser. Their terrain releases are distinct from the dated
+incident layers applied by the frontend. See the [web atlas gallery](WEB_MAPS.md)
+for captures, interface progress and the eight territories with incident geometry.
+
 Real measured packages are hosted in:
 
 [`fireviewer/simple-measured-scenes-v1`](https://huggingface.co/datasets/fireviewer/simple-measured-scenes-v1)
