@@ -343,3 +343,51 @@ including completed IGN background loading in 2D and no JavaScript exceptions.
 | ![Charcoal ground and flame symbols](images/web-maps-2026-09-08/natural-fire-desktop.png) | ![Plan with sourced activity](images/web-maps-2026-09-08/natural-fire-plan.png) | ![Mobile natural view](images/web-maps-2026-09-08/natural-fire-mobile.png) |
 
 Flames move in the live map; these captures show individual animation frames.
+
+
+## Daily perimeter selection and photo visibility — 8 September 2026
+
+Old public bookmarks pointing at an isolated CEMS product now resolve to the
+consolidated daily reconstruction for the selected day, when available. The
+original product remains explicitly selectable with `produit=source` and from
+the dated-products selector. Days without new geometry retain the last daily
+reconstruction or observed extent; retained activity is removed.
+
+Natural mode materialises the entire cumulative perimeter as charcoal ground
+without canopy, including interior islands as a display convention. Detailed
+affected fragments remain separate in Altitude. Perimeter strokes are drawn
+above the terrain in 3D, in a separate non-animated canvas. These are existing exterior rings, simplified by 12 metres
+for display, not a newly computed hull. Separate geographic components remain
+separate. No connecting burned strip or new source perimeter has been invented.
+The 2D source rings use a stronger stroke. Altitude styling is unchanged.
+
+Located photo markers now show a thumbnail and an explicit photo count. The
+same-sector group opens both dated ground photos with next/previous navigation.
+Read-only checks of the active production database found no agent media or
+incident spatial markers; the public Die response has an empty gallery and no
+evidence projections. The static atlas collection still contains four photos,
+only two of which have a documented approximate photographed sector. No extra
+photo coordinates were invented, and no private media were published. Locating
+additional processed photos still requires identifying their actual storage.
+
+Thirteen focused tests and the production build passed. Local Chrome desktop
+and iPhone 13 touch/DPR emulation passed the total 21 July footprint (one outer
+ring), its separate no-activity state, consolidated-bookmark selection,
+visible boundaries, photo opening and navigation, zoom, Natural/Altitude,
+2D/3D, reduced motion and the no-activity state. Physical phones are untested.
+
+
+The total-footprint correction is frontend `82be2ee`, deployment
+`dpl_47uoS5PEGuQLw7jew9GwxLkv7fEi` (production, incident site only). The 21 July
+view uses the existing 17 July total perimeter: one outer polygon, rather than
+932 interior affected fragments. The ground/canopy rendering now follows that
+total polygon. Source geometry, footprint dates and area calculations are unchanged.
+
+
+The total-perimeter and photo interaction checks also passed against production
+in desktop Chrome and mobile touch/DPR emulation, with the complete IGN 2D
+background loaded and no JavaScript exceptions.
+
+| Total perimeter, 21 July — 3D | Total perimeter — 2D | Mobile 3D |
+| --- | --- | --- |
+| ![Total perimeter in natural relief](images/web-maps-2026-09-08/total-perimeter-desktop.png) | ![Total perimeter in plan](images/web-maps-2026-09-08/total-perimeter-plan.png) | ![Total perimeter on mobile](images/web-maps-2026-09-08/total-perimeter-mobile.png) |
