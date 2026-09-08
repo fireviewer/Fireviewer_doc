@@ -428,37 +428,52 @@ shown before 6 July or before their provider period has ended. They do not
 change the original EFFIS single-sector assessment or claim a new measured
 area. See the [prefecture bulletin](https://www.pyrenees-orientales.gouv.fr/index.php/Actualites/Communique-de-presse/Annee-2026/Juillet-2026/Incendie-de-Trevillach-Point-de-situation-n-8-le-06.07.26.-a-13h00).
 
-The documentary exporter and compactor now both finalize the natural footprints
-as a mandatory production step, including resumed exports. Supplemental public
-geometry and its source hashes are versioned in the backend catalogue
-`tools/data/natural-footprint-supplements.json`; Trevillach no longer depends on
-manually supplied local receipt paths. To rebuild only the derived layers, run
-`python tools/build_natural_footprints.py <frontend/public/cartography>`.
-Deploy the indexes and all referenced assets together.
+Perimeter production is independent of Map Builder. The terrain builder creates
+terrain/background assets; the perimeter worker reads immutable documentary
+observations and publishes only dated incident layers. Neither the documentary
+exporter nor its compactor triggers perimeter production.
 
-The profile `natural-total-burned-ground-v1` supplies the existing renderer with
-cumulative exterior geometry: burned ground, canopy cutaway and exterior boundary.
-Flames remain a separate observed-activity layer and are not carried forward.
-Altitude rendering is unchanged. Native daily reconstruction/base geometry graphs
-are preserved byte for byte. The producer does not create a new observation on a
-day without one and does not join geographically separate sectors.
+Run the independent worker from the backend:
 
-`npm run build` now runs the mandatory `validate:perimeters` publication gate.
-It rejects missing total footprints, stale source hashes, altered files and future
-supplemental observations. The backend also writes
-`natural-footprint-build-receipt.json` with the output profile and index hashes.
-The producer must run in an intermediate export; a failed export is not publishable.
-Do not replace enriched daily chronologies with a raw documentary export.
+```
+python tools/build_daily_perimeters.py --cartography <frontend/public/cartography> --output <frontend/public/perimeters>
+```
 
-Pipeline verification on 8 September: 11 cases, 87 maps, 60 native footprints and
-27 supplementary layers. All 20 previously published derived assets regenerate
-byte for byte; the 7 additional layers cover Die source products. All existing
-source snapshots remain unchanged. A full isolated recompaction/finalization
-passed the frontend publication gate. Seventeen focused Python tests, three
-publication-gate tests, eleven frontend contract tests and one integration test
-through the actual atlas parser/frame adapter passed, as did the production build.
-These are pipeline/data checks; the browser captures below remain the visual
-reference from the preceding release, whose renderer is unchanged.
+The input and output directories must be separate. Source cartography is read-only;
+no terrain is rebuilt. The worker uses the versioned supplemental geometry catalogue
+`tools/data/natural-footprint-supplements.json` and the existing rendering profile
+`natural-total-burned-ground-v1`. Its output can be regenerated and published without
+running Map Builder. For an ongoing incident, an explicit `--through CASE=YYYY-MM-DD`
+extends that incident's daily publication horizon. This is a worker command, not an
+installed scheduler or a new observation-acquisition service.
+
+Each case has its own `/perimeters/<case>/index.json` and one immutable
+`day-<sha256>.json` product per calendar day. Each product identifies its source,
+source date, rendering profile and geometry reference. Dated products reuse immutable
+geometry where appropriate, avoiding large duplicate downloads on mobile. Every
+new geometry or source correction produces a new content-addressed revision;
+older files remain intact. New activity is never inferred from a changed filename.
+
+The atlas loads the independent daily product when the timeline date changes,
+then resolves its geometry for 2D and 3D. It distinguishes observed geometry,
+retrospective reconstruction, period assessment, carried-forward contour and an
+unavailable initial contour. Without a new polygon, the last known contour is held
+with its source date; flames are not carried forward. The calendar also includes
+surveillance dates and does not claim that all dossier days were active fire days.
+Burned ground, canopy cutaway, exterior boundary and Altitude styling are unchanged.
+
+`npm run build` checks both publications together. Missing calendar days, stale
+source snapshot fingerprints, incorrect daily geometry links and altered assets
+block publication. Regenerate the perimeter series after modifying source products;
+do not rerun Map Builder. Publish each perimeter index with all its referenced files.
+
+Verification on 8 September: 240 dated products for 11 cases, including 59 for
+Die/Justin. 205 dates resolve to geometry; 35 initial dates still have no eligible
+cartographic observation and are explicitly marked unavailable. These are not
+240 newly measured perimeters. All available dates were loaded through the actual
+atlas loader and frame adapter. The worker's tests prove source-read-only behavior,
+continuous daily output, deterministic reruns and separate output directories.
+Existing source products and the established rendering remain unchanged.
 
 Seventeen focused frontend tests, two focused generator tests and the
 TypeScript/production build passed. The generator tests cover cumulative
