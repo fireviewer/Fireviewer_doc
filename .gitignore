@@ -56,3 +56,7 @@ templates/**
 !templates/organization-profile/
 !templates/organization-profile/github-metadata.yaml
 !templates/storage-layout.local.example.json
+
+# Dated public map verification screenshots.
+!docs/public/images/web-maps-2026-09-08/
+!docs/public/images/web-maps-2026-09-08/*.png

@@ -1,17 +1,65 @@
 # Web atlas: visual progress and published coverage
 
-**Verified on 6 September 2026 · [Open the incident site](https://fireviewer.vercel.app/incendies).**
+**Verified on 8 September 2026 · [Open the incident site](https://fireviewer.vercel.app/incendies).**
 
 The incident atlas connects eleven French territories to their dossiers. Each
-territory has a published terrain package that loaded in the browser during this
-review. Eight also have incident geometry; three provide geographic context only.
+territory has a published terrain package, verified in the 6 September browser
+review below. All eleven now include incident geometry and a checked chronology archive.
 
-## Viewer progress
+## Continuous 2D coverage: 8 September update
+
+![Before and after: Gros Bessillon no longer exceeds its 2D basemap](images/web-maps-2026-09-08/plan-progress.png)
+
+The previous plan view reused the bounded 3D ground artwork, leaving the outer
+perimeter on an empty background. The 2D view now requests a continuous
+[IGN Plan image](https://data.geopf.fr/wms-r?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities)
+for the visible extent, reprojected to Lambert-93. Pan, zoom and the full-extent
+control retain geographic context beyond the 3D package. The dated incident
+geometry is unchanged. The Natural 3D background is sky blue; Altitude is unchanged.
+
+All eleven public 2D maps passed desktop, mobile, pan, zoom and full-extent
+checks in Chrome. IGN imagery is an online dependency; a failed request exposes
+a compact retry control, also tested locally. A continuous basemap does not
+establish continuous observations of the fire.
+
+![One production 2D screenshot for each of the eleven incidents](images/web-maps-2026-09-08/plans-overview.png)
+
+Full-size 2D captures:
+
+- [die-justin](images/web-maps-2026-09-08/die-justin-desktop.png)
+- [bousses](images/web-maps-2026-09-08/bousses-desktop.png)
+- [benonces](images/web-maps-2026-09-08/benonces-desktop.png)
+- [trevillach](images/web-maps-2026-09-08/trevillach-desktop.png)
+- [fontainebleau](images/web-maps-2026-09-08/fontainebleau-desktop.png)
+- [biscarrosse](images/web-maps-2026-09-08/biscarrosse-desktop.png)
+- [claps](images/web-maps-2026-09-08/claps-desktop.png)
+- [luglon](images/web-maps-2026-09-08/luglon-desktop.png)
+- [saumos](images/web-maps-2026-09-08/saumos-desktop.png)
+- [gros-bessillon](images/web-maps-2026-09-08/gros-bessillon-desktop.png)
+- [cagnano](images/web-maps-2026-09-08/cagnano-desktop.png)
+
+Mobile: [Gros Bessillon](images/web-maps-2026-09-08/gros-bessillon-mobile.png)
+and [Saumos](images/web-maps-2026-09-08/saumos-mobile.png).
+
+## Dossier enrichment
+
+The owner-authorised, append-only publication adds **22 facts, 46 chronology
+events and 37 official links** across the eleven dossiers. Their combined public
+contents now include **104 facts and 154 sourced chronology events**. Sources
+include prefectures, ONF, departmental authorities and published air-quality
+bulletins. Existing incident dates, statuses, reference coordinates and human
+review records are preserved. This publication is not an independent human review.
+
+Saumos, Gros Bessillon and Cagnano now have EFFIS period assessments. These are
+period summaries, not measured daily perimeters. Saumos CEMS export work is
+not included in this verified release; no unvalidated large geometry is served.
+
+## Viewer progress: 6 September archive
 
 ![Earlier interface, current natural relief, altitude, plan view and mobile interface](images/web-maps-2026-09-06/viewer-progress.png)
 
 The first panel is an archived development capture. The remaining panels are
-fresh captures of the public site. Selected observation dates are shown in the
+captures of the public site from 6 September. Selected observation dates are shown in the
 image: this is an interface comparison, not a reconstruction of fire spread.
 
 - A compact header and daily time control give the terrain more space. The
@@ -26,11 +74,11 @@ image: this is an interface comparison, not a reconstruction of fire spread.
 - The chronology can fall back to its checked, published archive when the
   incident API is unavailable.
 
-## A capture of every published territory
+## Natural 3D gallery: 6 September archive
 
 ![Eleven FireViewer territories with one real natural-view screenshot per map](images/web-maps-2026-09-06/territories-overview.png)
 
-All captures below use natural 3D at **1376 × 860**. Dates identify the selected
+The archived captures below use natural 3D at **1376 × 860**. Dates identify the selected
 source product, not the screenshot date or a current emergency state. EFFIS
 period assessments are not independent daily observations.
 
@@ -44,14 +92,14 @@ period assessments are not independent daily observations.
 | Biscarrosse, Landes | 4 references | EFFIS period assessment · 29 July | [PNG](images/web-maps-2026-09-06/biscarrosse-natural.png) | [Open](https://fireviewer.vercel.app/atlas/biscarrosse) |
 | Massif du Claps · Bellegarde-en-Diois, Drôme | 1 reference | EFFIS period assessment · 9 August | [PNG](images/web-maps-2026-09-06/claps-natural.png) | [Open](https://fireviewer.vercel.app/atlas/claps) |
 | Luglon, Landes | 1 reference | EFFIS period assessment · 17 August | [PNG](images/web-maps-2026-09-06/luglon-natural.png) | [Open](https://fireviewer.vercel.app/atlas/luglon) |
-| Saumos, Gironde | No incident geometry published | Terrain only | [PNG](images/web-maps-2026-09-06/saumos-natural.png) | [Open](https://fireviewer.vercel.app/atlas/saumos) |
-| Gros Bessillon · Pontevès, Var | No incident geometry published | Terrain only | [PNG](images/web-maps-2026-09-06/gros-bessillon-natural.png) | [Open](https://fireviewer.vercel.app/atlas/gros-bessillon) |
-| Cagnano · Cap Corse, Haute-Corse | No incident geometry published | Terrain only | [PNG](images/web-maps-2026-09-06/cagnano-natural.png) | [Open](https://fireviewer.vercel.app/atlas/cagnano) |
+| Saumos, Gironde | 1 EFFIS reference now published | Archived terrain-only capture | [PNG](images/web-maps-2026-09-06/saumos-natural.png) | [Open](https://fireviewer.vercel.app/atlas/saumos) |
+| Gros Bessillon · Pontevès, Var | 1 EFFIS reference now published | Archived terrain-only capture | [PNG](images/web-maps-2026-09-06/gros-bessillon-natural.png) | [Open](https://fireviewer.vercel.app/atlas/gros-bessillon) |
+| Cagnano · Cap Corse, Haute-Corse | 1 EFFIS reference now published | Archived terrain-only capture | [PNG](images/web-maps-2026-09-06/cagnano-natural.png) | [Open](https://fireviewer.vercel.app/atlas/cagnano) |
 
 ## What the daily sequence establishes
 
 Die / Justin has **59 dated documentary reconstructions, from 24 June to
-21 August 2026**, and 35 sourced chronology entries. Its eight original CEMS,
+21 August 2026**, and 37 sourced chronology entries. Its eight original CEMS,
 EFFIS and Humida source products remain separate. The cross-source work includes
 NASA FIRMS detections and Sentinel-2 acquisitions, with source dates and
 retrospective constraints retained.
@@ -68,8 +116,10 @@ or establish daily completeness for the other ten incidents.
 
 ## Capture provenance and rights
 
-Current screenshots were taken directly from `fireviewer.vercel.app` in Chrome
-on 6 September 2026. All eleven terrain views reached their ready state without
+The 6 September screenshots were taken directly from `fireviewer.vercel.app` in Chrome.
+The new 2D screenshots were captured from the same production site on 8 September
+at 1376 � 860 (desktop) and 390 � 844 (mobile). The before image is the user-supplied
+Gros Bessillon capture. All boards arrange real screenshots without altering map content. All eleven terrain views reached their ready state without
 JavaScript exceptions. Die also passed the altitude/plan switches and a
 390 × 844 mobile capture without horizontal overflow. This establishes the
 captured browser state, not all devices or scientific accuracy.
