@@ -428,12 +428,37 @@ shown before 6 July or before their provider period has ended. They do not
 change the original EFFIS single-sector assessment or claim a new measured
 area. See the [prefecture bulletin](https://www.pyrenees-orientales.gouv.fr/index.php/Actualites/Communique-de-presse/Annee-2026/Juillet-2026/Incendie-de-Trevillach-Point-de-situation-n-8-le-06.07.26.-a-13h00).
 
-Rebuild from the verified public archives with backend
-`tools/build_natural_footprints.py <frontend/public/cartography>
---effis-receipt <effis-france-summer-2026.receipt.json>
---trevillach-scope-receipt <completion-trevillach-cp8.receipt.json>`.
-The generator checks archive hashes before combining geometry. Deploy the
-resulting indexes and referenced `natural-<sha256>.json` files together.
+The documentary exporter and compactor now both finalize the natural footprints
+as a mandatory production step, including resumed exports. Supplemental public
+geometry and its source hashes are versioned in the backend catalogue
+`tools/data/natural-footprint-supplements.json`; Trevillach no longer depends on
+manually supplied local receipt paths. To rebuild only the derived layers, run
+`python tools/build_natural_footprints.py <frontend/public/cartography>`.
+Deploy the indexes and all referenced assets together.
+
+The profile `natural-total-burned-ground-v1` supplies the existing renderer with
+cumulative exterior geometry: burned ground, canopy cutaway and exterior boundary.
+Flames remain a separate observed-activity layer and are not carried forward.
+Altitude rendering is unchanged. Native daily reconstruction/base geometry graphs
+are preserved byte for byte. The producer does not create a new observation on a
+day without one and does not join geographically separate sectors.
+
+`npm run build` now runs the mandatory `validate:perimeters` publication gate.
+It rejects missing total footprints, stale source hashes, altered files and future
+supplemental observations. The backend also writes
+`natural-footprint-build-receipt.json` with the output profile and index hashes.
+The producer must run in an intermediate export; a failed export is not publishable.
+Do not replace enriched daily chronologies with a raw documentary export.
+
+Pipeline verification on 8 September: 11 cases, 87 maps, 60 native footprints and
+27 supplementary layers. All 20 previously published derived assets regenerate
+byte for byte; the 7 additional layers cover Die source products. All existing
+source snapshots remain unchanged. A full isolated recompaction/finalization
+passed the frontend publication gate. Seventeen focused Python tests, three
+publication-gate tests, eleven frontend contract tests and one integration test
+through the actual atlas parser/frame adapter passed, as did the production build.
+These are pipeline/data checks; the browser captures below remain the visual
+reference from the preceding release, whose renderer is unchanged.
 
 Seventeen focused frontend tests, two focused generator tests and the
 TypeScript/production build passed. The generator tests cover cumulative
