@@ -6,6 +6,10 @@
 
 
 
+Latest natural rendering: **cumulative total footprints across all eleven cases**,
+with source provenance, unchanged Altitude rendering and production desktop/mobile
+checks. See the [release evidence and captures](#cumulative-natural-footprints-for-all-eleven-cases--8-september-2026).
+
 The incident atlas connects eleven French territories to their dossiers. Each
 
 territory has a published terrain package, verified in the 6 September browser
@@ -391,3 +395,73 @@ background loaded and no JavaScript exceptions.
 | Total perimeter, 21 July — 3D | Total perimeter — 2D | Mobile 3D |
 | --- | --- | --- |
 | ![Total perimeter in natural relief](images/web-maps-2026-09-08/total-perimeter-desktop.png) | ![Total perimeter in plan](images/web-maps-2026-09-08/total-perimeter-plan.png) | ![Total perimeter on mobile](images/web-maps-2026-09-08/total-perimeter-mobile.png) |
+
+
+## Cumulative natural footprints for all eleven cases — 8 September 2026
+
+Frontend `dbedee9` and generator `e1793d3` extend the natural total-footprint
+rendering to every published case. Production deployment
+`dpl_84kgmk1pmeKqJ5CghKqqLtpcXMs7` is READY on fireviewer.vercel.app.
+The association site is outside this release.
+
+A later CEMS damage product previously replaced the visible footprint with
+many separate damage fragments. Twenty independent `naturalFootprints` assets
+now combine the exterior rings of the available historical burned polygons up
+to each product date. Interior islands are filled for this display convention;
+there is no convex hull, spatial buffer, expansion from activity points or use
+of future observations. Separate geographic sectors remain separate. Tiny
+components keep their fill; their boundary stroke appears when large enough
+at the current zoom. The detailed Altitude rendering is unchanged.
+
+Die keeps its existing published daily reconstruction and total-perimeter
+products. Original source files, hashes, product references and reported areas
+remain unchanged in every case. `produit=source` explicitly restores the
+isolated source product. The natural footprint has its own integrity-checked
+download with product IDs, source dates and provenance in the Sources panel.
+
+For Trevillach, EFFIS records 558914, 558913, 558911 and 558923 complete the
+previously attached Montalba sector with Rodes, Vinca and Ille-sur-Tet sectors.
+The association uses the prefecture's 6 July bulletin and overlap with the
+existing CEMS damage coverage. This scope document and the EFFIS archive are
+hash-pinned in the footprint provenance. The supplemental records are not
+shown before 6 July or before their provider period has ended. They do not
+change the original EFFIS single-sector assessment or claim a new measured
+area. See the [prefecture bulletin](https://www.pyrenees-orientales.gouv.fr/index.php/Actualites/Communique-de-presse/Annee-2026/Juillet-2026/Incendie-de-Trevillach-Point-de-situation-n-8-le-06.07.26.-a-13h00).
+
+Rebuild from the verified public archives with backend
+`tools/build_natural_footprints.py <frontend/public/cartography>
+--effis-receipt <effis-france-summer-2026.receipt.json>
+--trevillach-scope-receipt <completion-trevillach-cp8.receipt.json>`.
+The generator checks archive hashes before combining geometry. Deploy the
+resulting indexes and referenced `natural-<sha256>.json` files together.
+
+Seventeen focused frontend tests, two focused generator tests and the
+TypeScript/production build passed. The generator tests cover cumulative
+union, retained source holes, separate sectors and exclusion of future data.
+All twenty published footprint hashes and the eleven live indexes were checked.
+All 22 production browser runs passed (11 cases, desktop and mobile): complete
+IGN 2D loading, total-footprint canopy cutaway, zoom, Natural/Altitude and
+2D/3D switches, terrain/camera audits, and zero JavaScript exceptions. Die photo
+opening and next-photo navigation also passed on both formats.
+
+The mobile checks use Chrome with touch/DPR emulation, not a physical phone.
+The captures show selected dossier dates; a later calendar day can retain an
+older perimeter, whose source date is displayed on the map.
+
+![All eleven cumulative natural maps](images/web-maps-2026-09-08/all-cases/natural-overview.jpg)
+
+![Fontainebleau before and after the cumulative footprint correction](images/web-maps-2026-09-08/all-cases/natural-progress.jpg)
+
+| Case | Natural 3D | Complete 2D | Mobile 3D |
+| --- | --- | --- | --- |
+| Die / Justin | ![Die / Justin 3D](images/web-maps-2026-09-08/all-cases/die-justin-desktop-3d.jpg) | ![Die / Justin 2D](images/web-maps-2026-09-08/all-cases/die-justin-desktop-2d.jpg) | ![Die / Justin mobile](images/web-maps-2026-09-08/all-cases/die-justin-mobile-3d.jpg) |
+| Fontainebleau | ![Fontainebleau 3D](images/web-maps-2026-09-08/all-cases/fontainebleau-desktop-3d.jpg) | ![Fontainebleau 2D](images/web-maps-2026-09-08/all-cases/fontainebleau-desktop-2d.jpg) | ![Fontainebleau mobile](images/web-maps-2026-09-08/all-cases/fontainebleau-mobile-3d.jpg) |
+| Trevillach | ![Trevillach 3D](images/web-maps-2026-09-08/all-cases/trevillach-desktop-3d.jpg) | ![Trevillach 2D](images/web-maps-2026-09-08/all-cases/trevillach-desktop-2d.jpg) | ![Trevillach mobile](images/web-maps-2026-09-08/all-cases/trevillach-mobile-3d.jpg) |
+| Gros Bessillon | ![Gros Bessillon 3D](images/web-maps-2026-09-08/all-cases/gros-bessillon-desktop-3d.jpg) | ![Gros Bessillon 2D](images/web-maps-2026-09-08/all-cases/gros-bessillon-desktop-2d.jpg) | ![Gros Bessillon mobile](images/web-maps-2026-09-08/all-cases/gros-bessillon-mobile-3d.jpg) |
+| Biscarrosse | ![Biscarrosse 3D](images/web-maps-2026-09-08/all-cases/biscarrosse-desktop-3d.jpg) | ![Biscarrosse 2D](images/web-maps-2026-09-08/all-cases/biscarrosse-desktop-2d.jpg) | ![Biscarrosse mobile](images/web-maps-2026-09-08/all-cases/biscarrosse-mobile-3d.jpg) |
+| Bousses | ![Bousses 3D](images/web-maps-2026-09-08/all-cases/bousses-desktop-3d.jpg) | ![Bousses 2D](images/web-maps-2026-09-08/all-cases/bousses-desktop-2d.jpg) | ![Bousses mobile](images/web-maps-2026-09-08/all-cases/bousses-mobile-3d.jpg) |
+| Benonces | ![Benonces 3D](images/web-maps-2026-09-08/all-cases/benonces-desktop-3d.jpg) | ![Benonces 2D](images/web-maps-2026-09-08/all-cases/benonces-desktop-2d.jpg) | ![Benonces mobile](images/web-maps-2026-09-08/all-cases/benonces-mobile-3d.jpg) |
+| Claps | ![Claps 3D](images/web-maps-2026-09-08/all-cases/claps-desktop-3d.jpg) | ![Claps 2D](images/web-maps-2026-09-08/all-cases/claps-desktop-2d.jpg) | ![Claps mobile](images/web-maps-2026-09-08/all-cases/claps-mobile-3d.jpg) |
+| Luglon | ![Luglon 3D](images/web-maps-2026-09-08/all-cases/luglon-desktop-3d.jpg) | ![Luglon 2D](images/web-maps-2026-09-08/all-cases/luglon-desktop-2d.jpg) | ![Luglon mobile](images/web-maps-2026-09-08/all-cases/luglon-mobile-3d.jpg) |
+| Saumos | ![Saumos 3D](images/web-maps-2026-09-08/all-cases/saumos-desktop-3d.jpg) | ![Saumos 2D](images/web-maps-2026-09-08/all-cases/saumos-desktop-2d.jpg) | ![Saumos mobile](images/web-maps-2026-09-08/all-cases/saumos-mobile-3d.jpg) |
+| Cagnano | ![Cagnano 3D](images/web-maps-2026-09-08/all-cases/cagnano-desktop-3d.jpg) | ![Cagnano 2D](images/web-maps-2026-09-08/all-cases/cagnano-desktop-2d.jpg) | ![Cagnano mobile](images/web-maps-2026-09-08/all-cases/cagnano-mobile-3d.jpg) |

@@ -60,3 +60,6 @@ templates/**
 # Dated public map verification screenshots.
 !docs/public/images/web-maps-2026-09-08/
 !docs/public/images/web-maps-2026-09-08/*.png
+
+!docs/public/images/web-maps-2026-09-08/all-cases/
+!docs/public/images/web-maps-2026-09-08/all-cases/*.jpg
