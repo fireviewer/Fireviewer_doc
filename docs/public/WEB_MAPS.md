@@ -308,3 +308,38 @@ They establish the tested recovery paths, not compatibility with every handset.
 | Die / Justin | Gros Bessillon | Saumos |
 | --- | --- | --- |
 | ![Die mobile zoom](images/web-maps-2026-09-08/die-justin-mobile-zoom.png) | ![Bessillon mobile zoom](images/web-maps-2026-09-08/gros-bessillon-mobile-zoom.png) | ![Saumos mobile zoom](images/web-maps-2026-09-08/saumos-mobile-zoom.png) |
+
+
+## Natural burned-ground and flame rendering — 8 September 2026
+
+Frontend `00e82b4` replaces the beige affected-area wash with matte charcoal and
+ash grain in both 2D and 3D. The existing natural-mode canopy cutaway exposes
+burned ground inside the original affected polygons, preserving holes and relief.
+Altitude retains its established palette and satellite point annotations.
+
+Flame animation is a symbolic indication of sourced activity: original flame
+points, samples along documented fronts and anchors inside active polygons.
+Thermal detections alone do not create flames. No polygon is buffered or moved.
+The last available extent remains visible on days without a new map, with the
+original source date; activity is not automatically carried into a later day.
+
+The animation uses a separate transparent canvas, not continuous 3D rendering.
+It is capped at 24 fps and 36 anchors on mobile (96 on desktop), pauses in hidden
+tabs and stays still with reduced motion. Ground elevation and intervening
+terrain are checked for 3D placement. Photo buttons remain independent.
+
+Local validation on Die / Justin, 8 July: desktop 1376 x 860 and iPhone 13 Chrome
+touch/DPR emulation passed visible animation, zoom, Altitude/Natural, 2D/3D,
+reduced motion and the 11 July no-activity state. Nine focused unit tests and
+the TypeScript/production build passed. Physical mobile hardware remains untested.
+
+
+Production `dpl_CvhkMEiPPxTJg9qjg5ArKn9zPn3P` reached READY for the incident
+site only. The same desktop/mobile checks passed against fireviewer.vercel.app,
+including completed IGN background loading in 2D and no JavaScript exceptions.
+
+| Natural 3D | Natural 2D | Mobile 3D |
+| --- | --- | --- |
+| ![Charcoal ground and flame symbols](images/web-maps-2026-09-08/natural-fire-desktop.png) | ![Plan with sourced activity](images/web-maps-2026-09-08/natural-fire-plan.png) | ![Mobile natural view](images/web-maps-2026-09-08/natural-fire-mobile.png) |
+
+Flames move in the live map; these captures show individual animation frames.
