@@ -19,7 +19,7 @@ The component repositories contain their own `LICENSE` / documentation-licence f
 
 ## Models and datasets
 
-The `fireviewer/models` GitHub repository does **not** grant a common licence to the models and datasets it references.
+The canonical `fireviewer-model-lab/registry` and its archived `fireviewer/models` source do **not** grant a common licence to the models and datasets it references.
 
 Each Hugging Face model or dataset retains:
 
@@ -50,3 +50,9 @@ A new public FireViewer repository should not be considered publication-ready un
 2. the licence of original documentation/non-code content;
 3. whether external data/assets are excluded from those licences;
 4. where the canonical provenance/rights information lives.
+
+## Extracted components and private websites
+
+The extracted FV contracts, ingestion, vision, geolocation, supervisor, orchestrator, Fire State and model-lab packages retain the licenses and historical notices shipped with their exact releases. The model-lab registry retains its separate metadata license. The UWD generic builder contains separately scoped original web code, AGPL-derived interfaces/spatial functions and MIT Unreal tools; its `LICENSE`, `NOTICE.md` and per-directory notices define those scopes. Do not infer a single new license from repository ownership.
+
+Both the viewer and association website are private source repositories. Privacy does not cancel existing licenses, grant third-party rights or itself establish a signed copyright transfer. The association website has no new blanket license introduced by this migration. Technical assignment to UWD or FV is recorded separately from unsigned legal agreements and author declarations.
