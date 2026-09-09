@@ -4,16 +4,16 @@ title: "FireViewer"
 type: software
 authors:
   - name: "Unicorn Who Dev"
-    email: "unicornwhodev@gmail.com"
+    email: "contact@fire-viewer.fr"
 repository-code: "https://github.com/fireviewer"
 url: "https://github.com/fireviewer/Fireviewer_doc"
 abstract: >-
   FireViewer is open infrastructure for wildfire observation, spatial
   reconstruction, temporal tracking and reproducible post-event analysis. It
-  combines provenance-aware evidence handling, headless geospatial production,
-  AI-assisted analysis, human review and replayable incident artifacts while
-  keeping observed, reconstructed, interpolated, simulated and predicted
-  information semantically distinct.
+  combines provenance-aware evidence handling, deterministic geographic
+  processing, machine-assisted analysis and human review while keeping
+  observed, reconstructed, simulated and predicted information semantically
+  distinct.
 keywords:
   - wildfire
   - geospatial
