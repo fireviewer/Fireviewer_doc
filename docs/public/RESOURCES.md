@@ -63,7 +63,7 @@ Examples include:
 
 - `dataset-from-simulations` — public synthetic observations;
 - `omniverse-die-reproduction-pack-v1` — restricted historical simulation/reproduction package;
-- generated scenarios and synthetic campaigns produced by `fireviewer-sdg`.
+- historical generated scenarios and synthetic campaigns from the archived `fireviewer-sdg` repository. Independent useful generation helpers are maintained in private `fireviewer-model-lab`; archived Blender/Omniverse chains are not active production.
 
 These resources can support development and evaluation, but their outputs must remain labelled as synthetic/reproduction material.
 
@@ -119,3 +119,5 @@ When the Hugging Face inventory changes:
 4. update the resource card without overstating deployment or qualification;
 5. update the organisation profile only after the individual resource status is clear;
 6. never reorganise measured-map paths merely to make the Hub look cleaner.
+
+The canonical model/resource registry is now maintained in `fireviewer-model-lab/registry`. The archived `models` repository preserves provenance. The former house Asset4Sim/Hunyuan3D pack and its derivatives are excluded from the active project; the six Quaternius CC0 trees retain their own attribution.

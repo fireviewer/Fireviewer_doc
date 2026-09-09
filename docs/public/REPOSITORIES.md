@@ -11,18 +11,28 @@ No README proves that a service is deployed, enabled, funded, scientifically qua
 
 ## Component map
 
-| Component | Responsibility | GitHub visibility on 4 September 2026 |
+| Component | Responsibility | Source access, September 2026 |
 | --- | --- | --- |
-| [`.github`](https://github.com/fireviewer/.github) | Organisation profile and shared contribution, conduct, security and support policies. | Public |
-| [`Fireviewer_doc`](https://github.com/fireviewer/Fireviewer_doc) | Canonical architecture, safety, data governance, current status and resource/repository guides. | Public |
-| [`fireviewer-ai-worker`](https://github.com/fireviewer/fireviewer-ai-worker) | Evidence acquisition, visual processing, satellite evidence, deterministic geographic hypotheses, event dossiers and point assessment. | Public |
-| `fireviewer-backend` | Incident registry, durable evidence, review, audit, orchestration, Part.4 3.3 reconstruction/calibration and publication gates. | Private |
-| `fireviewer-frontend` | Contribution, human review, incident exploration and 2D/3D interfaces. | Private |
-| [`fireviewer-spatial`](https://github.com/fireviewer/fireviewer-spatial) | Deterministic measured-map production, portable spatial packages, observed temporal layers and validation contracts. | Public |
-| `fireviewer-unreal` | Source-only Unreal Engine consumer prepared locally for portable map contracts, guarded map assembly and local visual review. Its publication is paused; it contains no Unreal content library, dataset, model or generated reproduction. | Local only; not published |
-| [`fireviewer-sdg`](https://github.com/fireviewer/fireviewer-sdg) | Synthetic-data generation, simulation research and real/synthetic separation. | Public |
-| `models` | Small machine-readable/narrative registry of the public Hugging Face snapshot and resource-status policy; no weights or datasets. | Private |
-| [Organisation profile](https://github.com/fireviewer) | Public entry point and links to currently accessible resources. | Public |
+| `.github` | Organisation profile and shared contribution policies. | Public |
+| `Fireviewer_doc` | Canonical architecture, qualification boundaries and repository guide. | Public |
+| `fireviewer-backend` | Incidents, accounts, authorization, persistence, human decisions, audit and publication. Existing daily perimeter CLI remains here. | Private |
+| `fireviewer-frontend` | Public viewer, administration, catalogue and chronological incident layers. | Private |
+| `fireviewer-association-site` | Association website; separate source and deployment from the viewer. | Private |
+| `fireviewer-contracts` | Versioned business contracts, shared geometry, Python models, TypeScript types and fixtures. | Private |
+| `fireviewer-evidence-ingestion` | Sources, media, transcription and satellite acquisition/normalization. | Private |
+| `fireviewer-vision-runtime` | Detection, pointing, segmentation and keyframes. | Private |
+| `fireviewer-geolocation` | Geographic hypotheses, Panoramax, retrieval and registration. | Private |
+| `fireviewer-evidence-supervisor` | Eve, acceptance, rejection, abstention and contradictions. | Private |
+| `fireviewer-orchestrator` | Execution, dispatch, retries and idempotency; durable business authority remains in the backend. | Private |
+| `fireviewer-fire-state` | Part.4 calculation, profiles, calibration and evaluation; transactions and revisions remain in the backend. | Private |
+| `fireviewer-model-lab` | Corpus preparation, training, benchmarks and canonical registry; no weights or datasets in Git. Independent useful synthetic helpers remain here. | Private |
+| `fireviewer-unreal` | Fire visualization and scenarios; generic cartographic tools are consumed from UWD. Source availability does not establish native runtime acceptance. | Private |
+| `fireviewer-docker` | Immutable image/input locks, bounded retention and isolated execution composition. | Private |
+| `fireviewer-ai-worker` | Compatibility imports and commands for consumers migrating to the dedicated components. | Private; compatibility |
+| `fireviewer-spatial` | Historical spatial source and reference baseline; active generic producer is UWD. | Private; archived |
+| `fireviewer-sdg` | Historical Blender/Omniverse simulation chains. | Private; archived |
+| `models` | Historical registry source; canonical index moved into fireviewer-model-lab. | Private; archived |
+| `unicornwhodev/map-builder` | UWD generic web builder, acquisition, treatment, packaging, CLI/API, producer UI/contracts and generic Unreal cartography plugin. | Private; UWD |
 
 Repository visibility is an access decision, not a maturity level.
 
@@ -78,8 +88,8 @@ remain outside Git. The private frontend/backend retain one bounded,
 source-backed Die / Justin demonstration made from authored JSON/GeoJSON and
 public citations, without source media or reproduction outputs. No other
 packaged retrospective or multi-incident corpus is retained. A separate fully
-synthetic incident configuration fixture remains in the local, unpublished
-`fireviewer-unreal` working tree to document the JSON/GeoJSON contract. See
+synthetic incident configuration fixture remains in the private
+`fireviewer-unreal` repository to document the JSON/GeoJSON contract. See
 [Repository hygiene](REPOSITORY_HYGIENE.md).
 
 ## Community and governance
@@ -104,3 +114,13 @@ Repositories with a component-specific security note may retain a local `SECURIT
 ## Update rule
 
 When code changes a public architectural contract, update the canonical documentation in the same release window. As of 4 September 2026, the current Part.4 line is **3.3**, adding dated administrative initialization and restorable state chains to the earlier provenance/calibration implementation. See [Daily reconstruction](RECONSTRUCTION.md) for its qualification boundary.
+
+## Restructuring boundary
+
+UWD supplies geography independently of FireViewer incident accounts and decisions. FV attaches every new map request to an existing incident before dispatch. Terrain packages publish automatically after technical integrity checks; this does not publish AI/LLM claims or bypass their human decisions. Natural and altitude views share measured terrain. Dated wildfire perimeters, activity/flames and located-photo references remain separate incident layers.
+
+The existing measured-map catalogue and published paths remain compatible. Existing daily perimeter production and its viewer are preserved. Generalizing the agentic perimeter/photo workflow, qualifying native Unreal or GPU paths and scientific calibration remain distinct functional work; repository extraction does not declare them complete.
+
+Unity and Blender/Lightning production are retired. Necessary readers of already accepted historical packages remain for compatibility. The former house Hunyuan3D/Asset4Sim pack (references 001–294, historically called the 209-assets pack), including its derivatives, is excluded from active production. The six admitted Quaternius CC0 trees are a separate resource.
+
+Repository allocation records technical stewardship. Original licenses and attribution notices remain applicable; unsigned transfer or usage agreements are not presented as executed legal acts. Neither website requires a public source repository to serve its public pages.
