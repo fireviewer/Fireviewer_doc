@@ -1,79 +1,57 @@
 # Supporting FireViewer
 
-FireViewer has so far been developed with limited financial resources and a
-large amount of personal time.
+FireViewer is an open research and engineering project for documenting,
+reviewing, mapping and studying wildfire events while preserving provenance,
+uncertainty and revision history.
 
-The project does not need to become expensive by default.
-
-What support mainly changes is how much time can be spent turning working
-experiments into stable, documented and reproducible tools.
+The French non-profit association FIRE-VIEWER provides the project's
+administrative and financial framework for association-controlled activities
+and resources. Eligibility, identifiers and required documents are verified
+again for each grant, credit programme or partnership.
 
 ## What support can help with
 
-Current priorities include:
+Current needs include:
 
-- stabilising reproducible incident reconstruction;
-- improving measured OpenUSD environments;
-- progressively improving the environmental asset library;
-- model and dataset development and evaluation;
-- real historical reference cases;
-- compute and artifact storage;
-- documentation and accessibility;
-- independent technical or scientific validation.
+- reproducible incident reconstruction and evaluation;
+- measured geographic environments and map-package validation;
+- model and dataset development, cleaning and benchmarking;
+- compute, object storage and resilient backups;
+- historical reference cases and authorised source material;
+- accessibility, documentation and public education;
+- independent technical or scientific review.
 
-## Support does not have to be money
+## Forms of support
 
-Useful support can also be:
+Useful support can include:
 
-- compute;
-- storage;
-- API or platform credits;
-- reusable imagery or geographic data;
-- OpenUSD or GIS expertise;
-- security review;
-- accessibility work;
-- research collaboration;
-- introductions to relevant institutions.
+- grants or project funding;
+- cloud, compute, storage or API credits;
+- reusable imagery or geographic data with clear rights;
+- geospatial, wildfire, OpenUSD, security or accessibility expertise;
+- research and educational partnerships;
+- independent validation or testing.
 
-Even relatively small support can remove a concrete limitation.
-
-## Association
-
-A French non-profit association is currently being created to give FireViewer
-a proper administrative and financial structure.
-
-Until registration is complete, FireViewer does not present it as an
-established legal entity.
-
-Its purpose is mainly to make project resources, funding and collaboration
-easier to manage and less dependent on private accounts.
-
-Technical governance remains separate.
-
-FireViewer does not currently claim that donations are tax-deductible.
-
-Any future tax, public-benefit or equivalent status will only be stated once it
-has actually been established.
+A credit programme is an in-kind benefit, not cash funding. A grant, selection,
+competition and procurement contract are different mechanisms and are not
+presented as automatic entitlements.
 
 ## Independence
 
-Financial support does not buy favourable results.
+Support does not buy favourable results or authority over evidence. It cannot
+turn uncertainty into certainty, synthetic material into real evidence, or an
+experimental component into a validated capability.
 
-A sponsor or grant cannot turn:
+## Association and asset boundary
 
-- uncertain evidence into certainty;
-- an unsuccessful benchmark into a successful one;
-- synthetic material into real evidence;
-- an experimental feature into a validated capability.
-
-If something does not work well enough, documenting that is more useful to
-FireViewer than hiding it.
-
-See [project governance](../GOVERNANCE.md).
+Association resources are separated from personal or commercial projects.
+Pre-association and UWD assets are used only through their applicable licences,
+assignments or written agreements. Repository placement alone is not treated as
+proof of ownership.
 
 ## Contact
 
 For grants, infrastructure, research collaboration, sponsorship or technical
 support:
 
-**unicornwhodev@gmail.com**
+**contact@fire-viewer.fr**
