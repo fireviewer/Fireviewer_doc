@@ -1,111 +1,61 @@
 # Repository hygiene and publication boundary
 
 FireViewer Git repositories are source repositories. They may contain code,
-portable contracts and configuration schemas, documentation, and small
-synthetic fixtures needed to test those contracts. Artifact stores remain the
-authoritative place for datasets, weights and produced geographic packages.
+portable contracts and configuration schemas, documentation, licences and small
+reviewed fixtures needed to test those contracts. Datasets, weights, generated
+maps and other substantial artifacts belong in designated artifact storage.
 
-## Allowed in Git
+## Allowed in public Git
 
-- source code, tests and build definitions;
+- source code, tests and build definitions intended for publication;
 - portable configuration templates with empty or example-only values;
-- schemas and small machine-readable contract fixtures;
+- schemas and small synthetic contract fixtures;
 - documentation, licences and provenance notices;
-- the owner-authorised September 2026 incident web release: bounded static
-  documentary JSON/GeoJSON, public citations and attributed display derivatives
-  required by the frontend; this does not admit the underlying source archives;
-- the selected public atlas screenshots explicitly requested for documentation,
-  with attribution, capture context and coverage limits;
-- tiny source-authored geometry fixtures when a test cannot express the same
-  contract as ordinary code;
-- one bounded, source-backed Die / Justin demonstration in the private
-  frontend/backend repositories, limited to authored JSON/GeoJSON,
-  presentation data and public citations needed to exercise the incident
-  interface; it contains no source media, private evidence, training material,
-  model output or produced scene;
-- one clearly labelled synthetic incident configuration example in the local,
-  unpublished `fireviewer-unreal` working tree, including JSON and GeoJSON
-  inputs but no captured media, generated result or real incident data.
+- selected public screenshots after visual and metadata review;
+- bounded public presentation data with explicit source and rights records.
 
-Synthetic examples use invented identifiers, non-personal metadata and generic
-coordinates. The retained source-backed demonstration is explicitly labelled
-as a historical demonstration and does not establish live operational status.
+## Forbidden in public Git
 
-## Forbidden in Git
-
-- credentials, tokens, private keys, populated environment files or provider
-  secrets;
-- personal information, private incident evidence, unapproved real-incident
-  corpora or non-public infrastructure identifiers;
-- datasets, source imagery, annotations, training corpora or cached downloads;
+- credentials, tokens, private keys or populated environment files;
+- personal information, private evidence or non-public infrastructure
+  identifiers;
+- personal filesystem paths, machine settings or editor state;
+- datasets, source media archives, annotations or training corpora;
 - model weights, checkpoints, optimiser state or training outputs;
-- imported or converted 3D asset libraries, licensed binary content or engine
-  packages;
-- measured-map productions, reproduction packs, raw render/capture archives,
-  generated production catalogues or private validation results;
-- build products, caches, scratch directories and machine-specific settings.
+- imported 3D libraries, licensed binary packs or engine caches;
+- produced measured-map packages, reproduction outputs or raw capture archives;
+- build products, caches, scratch directories, database files and raw logs;
+- signed URLs, browser HAR files or network captures.
 
-A public URL does not by itself grant redistribution rights. Third-party inputs
-should be referenced by provider, licence and immutable revision rather than
-copied into Git when redistribution is unnecessary or unclear.
+A public URL does not itself grant redistribution rights. Third-party resources
+should be referenced by provider, licence and immutable revision when copying is
+unnecessary or not authorised.
 
-## Cleanup policy
+## Cleanup rule
 
-Repository cleanup is reference-aware. A file may be removed when it is a
-generated output, cache, duplicate, abandoned probe or unreferenced obsolete
-configuration and its removal does not break a consumer. Search references,
-imports, build files, tests and published compatibility paths before deleting
-it.
+Cleanup is reference-aware. A generated output, abandoned probe, duplicate or
+obsolete configuration can be removed only after imports, tests, build files,
+published paths and consumers have been checked.
 
-Names containing `legacy` or `firewarning` are not automatically obsolete.
-Compatibility adapters, migration baselines and immutable published paths stay
-in place until every consumer has an explicit migration. Ambiguous items are
-recorded as cleanup candidates rather than deleted speculatively.
-
-Git cleanup is not permission to delete the authoritative local or hosted copy
-of an artifact. Artifact retention and deletion require their own inventory,
-recovery and rights checks.
-
-## Current cleanup decisions
-
-The 4 September 2026 publication review removed or excluded Unreal editor/user
-settings, hard-coded local engine paths, local real-incident helper scripts,
-one-off reviewed catalogue admission code, old real-incident request examples,
-the ai-worker multi-incident media corpus and five additional packaged backend
-retrospectives. The ignored local artifact trees were not deleted. Die / Justin
-is the only retained source-backed incident demonstration; its source media and
-reproduction artifacts remain outside Git. The subsequent incident-site work
-authorised a static public web release and selected documentation screenshots,
-as described above and in the [web atlas gallery](WEB_MAPS.md). This bounded
-exception does not move measured terrain packages, private evidence or raw
-satellite/source archives into Git.
-
-Referenced `firewarning-*` identifiers, explicit legacy adapters and
-`fireviewer-spatial/reference/map-builder-reference-v1` remain because they
-still have compatibility or validation consumers. The frontend's unreferenced
-legacy 3D generator, loaders and fallback viewers were removed with the old
-generated payload. Retained compatibility paths are not evidence of active
-models or production maps; future cleanup must migrate their consumers first.
-
-These decisions describe the current branch tips. They do not claim that old
-objects have already been removed from reachable Git history. Purging a prior
-artifact from every branch and tag requires a separately approved, coordinated
-history rewrite and force-push; affected clones must then be replaced or
-carefully repaired.
+Compatibility identifiers remain until a migration updates every consumer.
+Removing a file from the current branch does not remove it from Git history.
+A confirmed credential, private-data or personal-path leak requires revocation
+where applicable and a coordinated history rewrite or repository recreation.
 
 ## Pre-publication gates
 
-Before every publication lot:
+Before every public update:
 
-1. review the exact staged file list and diff;
-2. enumerate ignored-but-tracked files, payload extensions and large blobs;
-3. scan staged content for credentials, private identifiers, personal paths and
-   unapproved real-incident material;
-4. verify that configuration examples contain placeholders only;
-5. run the relevant unit, contract and documentation checks;
-6. perform a security review of changed source code;
-7. compare every pushed branch head with its remote head.
+1. review the exact staged files and diff;
+2. list ignored-but-tracked files and large blobs;
+3. scan all changed text and configuration for secrets, personal paths and
+   private identifiers;
+4. verify that examples contain placeholders only;
+5. inspect screenshots visually and remove unnecessary metadata;
+6. run relevant unit, contract and documentation checks;
+7. verify the pushed branch head and repository visibility;
+8. confirm that no public branch retains superseded working material.
 
-Passing these gates establishes the source-publication boundary only. It does
-not qualify a cloud deployment, GPU path, real incident workflow, model or
+Passing these gates establishes only the source-publication boundary. It does
+not qualify a cloud deployment, GPU path, model, incident workflow or
 scientific result.
