@@ -1,166 +1,112 @@
-# How FireViewer is currently run
+# FireViewer governance
 
-FireViewer is still a young project, and its governance is deliberately simple.
+FireViewer is still a small project. Its governance therefore remains simple,
+explicit and proportionate to the people actually doing the work.
 
-I started the project and currently maintain most of it myself.
+Technical development is currently led primarily by one maintainer. The French
+non-profit association FIRE-VIEWER provides administrative and financial
+stewardship for association-controlled resources.
 
-There is no large contributor community, no technical committee and no reason
-to pretend otherwise.
+These roles are related but not interchangeable.
 
-Today, most technical decisions are therefore maintainer-led.
-
-That does not mean outside ideas are secondary. If somebody finds a better way
-to solve a problem, reproduces an issue, challenges an assumption or
-contributes something useful, I want that discussion to happen.
-
-The important part is that changes affecting evidence, geography,
-reconstruction or publication remain explainable.
-
-FireViewer was built around the idea that uncertainty should not disappear just
-because a cleaner answer would be more convenient. I do not want project
-governance to work differently.
-
-## Current structure
+## Structure
 
 ```mermaid
 flowchart TB
-    CONTRIB["Contributors<br/>ideas · code · review · research"] --> DISCUSS["Technical discussion"]
-    DISCUSS --> MAINT["Maintainer-led<br/>technical decisions"]
+    CONTRIBUTORS["Contributors<br/>code · review · research"] --> DISCUSSION["Technical discussion"]
+    DISCUSSION --> MAINTAINER["Maintainer-led technical decisions"]
 
-    ASSO["FireViewer association<br/>in creation"] --> ADMIN["Administration<br/>funding · accounts · shared resources"]
+    ASSOCIATION["Association FIRE-VIEWER"] --> ADMIN["Administration · funding · accounts · association assets"]
 
-    MAINT --> PROJECT["FireViewer"]
+    MAINTAINER --> PROJECT["FireViewer"]
     ADMIN --> PROJECT
 
-    FUND["Grants · sponsors · infrastructure"] --> ADMIN
-    FUND -.->|"no authority over results"| MAINT
-
-    PROJECT --> OPEN["Code · models · datasets<br/>documentation · spatial artifacts"]
+    FUNDING["Grants · sponsors · infrastructure"] --> ADMIN
+    FUNDING -.->|"no authority over evidence or results"| MAINTAINER
 ```
 
-The administrative and technical sides are related, but they do not have the
-same role.
+## Technical responsibility
 
-## Technical decisions
+The technical maintainer currently has primary responsibility for:
 
-The founding maintainer currently has final responsibility for:
-
-- repository administration;
-- accepting or rejecting contributions;
 - architecture and public contracts;
-- releases;
-- evidence and provenance rules;
+- accepting or rejecting code contributions;
+- releases and compatibility;
+- evidence, provenance and uncertainty rules;
 - security and privacy boundaries;
-- maintaining the distinction between experimental and accepted capabilities.
+- separating experimental, implemented and accepted capabilities.
 
-Routine and reversible implementation choices do not need a formal governance
-process.
+Changes affecting the meaning of evidence, geography, reconstruction,
+publication, data retention, licensing or real/synthetic separation require an
+explicit technical record and appropriate review.
 
-Changes that alter the meaning of FireViewer should receive more explicit
-discussion and leave a public record when practical.
+## Association responsibility
 
-That includes changes to:
+The association is responsible for its own:
 
-- what counts as evidence;
-- geographic truth and uncertainty;
-- reconstruction semantics;
-- publication gates;
-- data retention;
-- licensing;
-- real/synthetic separation;
-- compatibility-sensitive spatial packages.
+- administration and statutory decisions;
+- bank accounts, budgets, expenses and grants;
+- contracts and partnerships entered into in its name;
+- association-controlled domains, accounts, data and infrastructure;
+- assets formally assigned, purchased or licensed to it;
+- legal and regulatory obligations.
 
-## The association
+The association does not automatically own software, data, models, brands or
+other assets created before it existed. Those assets require an explicit
+licence, assignment, contribution or other documented arrangement.
 
-A French non-profit association is currently being created around FireViewer.
+## Conflicts of interest
 
-Its first role is practical:
+A decision involving the founder, technical maintainer or a related personal
+activity must be documented. The interested person must not approve their own
+reimbursement, contract, licence or other direct benefit.
 
-- provide administrative continuity;
-- manage funding and shared expenses;
-- hold shared project resources where appropriate;
-- make grants and partnerships easier to manage;
-- reduce the amount of infrastructure depending indefinitely on one person's
-  private accounts.
+The relevant decision should identify:
 
-It is not intended to suddenly turn technical decisions into votes or to
-create an artificial board above the people actually doing the technical work.
-
-For now, technical governance remains maintainer-led.
-
-If FireViewer eventually attracts regular contributors and additional
-maintainers, governance should evolve with that reality.
-
-## Contributions and disagreement
-
-Technical disagreement is useful.
-
-A contributor does not need to agree with an existing design simply because I
-wrote it.
-
-A reproducible counter-example, better implementation, stronger source or
-well-explained criticism is useful project input.
-
-Evidence and reasoning should matter more than seniority.
+- the asset, service or expense concerned;
+- the parties and their roles;
+- the applicable licence or contract;
+- the association interest;
+- the abstention or independent validation used;
+- the resulting record or agreement.
 
 ## Evidence and safety
 
 No maintainer, association officer, contributor, sponsor or external AI system
-can bypass FireViewer's evidence rules just by asserting that a result is
-correct.
+can bypass FireViewer's evidence rules by assertion alone.
 
 In particular:
 
-- uncertainty must not be hidden to obtain a cleaner result;
-- synthetic information must not become real-event evidence;
-- model output must not silently mutate source evidence;
-- review or publication gates must not be bypassed for convenience.
+- uncertainty must remain visible;
+- model output must not overwrite source evidence;
+- synthetic information must not become evidence of a real event;
+- reconstruction must not be labelled as direct observation;
+- publication gates must not be bypassed for convenience;
+- FireViewer must not be presented as a future-propagation predictor.
 
-Changing these principles is a project-level governance and architecture
-decision.
+## Contributions and disagreement
+
+Technical disagreement is useful when it is supported by reproducible tests,
+clear reasoning, stronger sources or a better implementation. Authority does
+not convert an unsupported claim into evidence.
+
+Maintainer access can expand when regular contributors demonstrate reliable
+work and understanding of the component concerned. Permissions should initially
+remain limited to the relevant technical area.
 
 ## Funding independence
 
-A grant, sponsor or infrastructure provider does not buy authority over
-FireViewer's technical conclusions.
+Funding can influence which work becomes possible sooner. It cannot determine
+what evidence says, hide uncertainty, convert a failed benchmark into a success
+or promote an unqualified capability.
 
-Funding can influence which work becomes possible sooner.
+## Shared resources and continuity
 
-It must not change:
-
-- what evidence says;
-- whether uncertainty is shown;
-- whether a result passed validation;
-- whether synthetic information is labelled synthetic;
-- whether something is described as operational when it is not.
-
-## Becoming a maintainer
-
-There is currently no contribution-count formula.
-
-If contributors become regularly involved, maintainer access can be extended
-based on demonstrated work, reliability and understanding of the relevant
-component.
-
-Permissions can initially remain limited to that technical area.
-
-If FireViewer becomes a genuinely multi-maintainer project, this document
-should be rewritten to describe that project instead of preserving today's
-structure forever.
-
-## Shared resources
-
-Repositories, domains, infrastructure accounts, project identity and other
-shared resources should be managed for FireViewer's continuity rather than the
-private benefit of one contributor.
-
-Important transfers of stewardship should be documented.
-
-## One rule for governance
-
-**The governance should reflect the project that actually exists, not imitate
-the governance of a larger project we do not have yet.**
+Association-controlled repositories, domains, credentials and infrastructure
+must have documented recovery and continuity procedures. Personal and
+association accounts must remain distinguishable. Important transfers of
+stewardship or ownership require a written record.
 
 ## Contact
 
-**unicornwhodev@gmail.com**
+**contact@fire-viewer.fr**
