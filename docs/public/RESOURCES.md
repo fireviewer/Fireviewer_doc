@@ -1,123 +1,125 @@
 # FireViewer resource status
 
-**Snapshot: 4 September 2026.**
+This page defines how FireViewer describes models, datasets, measured maps,
+synthetic material and retained historical artifacts. A resource does not become
+active merely because a file, checkpoint or repository still exists.
 
-This page defines how FireViewer describes models, datasets, maps, simulations and retained historical artifacts. It prevents a resource from becoming "active" merely because a file, checkpoint or repository still exists.
+The FireViewer Hugging Face organisation is authoritative for public artifact
+visibility, cards and immutable revisions. The private
+`fireviewer-model-lab/registry` is the canonical internal lifecycle registry.
 
 ## Status vocabulary
 
 | Status | Meaning |
 | --- | --- |
-| **public reference** | Publicly visible and documented resource that remains useful as a current reference. This does not by itself mean deployed or scientifically qualified. |
-| **public research** | Public dataset or artifact useful for research/evaluation but not an operational runtime dependency by default. |
+| **public reference** | Public and useful as a current reference; not automatically deployed or scientifically qualified. |
+| **public research** | Public material intended for research or evaluation rather than production authority. |
 | **measured map** | Real measured geographic production retained under a versioned map contract. |
-| **synthetic** | Generated or simulated material that must remain explicitly separate from real-event evidence. |
-| **restricted research** | Private resource kept private because of rights, research scope or redistribution constraints. |
-| **legacy** | Deprecated, superseded, incomplete or low-quality artifact retained only for provenance, comparison or reproducibility. |
-| **upstream** | Third-party resource referenced by immutable source/revision and not redistributed by FireViewer unless rights permit it. |
+| **synthetic** | Generated material kept explicitly separate from real-event evidence. |
+| **restricted research** | Private material retained because of rights, research scope or redistribution constraints. |
+| **legacy** | Superseded, incomplete or low-quality material kept only for provenance, comparison or recovery. |
+| **upstream** | Third-party material referenced by source and revision and not redistributed unless rights permit it. |
 
-## Public Hugging Face snapshot
+## Public models
 
-The anonymous public FireViewer organisation inventory inspected on 4 September 2026 exposes **2 public models** and **7 public datasets**.
+Public model cards may include FireViewer fire/smoke detectors such as:
 
-### Public models
+- `fireviewer/rtdetr-v2-r50-fire-smoke`;
+- `fireviewer/dfine-large-fire-smoke-v7`.
 
-| Resource | Role | FireViewer status |
+Public visibility does not make a model publication authority, prove current
+runtime promotion or establish scientific qualification. The exact current
+inventory must be read from the Hub rather than inferred from this page.
+
+## Public datasets and hosted artifacts
+
+Current or historical public resource families include:
+
+| Resource | Role | Classification |
 | --- | --- | --- |
-| [`fireviewer/rtdetr-v2-r50-fire-smoke`](https://huggingface.co/fireviewer/rtdetr-v2-r50-fire-smoke) | Visible smoke/flame object detection | **Public reference detector**; not publication authority and not automatically promoted into every runtime. |
-| [`fireviewer/dfine-large-fire-smoke-v7`](https://huggingface.co/fireviewer/dfine-large-fire-smoke-v7) | Visible smoke/flame object detection research | **Public research detector**; public visibility does not establish runtime promotion, scientific qualification or publication authority. |
+| `fire-smoke-detection-corpus-v1` | Visible fire/smoke detection corpus | Public research/reference |
+| `fire-smoke-pointing-ground-v1` | Ground pointing and grounding material | Public research |
+| `dinov3-cross-view-fireviewer-v1-dataset` | Cross-view registration/localisation research | Public research |
+| `prithvi-burnscars-training-dataset-v1` | Burn-scar segmentation research | Public research; burn scar is not active fire |
+| `firewarning-train-bundles-v1` | Historical reproducible training packages | Legacy/public archive |
+| `dataset-from-simulations` | Generated observations | Synthetic |
+| `simple-measured-scenes-v1` | Versioned real measured geographic packages | Measured map |
 
-### Public datasets and hosted artifacts
-
-| Resource | Role | Status |
-| --- | --- | --- |
-| [`fire-smoke-detection-corpus-v1`](https://huggingface.co/datasets/fireviewer/fire-smoke-detection-corpus-v1) | Visible fire/smoke object detection corpus | Public research / reference corpus |
-| [`fire-smoke-pointing-ground-v1`](https://huggingface.co/datasets/fireviewer/fire-smoke-pointing-ground-v1) | Ground fire/smoke pointing and grounding | Public research; historical associated checkpoint is not active |
-| [`dinov3-cross-view-fireviewer-v1-dataset`](https://huggingface.co/datasets/fireviewer/dinov3-cross-view-fireviewer-v1-dataset) | Cross-view registration/localisation research | Public research |
-| [`prithvi-burnscars-training-dataset-v1`](https://huggingface.co/datasets/fireviewer/prithvi-burnscars-training-dataset-v1) | Burn-scar segmentation materialisation | Public research; burn scar is not active fire |
-| [`firewarning-train-bundles-v1`](https://huggingface.co/datasets/fireviewer/firewarning-train-bundles-v1) | Historical reproducible training packages | Public archive / legacy training inputs |
-| [`dataset-from-simulations`](https://huggingface.co/datasets/fireviewer/dataset-from-simulations) | Omniverse-generated observations | Public synthetic |
-| [`simple-measured-scenes-v1`](https://huggingface.co/datasets/fireviewer/simple-measured-scenes-v1) | Versioned real measured geographic packages | **Measured map** |
-
-Historical `firewarning-*` slugs remain for compatibility and provenance. The active project identity is FireViewer.
+Historical identifiers can remain where changing them would break provenance or
+immutable links. They do not create a second active project.
 
 ## Measured maps
 
-`simple-measured-scenes-v1` is the canonical hosted repository for real measured map builds.
+`simple-measured-scenes-v1` is the canonical hosted repository for retained real
+measured-map builds.
 
-Current retained production includes Die / Justin in Drôme, France. The repository is designed to grow as additional real areas are produced and validated.
+Published directories, filenames and package paths can be consumed directly by
+the viewer and are therefore compatibility-sensitive. A documentation cleanup
+must not move, rename or flatten those paths. Structural changes require a
+versioned migration and coordinated consumer updates.
 
-### Compatibility rule
+A measured map describes geographic context. It does not assert wildfire
+activity and must remain separate from dated incident layers and Fire State
+calculations.
 
-Existing published map directories, filenames and package paths can be consumed directly by the FireViewer viewer. They are therefore compatibility-sensitive.
+## Synthetic and historical material
 
-**Do not rename, move, flatten or reorganise existing measured-map packages as part of documentation or repository cleanup.**
+Synthetic data can support training, testing and evaluation but cannot become
+evidence of a real wildfire event. Superseded simulation chains and reproduction
+packages are retained privately only when provenance, comparison or recovery
+requires them. They are not active production components.
 
-A future structural migration must be explicitly versioned and coordinated with every consumer.
-
-## Synthetic and reproduction resources
-
-Synthetic and historical-reproduction material is not a measured-map production and is not real-event evidence.
-
-Examples include:
-
-- `dataset-from-simulations` — public synthetic observations;
-- `omniverse-die-reproduction-pack-v1` — restricted historical simulation/reproduction package;
-- historical generated scenarios and synthetic campaigns from the archived `fireviewer-sdg` repository. Independent useful generation helpers are maintained in private `fireviewer-model-lab`; archived Blender/Omniverse chains are not active production.
-
-These resources can support development and evaluation, but their outputs must remain labelled as synthetic/reproduction material.
+Independent reusable generation helpers can remain in `fireviewer-model-lab`
+when they are still used and clearly isolated from real-event evidence.
 
 ## Restricted research
 
-Private datasets can be retained when one or more upstream sources do not provide sufficiently explicit redistribution rights or when a campaign is intentionally research-only.
+A dataset or checkpoint remains private when source rights do not support public
+redistribution, when it contains private evidence or when a campaign is still
+research-only. Private access never broadens upstream rights.
 
-`fireviewer/firewarning-training-corpus` is outside the anonymous public
-inventory and is classified as private/restricted evaluation material. Its
-absence from the public table is intentional.
+Restricted material must preserve:
 
-Identified examples include private DINOv3 campaign archives and the restricted SegFormer baseline dataset. Private access never broadens upstream redistribution rights.
+- source and licence records;
+- immutable revision or content hashes;
+- intended task and split;
+- known exclusions and limitations;
+- access and retention decisions.
 
 ## Legacy model archive
 
-Deprecated, superseded, incomplete and low-quality historical model checkpoints are not listed as active public FireViewer models.
+Deprecated, superseded, incomplete and low-quality checkpoints are not listed as
+active FireViewer models. When retention is useful, they belong in a private
+legacy archive for provenance, reproducibility and comparison.
 
-When such artifacts are worth retaining, they are consolidated in the private `fireviewer/fireviewer-legacy-models` archive for:
+Production code must not consume a common legacy archive directly. Reactivation
+requires rights review, evaluation under a current protocol and explicit
+promotion into a dedicated release.
 
-- provenance;
-- reproducibility;
-- comparison;
-- hash/revision retention;
-- audit of past experiments.
+## Upstream models, data and assets
 
-Production code must not consume the common legacy archive directly. Reactivation requires re-evaluation under a current benchmark, rights review and explicit promotion into a dedicated repository.
+Third-party weights, datasets, geographic sources and assets are referenced by
+provider, identifier and immutable revision whenever possible. They are not
+copied into FireViewer storage merely for convenience when redistribution rights
+are unclear or unnecessary.
 
-Private historical RF-DETR and SegFormer releases that remain accessible are treated as legacy/research resources unless explicitly promoted again.
+## Resource status versus pipeline status
 
-## Upstream models and assets
-
-Third-party weights and datasets are referenced by provider, identifier and immutable revision whenever possible. They are not copied into FireViewer storage merely for convenience when redistribution rights are unclear or unnecessary.
-
-## Relationship to pipeline status
-
-Resource status and pipeline status are different concepts:
-
-- a **public** model can still be unqualified for production;
-- a **private** resource can still be useful research material;
-- a **legacy** checkpoint can remain reproducible without being active;
-- a **measured map** can be valid geography without asserting any wildfire state;
-- a **synthetic** dataset can be high quality without becoming real-world evidence.
-
-As of 4 September 2026, the deterministic event reconstruction is Part.4 **3.3**, using the uncalibrated `part4-framed-v1` profile. Resource visibility and pipeline qualification remain separate.
+- a public model can remain unqualified for production;
+- a private resource can still be useful research material;
+- a legacy checkpoint can remain reproducible without being active;
+- a measured map can be valid geography without asserting a fire state;
+- a synthetic dataset can be useful without becoming real-world evidence.
 
 ## Update procedure
 
-When the Hugging Face inventory changes:
+When an artifact changes:
 
-1. verify public/private visibility from the Hub;
-2. record immutable revisions in the machine-readable registry where applicable;
-3. classify the resource using this status vocabulary;
-4. update the resource card without overstating deployment or qualification;
-5. update the organisation profile only after the individual resource status is clear;
-6. never reorganise measured-map paths merely to make the Hub look cleaner.
-
-The canonical model/resource registry is now maintained in `fireviewer-model-lab/registry`. The archived `models` repository preserves provenance. The former house Asset4Sim/Hunyuan3D pack and its derivatives are excluded from the active project; the six Quaternius CC0 trees retain their own attribution.
+1. verify its actual public/private visibility;
+2. record its immutable revision;
+3. classify it using this vocabulary;
+4. review source rights and redistribution terms;
+5. update the resource card without overstating deployment or qualification;
+6. preserve compatibility-sensitive measured-map paths;
+7. remove obsolete public promotion while retaining private provenance when
+   justified.
