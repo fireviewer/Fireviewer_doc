@@ -53,8 +53,6 @@ docs/**
 !docs/REPOSITORY_DOCUMENTATION_POLICY.md
 !docs/LICENSING.md
 templates/**
-!templates/organization-profile/
-!templates/organization-profile/github-metadata.yaml
 !templates/storage-layout.local.example.json
 
 # Dated public map verification screenshots.
