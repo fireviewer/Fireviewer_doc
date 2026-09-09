@@ -1,53 +1,42 @@
 # FireViewer public documentation policy
 
-FireViewer's tracked public documentation is written in **English**. It should
-be complete enough to explain the product, architecture, evidence and review
-model, data policy, safety boundaries, repository roles, licensing, and current
-verified maturity.
+FireViewer's tracked public documentation explains stable project purpose,
+architecture, evidence and review rules, data policy, safety boundaries,
+repository roles, licensing and verified maturity.
 
 Completeness does not require publishing operationally sensitive or unstable
-working material. Detailed development notes may remain local and may be
-written in French. Local-only material includes provider runbooks, cloud
-identifiers, credentials, machine paths, private evidence, raw logs, internal
-plans, unfinished research notes, and project-management tracking.
+working material.
 
-Code-adjacent public documentation may describe stable interfaces, contracts,
-validation commands, and safety invariants needed to understand or contribute
-to a repository. It must not imply deployment, operational qualification, or
-scientific validation without independently publishable evidence.
+## Public material may include
 
-Public status statements must distinguish:
+- stable interfaces and contracts;
+- architecture and responsibility boundaries;
+- documented validation commands;
+- dated capability and limitation statements;
+- licences, attribution and provenance rules;
+- selected public screenshots whose content and metadata have been reviewed.
 
-- source code or a contract being present;
-- an integration being configured or deployed behind a guard;
-- a feature being enabled;
-- a real end-to-end path being accepted;
-- a scientific or operational claim being independently validated.
+## Material kept outside public Git
+
+- credentials, tokens, private keys and populated environment files;
+- personal machine paths and machine-specific settings;
+- private evidence, contributor information and sensitive locations;
+- provider identifiers, internal endpoints, signed URLs and operational
+  runbooks;
+- raw logs, browser or network captures and vulnerability details;
+- internal plans, unfinished research notes and project-management tracking;
+- datasets, model weights, generated map packages, asset libraries, caches and
+  build outputs.
+
+Public status statements must distinguish source code being present from an
+integration being configured, enabled, accepted end to end or scientifically
+qualified.
 
 Local working material must not be copied into a public repository under a new
-name. Public documents must not contain secrets, private evidence, personal
-machine paths, provider identifiers, or unsupported performance claims.
+name. Compatibility identifiers and published artifact paths remain until a
+versioned migration updates every consumer.
 
-Git repositories are source publications. They may retain small synthetic
-contract/configuration fixtures and one reviewed source-backed incident
-demonstration in the private frontend/backend repositories. The demonstration
-is limited to authored JSON/GeoJSON, presentation data and public citations;
-source media and reproduction artifacts remain outside Git. The owner-authorised
-September 2026 incident-site release additionally includes bounded public web
-presentation data (cited JSON/GeoJSON and small attributed display derivatives)
-needed by the deployed frontend. The requested atlas screenshots are a selected
-documentation exception, not permission to publish raw capture archives. A separate
-synthetic incident fixture is kept only in the unpublished Unreal working tree.
-Repositories must not contain datasets, model weights or checkpoints, source
-imagery, imported 3D asset libraries, measured-map packages, reproduction
-outputs, unrelated renders, caches or build products. See
-[`docs/public/REPOSITORY_HYGIENE.md`](public/REPOSITORY_HYGIENE.md) for the
-complete boundary and pre-publication gates.
+Security issues must follow the project security policy. Other private matters
+can be sent to:
 
-Cleanup must be reference-aware. Generated, duplicated and unreferenced
-obsolete files may be removed after consumer checks. Compatibility identifiers,
-legacy adapters and published paths are retained until an explicit migration
-updates every consumer; a deprecated-looking name is not sufficient evidence
-for deletion.
-
-The public documentation contact is **unicornwhodev@gmail.com**.
+**contact@fire-viewer.fr**
