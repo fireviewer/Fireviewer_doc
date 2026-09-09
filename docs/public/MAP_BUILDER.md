@@ -1,149 +1,138 @@
-# FireViewer Map Builder
+# Map Builder boundary
 
-The FireViewer Map Builder turns one immutable geographic request into a versioned measured-map package. Its core engine is provider-neutral: it receives a request, a scratch directory and an output directory. Cloud launch, object storage, credentials and publication remain adapters outside the builder.
+## Role
+
+The generic Map Builder is maintained by **Unicorn Who Dev** in the private
+repository `unicornwhodev/map-builder`.
+
+It turns one immutable geographic request into a versioned measured-map package.
+The builder does not own FireViewer incidents, user accounts, evidence,
+machine-assessment decisions or publication state.
+
+FireViewer consumes the builder through versioned packages and, where enabled,
+a pinned CLI, API or container image. The FireViewer backend remains the
+authority for incident attachment, permissions, review and publication.
+
+## Responsibility split
+
+| UWD Map Builder | FIRE-VIEWER |
+| --- | --- |
+| Geographic request validation and planning | Existing incident identity and authorisation |
+| Geographic-source acquisition adapters | Selection of the incident and requested area |
+| Terrain and map-package production | Dispatch policy and use of the returned package |
+| CLI, API and producer interface | FireViewer-specific backend and frontend adapters |
+| Generic cartographic validation receipts | Incident audit, review and publication records |
+| Generic cartographic Unreal integration | Fire-specific Unreal visualisation and scenarios |
+
+Repository placement records technical stewardship. Ownership and usage rights
+remain governed by the applicable licences and written UWD/FIRE-VIEWER
+agreements.
 
 ## Production contract
 
-One request fixes the zone identity, centre, side length, profile, builder revision and output identity.
+One request fixes, at minimum:
 
-The engine writes temporary work below the provided scratch root and emits authoritative geographic artifacts, runtime viewer artifacts, manifests, provenance, metrics and a terminal completion receipt.
+- request and zone identity;
+- geographic centre and requested extent;
+- coordinate reference system and profile;
+- builder and contract revisions;
+- input-source identities;
+- scratch and output locations supplied by the caller;
+- expected output identity.
 
-The completion receipt is written last. Artifacts without that receipt form an incomplete build and must not be presented as a valid measured-map production.
+The builder writes temporary work only below the supplied scratch root and emits
+its final package below the supplied output root. A terminal completion receipt
+is written last. Outputs without that receipt are incomplete and must not be
+presented as an accepted measured-map build.
 
 ```mermaid
 flowchart TB
-    REQUEST["Immutable map request<br/>zone · profile · builder revision"]
-
-    REQUEST --> TERRAIN["Terrain / elevation"]
-    REQUEST --> GROUND["Orthophoto / ground material"]
-    REQUEST --> ASSETS["Measured asset placements"]
-    REQUEST --> SOURCE["Source revisions · rights · provenance"]
-
-    TERRAIN --> SHARDS["Deterministic tile shards"]
-    GROUND --> SHARDS
-    ASSETS --> SHARDS
-    SOURCE --> SHARDS
-
-    SHARDS --> CHECKPOINTS["Resumable checkpoints"]
-    CHECKPOINTS --> ASSEMBLER["Single final assembler"]
-
-    ASSEMBLER --> USD["OpenUSD scene"]
-    ASSEMBLER --> VIEWER["Tiled web-view package"]
-    ASSEMBLER --> MANIFEST["Manifest · hashes · provenance"]
-    ASSEMBLER --> VALIDATION["Validation receipts"]
-
-    USD --> PACKAGE["Versioned measured-map package"]
-    VIEWER --> PACKAGE
-    MANIFEST --> PACKAGE
-    VALIDATION --> PACKAGE
-
-    PACKAGE --> RECEIPT["Terminal completion receipt"]
+    REQUEST["Immutable geographic request"] --> PLAN["Plan · CRS · tiles"]
+    PLAN --> SOURCES["Measured geographic sources"]
+    SOURCES --> SHARDS["Deterministic resumable shards"]
+    SHARDS --> ASSEMBLY["Final assembly"]
+    ASSEMBLY --> PACKAGE["Measured-map package"]
+    PACKAGE --> RECEIPT["Manifest · hashes · provenance · completion receipt"]
 ```
 
-The diagram shows the package-production boundary. Wildfire observations, Part.4 state reconstruction and simulation are not Map Builder inputs and do not rewrite the measured map.
+## Package classes
 
-## Tiled viewer
+A package can contain:
 
-The production viewer is a tiled package rather than one mandatory monolithic GLB. A package can contain:
+- authoritative terrain and geographic artifacts;
+- a portable OpenUSD scene;
+- a tiled browser-view package;
+- shared prototype and placement payloads;
+- source, rights and provenance manifests;
+- validation metrics and terminal receipts.
 
-- a lightweight far view for continuous geographic context;
-- shared prototype namespaces for reusable assets;
-- per-tile terrain payloads;
-- per-tile placement payloads;
-- a catalogue for progressive loading.
+Viewer derivatives improve loading and presentation but do not replace the
+authoritative geographic artifacts.
 
-The browser can load and evict detailed tiles according to camera visibility and a bounded resident-tile budget. Viewer optimisation must not rewrite authoritative geographic results.
+## Resumability
 
-## Resumable workers
+Large requests can be partitioned into deterministic tile shards. Each shard
+owns a fixed tile set and publishes checkpoints. One dependent assembler restores
+the complete checkpoint set and creates the final package.
 
-Large requests can be partitioned into disjoint deterministic tile shards. Each shard owns a fixed tile set and can publish resumable checkpoints. A single dependent assembler restores the complete checkpoint set and creates the final package.
+A resumed job must preserve request identity, tile ownership, source revisions
+and output identity. Resume is not permission to mix outputs from different
+profiles or source versions.
 
-Source metatiles remain assigned deterministically so shared downloads are not duplicated unnecessarily across workers.
+## FireViewer integration
 
-The same engine can support an asset-free profile. An asset-free build keeps an explicitly empty prototype namespace, including across resume, instead of inventing placeholder assets.
+FireViewer sends only the technical request needed for map production. The
+builder does not receive authority to publish an incident or approve evidence.
 
-## Unreal Engine source adapter
+The integration is version-locked through one or more of:
 
-The Unreal integration is split across two published source repositories and
-one local source tree whose publication is currently paused:
+- a package version;
+- an immutable source revision;
+- a container digest;
+- a request/response schema revision.
 
-- [`fireviewer-spatial`](https://github.com/fireviewer/fireviewer-spatial)
-  defines portable map-export and asset-variant contracts;
-- the unpublished local `fireviewer-unreal` working tree consumes those
-  contracts in an Unreal Engine project and commandlets;
-- `fireviewer-backend` contains an optional `aws_unreal` job adapter for a
-  separately configured, self-terminating Windows worker.
+`fireviewer-docker` composes the FireViewer services and references the approved
+UWD image or package. It does not copy the Map Builder source into the
+association repository.
 
-The backend adapter is disabled unless its explicit provider and deployment
-configuration are supplied. Cloud account, image, template, bucket and machine
-identifiers remain operator configuration and are not committed.
+## Unreal separation
 
-The local `fireviewer-unreal` tree is deliberately source-only. Unreal content
-libraries, imported assets, datasets, models, built projects, generated maps,
-captures and reproduction outputs remain outside Git. The repository keeps one
-small, invented incident example as JSON/GeoJSON configuration so the
-integration contract can be understood and tested without publishing a real
-incident or a produced scene.
+The UWD repository owns generic cartographic Unreal tooling. The private
+`fireviewer-unreal` repository owns FireViewer-specific fire visualisation and
+scenario logic. A FireViewer adapter may consume the UWD plugin or package, but
+must not maintain a silent second implementation of the generic builder.
 
-Source presence establishes an integration contract; it does not prove that an
-Unreal build, cloud worker, visual result or public deployment has been
-accepted.
-
-## Validation boundary
-
-Validation can check:
-
-- request identity;
-- tile coverage;
-- geographic bounds;
-- package structure;
-- provenance and licences;
-- required receipts;
-- semantic parity across supported execution environments.
-
-Binary identity is not required for formats that can contain variable metadata; semantic equivalence is the relevant comparison where documented.
-
-A successful synthetic test, container run or cloud replay does not prove every map size, source condition, browser or publication route. Runtime resource measurements, visual review, public loading and atomic publication remain separate acceptance gates.
+Source presence does not establish packaged-build, visual, cloud-runtime or
+production acceptance.
 
 ## Measured-map publication
 
-The incident website also consumes **immutable web terrain releases** through a
-public catalogue. On 6 September 2026, all eleven registered territories loaded
-in the public browser. Their terrain releases are distinct from the dated
-incident layers applied by the frontend. See the [web atlas gallery](WEB_MAPS.md)
-for captures, interface progress and the eight territories with incident geometry.
+Accepted real measured packages are hosted in the designated FireViewer
+artifact repository, currently:
 
-Real measured packages are hosted in:
+`fireviewer/simple-measured-scenes-v1`
 
-[`fireviewer/simple-measured-scenes-v1`](https://huggingface.co/datasets/fireviewer/simple-measured-scenes-v1)
+Published paths are compatibility-sensitive. Existing directories, filenames
+or identifiers must not be moved merely to make a repository look tidier. A
+structural change requires a versioned migration and coordinated consumer
+updates.
 
-That repository is a compatibility surface for the viewer. Existing published directories, filenames and package paths can be referenced directly by consumers.
+A measured map describes geographic context. Dated wildfire perimeters,
+activity, located-photo references and Part.4 results remain separate incident
+layers.
 
-**Documentation cleanup must not rename, move, flatten or reorganise existing measured-map packages.** A structural migration requires an explicit versioned migration contract and coordinated update of every consumer.
+## Security and data boundary
 
-New real map builds should be added with their own zone identity, build identity, provenance, integrity hashes and validation state rather than replacing a referenced build silently.
+The public source repositories must not contain:
 
-## What is not a measured map
+- provider credentials or signed URLs;
+- local machine paths or operator configuration;
+- source rasters or private evidence;
+- generated production packages or checkpoints;
+- internal deployment identifiers;
+- licensed asset libraries without redistribution rights.
 
-The following artifact families are deliberately separate from measured-map production:
+## Non-goals
 
-- synthetic Omniverse scenes;
-- historical reproduction packs;
-- unit/integration fixtures;
-- cloud-provider migration baselines;
-- temporary build outputs;
-- unaccepted validation runs.
-
-The repository directory `fireviewer-spatial/reference/map-builder-reference-v1` is a **semantic validation baseline for the AWS migration**, not a published production map. It is intentionally left in place; documentation classifies it correctly without moving it and risking broken references.
-
-## Data and security
-
-Source rasters, generated production packages, checkpoints, private evidence, credentials, provider identifiers and operator runbooks do not belong in Git.
-
-Public source repositories contain code, portable contracts, small validation fixtures and concise documentation. Heavy measured-map artifacts remain in designated artifact storage.
-
-Repository cleanup follows the [source publication and hygiene boundary](REPOSITORY_HYGIENE.md). Compatibility paths and active legacy adapters are not removed merely because their names look old.
-
-## Relationship to Part.4
-
-Map creation is separate from **Part.4 3.3** fire-state reconstruction. The map defines measured geographic context; Part.4 reconstructs dated wildfire state from reviewed observations. Neither should be presented as the other.
+The Map Builder is not an emergency system, an incident registry, an evidence
+supervisor or a wildfire-propagation predictor.
