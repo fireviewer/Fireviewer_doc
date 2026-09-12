@@ -1,5 +1,7 @@
 # FireViewer
 
+Voir [ORGANISATION.md](ORGANISATION.md) pour les responsabilités, le dépôt de commit et la reprise du travail.
+
 **Evidence-centred infrastructure for documenting, reviewing, mapping and studying wildfire events.**
 
 FireViewer is a research and engineering project developed primarily by

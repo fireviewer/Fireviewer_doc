@@ -33,9 +33,9 @@ real-data path is enabled, accepted or scientifically qualified.
 | `fireviewer/fireviewer-unreal` | Fire-specific visualisation and scenarios | FIRE-VIEWER · private |
 | `fireviewer/fireviewer-docker` | Version locks and FireViewer service composition | FIRE-VIEWER · private |
 | `fireviewer/fireviewer-ai-worker` | Temporary compatibility imports and commands | FIRE-VIEWER · private, transitional |
-| `fireviewer/fireviewer-spatial` | Historical spatial archive retained for provenance and compatibility | FIRE-VIEWER · private, archived |
-| `fireviewer/fireviewer-sdg` | Historical simulation archive | FIRE-VIEWER · private, archived |
-| `fireviewer/models` | Historical registry source superseded by `fireviewer-model-lab` | FIRE-VIEWER · private, archived |
+| `fireviewer/fireviewer-spatial` | Historical spatial archive retained for provenance and compatibility | FIRE-VIEWER · restored offline archive; removed from GitHub |
+| `fireviewer/fireviewer-sdg` | Historical simulation archive | FIRE-VIEWER · restored offline archive; removed from GitHub |
+| `fireviewer/models` | Historical registry source superseded by `fireviewer-model-lab` | FIRE-VIEWER · restored offline archive; removed from GitHub |
 | `unicornwhodev/map-builder` | Generic measured-map producer, CLI/API/UI and cartographic tooling | UWD · private |
 
 Repository visibility is an access decision, not a maturity level.
@@ -57,6 +57,8 @@ The FireViewer Docker repository references approved UWD releases. It does not
 copy or reassign the generic builder source.
 
 ## Historical repositories
+
+The three superseded repositories `fireviewer-spatial`, `fireviewer-sdg` and `models` were removed from GitHub on 9 September 2026. One verified compact archive is retained per repository, including Git history and available issue/PR/release metadata. See [current organisation and commit routing](ORGANISATION.md).
 
 Archived repositories are retained only when needed for provenance,
 compatibility or recovery. They are not active implementation locations and
