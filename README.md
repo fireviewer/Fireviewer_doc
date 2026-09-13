@@ -4,9 +4,15 @@ Voir [ORGANISATION.md](ORGANISATION.md) pour les responsabilités, le dépôt de
 
 **Evidence-centred infrastructure for documenting, reviewing, mapping and studying wildfire events.**
 
-FireViewer is a research and engineering project developed primarily by
-**Unicorn Who Dev** and supported administratively by the French non-profit
-association **FIRE-VIEWER**.
+FireViewer is a maintainer-led research and engineering project. Its application
+and domain components are maintained in dedicated `fireviewer` repositories.
+The French non-profit association **FIRE-VIEWER** provides administrative and
+financial stewardship for association-controlled resources.
+
+Technical development is currently led by **Unicorn Who Dev**. The generic
+Map Builder remains a separate UWD component. Historical authorship,
+pre-association rights and explicit asset agreements are preserved; repository
+placement does not by itself establish legal ownership.
 
 The project combines official and public sources, authorised contributions,
 deterministic geographic processing, machine-assisted analysis and human
