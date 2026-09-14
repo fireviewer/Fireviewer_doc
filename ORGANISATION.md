@@ -1,33 +1,23 @@
 # Organisation de Fireviewer_doc
 
-Source canonique : **[fireviewer/Fireviewer_doc](https://github.com/fireviewer/Fireviewer_doc)**. Responsabilité technique : **FV**. Accès : **public**.
+Source canonique : **[fireviewer/Fireviewer_doc](https://github.com/fireviewer/Fireviewer_doc)**. Responsabilité technique : **FIRE-VIEWER**. Accès : **public**.
 
-Documentation de référence et organisation du projet.
+Ce dépôt contient la documentation publique de référence de FireViewer.
 
-## Où travailler et commiter
+## Règles de contribution
 
-Dans le workspace organisé, ouvrir **`actifs/fireviewer/Fireviewer_doc`**. Chaque dossier est un dépôt Git autonome. Créer une branche de chantier dans ce dépôt ; pour un travail parallèle, créer un worktree sous `travaux/<chantier>/<composant>`. Ne jamais commiter depuis la racine multi-dépôts, `archives/` ou un ancien chemin de compatibilité.
+- Les changements de documentation générale FireViewer sont committés ici.
+- Le code ou la documentation propre à un composant restent dans le dépôt canonique de ce composant.
+- Une modification multi-composants conserve des commits séparés par dépôt.
+- Avant publication, revoir le dépôt cible et le diff puis exécuter `git diff --check`.
+- Un changement de contrat public, de responsabilité ou de limite de qualification doit être reflété dans la documentation correspondante.
 
-Architecture, responsabilités, contrats décrits, limites de qualification et guide des dépôts.
+Les conventions de rangement d’un poste de travail ne font pas partie de la documentation publique de référence.
 
-Les secrets, journaux privés et procédures internes vont dans fireviewer-docker ou restent locaux.
+## Droits et historique
 
-Avant un commit : vérifier `git rev-parse --show-toplevel`, `git remote -v`, `git status --short` puis `git diff --check`. Ajouter les fichiers nommément après revue. Les modifications de plusieurs composants donnent des commits distincts, reliés par leurs versions et contrats.
+Les licences, auteurs et notices historiques sont conservés. La responsabilité technique, la visibilité GitHub et l’emplacement d’un dépôt ne constituent pas une cession de propriété intellectuelle.
 
-## Reprendre la vérification
+Les anciens dépôts `fireviewer-spatial`, `fireviewer-sdg` et `models` sont des références historiques archivées hors de l’organisation active. Ils ne sont plus des emplacements de développement.
 
-```text
-git diff --check
-```
-
-Suivre les prérequis et verrous du dépôt. Les packages privés sont téléchargés avec les accès limités prévus ; aucun dossier source voisin ne doit être nécessaire. Les secrets et fichiers `.env` réels, données, poids, corpus et sorties restent hors Git.
-
-## Droits, historique et limites
-
-Les licences, auteurs et notices historiques sont conservés. La responsabilité technique UWD/FV et la visibilité GitHub ne constituent pas une cession signée. Les droits tiers restent distincts.
-
-Les anciens dépôts `fireviewer-spatial`, `fireviewer-sdg` et `models` sont remplacés et conservés en archives restaurables hors de l’organisation active. Les anciens imports nécessaires restent dans les adaptateurs explicitement maintenus. Les références historiques dans les notices et reçus gardent leur date.
-
-La généralisation agentique des périmètres/photos, les recettes fournisseurs/modèles et Unreal natif auparavant inachevées gardent leurs propres critères de réception. Aucun succès CPU ne les déclare réalisés.
-
-[README](README.md) · [Organisation générale](https://github.com/fireviewer/Fireviewer_doc/blob/main/docs/public/ORGANISATION.md)
+[README](README.md) · [Organisation générale](docs/public/ORGANISATION.md) · [Hygiène des dépôts](docs/public/REPOSITORY_HYGIENE.md)
