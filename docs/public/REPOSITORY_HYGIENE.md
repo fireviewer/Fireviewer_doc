@@ -22,30 +22,22 @@ FireViewer public Git repositories contain source, documentation, licences, port
 
 A public URL does not itself grant redistribution rights. Third-party resources should be referenced by provider, applicable terms and immutable revision when copying is unnecessary or not authorised.
 
-## Automated public-hygiene gate
-
-The public repositories run `.github/workflows/public-hygiene.yml` on pull requests and updates to `main`.
-
-The gate checks the tracked tree for file types that do not belong in public Git and scans readable text for a small set of high-confidence patterns associated with accidentally published operational identifiers, signing material or machine-local paths.
-
-The check is intentionally conservative: it does not try to infer every possible sensitive value and it does not inspect Git history. It also cannot replace visual inspection of screenshots, binary metadata review or rights verification.
-
 ## Cleanup rule
 
 Cleanup is reference-aware. A generated output, abandoned probe, duplicate or obsolete configuration can be removed only after imports, tests, build files, published paths and consumers have been checked.
 
 Compatibility identifiers remain until a migration updates every consumer. Removing a file from the current branch does not remove it from Git history.
 
-## Pre-publication gates
+## Pre-publication review
 
 Before every public update:
 
 1. review the exact changed files and diff;
-2. run the automated public-hygiene gate;
-3. verify that examples contain placeholders only;
+2. verify that examples contain placeholders only;
+3. check changed text and configuration for credentials, private identifiers and machine-local paths;
 4. inspect screenshots visually and remove unnecessary metadata;
 5. run relevant unit, contract and documentation checks;
 6. verify the pushed branch head and repository visibility;
 7. confirm that no public branch retains superseded working material.
 
-Passing these gates establishes only the source-publication boundary. It does not qualify a cloud deployment, model, incident workflow or scientific result.
+Passing these checks establishes only the source-publication boundary. It does not qualify a cloud deployment, model, incident workflow or scientific result.
