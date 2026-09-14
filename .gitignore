@@ -29,6 +29,33 @@ weights/
 *.7z
 *.log
 
+# Credentials, local configuration and private-key material.
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+id_rsa*
+id_ed25519*
+credentials*.json
+service-account*.json
+*service_account*.json
+*.tfstate
+*.tfstate.*
+.terraform/
+kubeconfig*
+*.kubeconfig
+*.ovpn
+*.mobileprovision
+*.provisionprofile
+.npmrc
+.pypirc
+.netrc
+
+.DS_Store
+Thumbs.db
+
 # The public set documents stable architecture, safety, governance, repository
 # roles, and a dated capability boundary. Internal plans, runbooks, ADRs, and
 # project tracking remain local and untracked.
@@ -43,6 +70,7 @@ docs/**
 !docs/public/DATA_GOVERNANCE.md
 !docs/public/MAP_BUILDER.md
 !docs/public/STATUS.md
+!docs/public/STATUS-*.md
 !docs/public/REPOSITORIES.md
 !docs/public/REPOSITORY_HYGIENE.md
 !docs/public/WEB_MAPS.md
