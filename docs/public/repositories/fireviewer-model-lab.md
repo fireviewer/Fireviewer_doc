@@ -1,6 +1,6 @@
 # fireviewer/fireviewer-model-lab
 
-**Visibilité :** privé
+**Visibilité :** public
 **Catégorie :** Recherche
 **URL :** https://github.com/fireviewer/fireviewer-model-lab
 

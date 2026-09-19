@@ -1,6 +1,6 @@
 # fireviewer/fireviewer-fire-state
 
-**Visibilité :** privé
+**Visibilité :** public
 **Catégorie :** Cœur
 **URL :** https://github.com/fireviewer/fireviewer-fire-state
 

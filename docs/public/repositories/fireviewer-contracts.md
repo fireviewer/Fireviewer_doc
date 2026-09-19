@@ -1,6 +1,6 @@
 # fireviewer/fireviewer-contracts
 
-**Visibilité :** privé
+**Visibilité :** public
 **Catégorie :** Cœur
 **URL :** https://github.com/fireviewer/fireviewer-contracts
 

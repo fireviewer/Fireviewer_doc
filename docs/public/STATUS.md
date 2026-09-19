@@ -34,6 +34,10 @@ The [public HF catalogue](HUGGINGFACE.md) separates the independent detector ben
 
 The detection corpus has 102,257 published records according to its retained audit. The new `fire-and-smoke-corpus-point-and-detect` repository contained only `.gitattributes` at the inventory revision: no usable corpus or 250,000-image delivery is established. Historical training bundles are file archives with separate per-bundle readiness. Measured maps remain separate from fire observations.
 
+## Public source release
+
+Eight domain components are now public, alongside the organisation profile and canonical documentation. See the [release scope](OPEN_SOURCE.md) for the explicit list and exclusions. This visibility change retains existing licences and acceptance boundaries; it is not a new deployment or qualification.
+
 ## Publication and evidence rules
 
 The backend retains publication authority. **Terrain packages and AI/LLM results do not follow the same acceptance rule.** Terrain packages attached to an existing incident can be published automatically after technical acceptance; sensitive AI/LLM results retain human validation. This documents the responsibility boundary, not a new verification of a deployed route.

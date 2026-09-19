@@ -1,6 +1,6 @@
 # fireviewer/fireviewer-vision-runtime
 
-**Visibilité :** privé
+**Visibilité :** public
 **Catégorie :** Cœur
 **URL :** https://github.com/fireviewer/fireviewer-vision-runtime
 

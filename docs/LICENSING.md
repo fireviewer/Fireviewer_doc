@@ -11,7 +11,7 @@ an external artifact.
 | `fireviewer/Fireviewer_doc` | AGPL-3.0-or-later for original executable scripts | CC BY 4.0 unless a file states otherwise |
 | `fireviewer/.github` | Not applicable unless a file states otherwise | CC BY 4.0 for original organisation-profile and policy content |
 
-Each private component repository contains, or must contain before external
+Each component repository contains, or must contain before external
 distribution, its own licence and notices. A private repository is not
 automatically proprietary, transferred or relicensed merely because access is
 restricted.

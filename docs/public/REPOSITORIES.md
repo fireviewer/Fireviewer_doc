@@ -20,14 +20,14 @@ The GitHub inventory verified on 19 September 2026 contains **18 FireViewer repo
 | `fireviewer/fireviewer-backend` | Incidents, accounts, permissions, durable evidence, audit, review and publication | FIRE-VIEWER · private |
 | `fireviewer/fireviewer-frontend` | Contribution, administration, catalogue, chronology and public exploration | FIRE-VIEWER · private |
 | `fireviewer/fireviewer-association-site` | Institutional website of the association | FIRE-VIEWER · private |
-| `fireviewer/fireviewer-contracts` | Shared evidence, geometry and result contracts | FIRE-VIEWER · private |
-| `fireviewer/fireviewer-evidence-ingestion` | Source, media, transcription and satellite acquisition/normalisation | FIRE-VIEWER · private |
-| `fireviewer/fireviewer-vision-runtime` | Detection, keyframes, segmentation, OCR and visual observations | FIRE-VIEWER · private |
-| `fireviewer/fireviewer-geolocation` | Deterministic geographic hypotheses, retrieval and registration | FIRE-VIEWER · private |
-| `fireviewer/fireviewer-evidence-supervisor` | Evidence assessment, contradictions and `accept`, `reject`, `abstain` | FIRE-VIEWER · private |
-| `fireviewer/fireviewer-orchestrator` | Dispatch, retries, receipts and idempotency | FIRE-VIEWER · private |
-| `fireviewer/fireviewer-fire-state` | Part.4 calculation, profiles, calibration and evaluation | FIRE-VIEWER · private |
-| `fireviewer/fireviewer-model-lab` | Corpus preparation, training recipes, benchmarks and model registry | FIRE-VIEWER · private |
+| `fireviewer/fireviewer-contracts` | Shared evidence, geometry and result contracts | FIRE-VIEWER · public |
+| `fireviewer/fireviewer-evidence-ingestion` | Source, media, transcription and satellite acquisition/normalisation | FIRE-VIEWER · public |
+| `fireviewer/fireviewer-vision-runtime` | Detection, keyframes, segmentation, OCR and visual observations | FIRE-VIEWER · public |
+| `fireviewer/fireviewer-geolocation` | Deterministic geographic hypotheses, retrieval and registration | FIRE-VIEWER · public |
+| `fireviewer/fireviewer-evidence-supervisor` | Evidence assessment, contradictions and `accept`, `reject`, `abstain` | FIRE-VIEWER · public |
+| `fireviewer/fireviewer-orchestrator` | Dispatch, retries, receipts and idempotency | FIRE-VIEWER · public |
+| `fireviewer/fireviewer-fire-state` | Part.4 calculation, profiles, calibration and evaluation | FIRE-VIEWER · public |
+| `fireviewer/fireviewer-model-lab` | Corpus preparation, training recipes, benchmarks and model registry | FIRE-VIEWER · public |
 | `fireviewer/fireviewer-unreal` | Fire-specific visualisation and scenarios; simulation on hold outside current MVP work | FIRE-VIEWER · private |
 | `fireviewer/fireviewer-docker` | Version locks, service composition, reconstruction procedures and private operational receipts | FIRE-VIEWER · private |
 | `fireviewer/fireviewer-ai-worker` | Compatibility imports and commands for existing consumers; no new canonical algorithms | FIRE-VIEWER · private, transitional |
@@ -36,6 +36,8 @@ The GitHub inventory verified on 19 September 2026 contains **18 FireViewer repo
 | `unicornwhodev/map-builder` | Generic measured-map producer, CLI/API/UI and cartographic tooling | UWD · private |
 
 Repository visibility is an access decision, not a maturity level. A publicly accessible website does not make its source repository public.
+
+The [first public source release](OPEN_SOURCE.md) opens eight domain components on 19 September 2026. The profile and canonical documentation remain public; sites, backend, Android applications and operational infrastructure stay private.
 
 ## Responsibility boundary
 

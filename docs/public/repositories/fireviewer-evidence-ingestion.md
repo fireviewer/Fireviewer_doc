@@ -1,6 +1,6 @@
 # fireviewer/fireviewer-evidence-ingestion
 
-**Visibilité :** privé
+**Visibilité :** public
 **Catégorie :** Cœur
 **URL :** https://github.com/fireviewer/fireviewer-evidence-ingestion
 

@@ -2,7 +2,7 @@
 
 **État documentaire et inventaire GitHub vérifiés : 19 septembre 2026.**
 
-L’organisation active comprend **18 dépôts FIRE-VIEWER : 16 composants cœur, institutionnels, infrastructure et transition, plus 2 dépôts auxiliaires Android**. Le dépôt UWD `unicornwhodev/map-builder` reste une dépendance externe séparée ; il ne fait pas partie de ces 18 dépôts. Les applications et composants FIRE-VIEWER sont privés ; seuls `fireviewer/.github` et `fireviewer/Fireviewer_doc` sont publics. La visibilité d’un dépôt ne constitue ni une preuve de maturité ni une cession de droits.
+L’organisation active comprend **18 dépôts FIRE-VIEWER : 16 composants cœur, institutionnels, infrastructure et transition, plus 2 dépôts auxiliaires Android**. Le dépôt UWD `unicornwhodev/map-builder` reste une dépendance externe séparée ; il ne fait pas partie de ces 18 dépôts. Huit composants de domaine rejoignent les deux dépôts documentaires publics dans le [premier lot d’ouverture](OPEN_SOURCE.md). Les sites, le backend, les applications Android, l’infrastructure, le worker transitoire et Unreal restent privés. La visibilité d’un dépôt ne constitue ni une preuve de maturité ni une cession de droits.
 
 | Dépôt | Responsabilité | Accès |
 | --- | --- | --- |
@@ -11,17 +11,17 @@ L’organisation active comprend **18 dépôts FIRE-VIEWER : 16 composants cœur
 | `fireviewer/fireviewer-ai-worker` | Compatibilité d’anciens imports et commandes | privé, transition |
 | `fireviewer/fireviewer-association-site` | Site institutionnel de l’association | privé |
 | `fireviewer/fireviewer-backend` | Incidents, comptes, droits, décisions, audit et publication | privé |
-| `fireviewer/fireviewer-contracts` | Contrats métier et géométrie partagée | privé |
+| `fireviewer/fireviewer-contracts` | Contrats métier et géométrie partagée | public |
 | `fireviewer/fireviewer-docker` | Composition, verrous de versions et procédures d’exploitation | privé |
-| `fireviewer/fireviewer-evidence-ingestion` | Sources, médias, transcription et acquisition/normalisation satellite | privé |
-| `fireviewer/fireviewer-evidence-supervisor` | Évaluation des preuves, contradictions, acceptation, rejet et abstention | privé |
-| `fireviewer/fireviewer-fire-state` | Calcul Part.4, profils, calibration et évaluation | privé |
+| `fireviewer/fireviewer-evidence-ingestion` | Sources, médias, transcription et acquisition/normalisation satellite | public |
+| `fireviewer/fireviewer-evidence-supervisor` | Évaluation des preuves, contradictions, acceptation, rejet et abstention | public |
+| `fireviewer/fireviewer-fire-state` | Calcul Part.4, profils, calibration et évaluation | public |
 | `fireviewer/fireviewer-frontend` | Viewer, administration, catalogue, contribution et chronologie | privé |
-| `fireviewer/fireviewer-geolocation` | Hypothèses géographiques, Panoramax, retrieval et registration | privé |
-| `fireviewer/fireviewer-model-lab` | Corpus, entraînement, benchmarks et registre des modèles | privé |
-| `fireviewer/fireviewer-orchestrator` | Exécution, dispatch, reprises et idempotence | privé |
+| `fireviewer/fireviewer-geolocation` | Hypothèses géographiques, Panoramax, retrieval et registration | public |
+| `fireviewer/fireviewer-model-lab` | Corpus, entraînement, benchmarks et registre des modèles | public |
+| `fireviewer/fireviewer-orchestrator` | Exécution, dispatch, reprises et idempotence | public |
 | `fireviewer/fireviewer-unreal` | Visualisation et scénarios incendie Unreal | privé |
-| `fireviewer/fireviewer-vision-runtime` | Détection, pointage, segmentation et keyframes | privé |
+| `fireviewer/fireviewer-vision-runtime` | Détection, pointage, segmentation et keyframes | public |
 | `fireviewer/FIRE-VIEWER-gestion-android` | Gestion associative Android ; hors pipeline incendie | privé, auxiliaire |
 | `fireviewer/pointing-atelier` | Annotation manuelle Android et corpus HF ; préparation automatique en pause | privé, auxiliaire |
 | `unicornwhodev/map-builder` | Producteur cartographique générique, CLI/API/UI et outils cartographiques Unreal | privé · UWD |
