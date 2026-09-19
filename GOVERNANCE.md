@@ -110,3 +110,7 @@ stewardship or ownership require a written record.
 ## Contact
 
 **contact@fire-viewer.fr**
+
+## Présentation française
+
+Voir [Gouvernance, stewardship et droits](docs/public/presentations/GOUVERNANCE_ET_DROITS.md), consolidée à partir du pack du 19 septembre 2026. Les pièces administratives datées restent distinctes des présentations publiques.

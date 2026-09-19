@@ -1,8 +1,8 @@
 # Organisation des dépôts FireViewer et UWD
 
-**État documentaire : 14 septembre 2026.**
+**État documentaire et inventaire GitHub vérifiés : 19 septembre 2026.**
 
-L’organisation active comprend **16 dépôts FIRE-VIEWER** et le dépôt UWD `unicornwhodev/map-builder`. Les applications et composants FIRE-VIEWER sont privés ; seuls `fireviewer/.github` et `fireviewer/Fireviewer_doc` sont publics. La visibilité d’un dépôt ne constitue ni une preuve de maturité ni une cession de droits.
+L’organisation active comprend **18 dépôts FIRE-VIEWER : 16 composants cœur, institutionnels, infrastructure et transition, plus 2 dépôts auxiliaires Android**. Le dépôt UWD `unicornwhodev/map-builder` reste une dépendance externe séparée ; il ne fait pas partie de ces 18 dépôts. Les applications et composants FIRE-VIEWER sont privés ; seuls `fireviewer/.github` et `fireviewer/Fireviewer_doc` sont publics. La visibilité d’un dépôt ne constitue ni une preuve de maturité ni une cession de droits.
 
 | Dépôt | Responsabilité | Accès |
 | --- | --- | --- |
@@ -22,7 +22,11 @@ L’organisation active comprend **16 dépôts FIRE-VIEWER** et le dépôt UWD `
 | `fireviewer/fireviewer-orchestrator` | Exécution, dispatch, reprises et idempotence | privé |
 | `fireviewer/fireviewer-unreal` | Visualisation et scénarios incendie Unreal | privé |
 | `fireviewer/fireviewer-vision-runtime` | Détection, pointage, segmentation et keyframes | privé |
+| `fireviewer/FIRE-VIEWER-gestion-android` | Gestion associative Android ; hors pipeline incendie | privé, auxiliaire |
+| `fireviewer/pointing-atelier` | Annotation manuelle Android et corpus HF ; préparation automatique en pause | privé, auxiliaire |
 | `unicornwhodev/map-builder` | Producteur cartographique générique, CLI/API/UI et outils cartographiques Unreal | privé · UWD |
+
+Les [fiches des 18 dépôts](repositories/README.md) décrivent leurs entrées, sorties et limites. Ces deux dépôts auxiliaires n’ajoutent pas deux microservices au pipeline. Unreal reste conservé pour un chantier de simulation en attente, hors travaux MVP actuels.
 
 ## Routage des changements
 
@@ -32,6 +36,7 @@ L’organisation active comprend **16 dépôts FIRE-VIEWER** et le dépôt UWD `
 - Contrats partagés : `fireviewer-contracts` ; algorithmes : composant métier concerné ; entraînement et registre : `fireviewer-model-lab`.
 - Compatibilité d’anciens imports : `fireviewer-ai-worker`, sans nouveau développement canonique.
 - Composition et versions d’exécution : `fireviewer-docker`.
+- Gestion associative mobile : `FIRE-VIEWER-gestion-android` ; annotation mobile et préparation des corpus : `pointing-atelier`, dans le respect de la pause documentée.
 
 Les chemins et conventions de rangement propres à un poste de travail ne définissent aucune source canonique et restent hors de cette documentation publique.
 

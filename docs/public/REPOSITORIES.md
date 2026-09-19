@@ -11,7 +11,7 @@ A repository, image or model being present does not prove that a complete real-d
 
 ## Active component map
 
-The active map contains 16 FV repositories and one UWD repository. Retired repositories are listed separately below, not counted as active components.
+The GitHub inventory verified on 19 September 2026 contains **18 FireViewer repositories**: the 16 core, institutional, infrastructure and transitional repositories below, plus two auxiliary Android repositories. The UWD Map Builder is a separate external dependency. Retired repositories are not active components. See the [individual repository descriptions](repositories/README.md).
 
 | Repository | Responsibility | Stewardship / visibility |
 | --- | --- | --- |
@@ -28,9 +28,11 @@ The active map contains 16 FV repositories and one UWD repository. Retired repos
 | `fireviewer/fireviewer-orchestrator` | Dispatch, retries, receipts and idempotency | FIRE-VIEWER · private |
 | `fireviewer/fireviewer-fire-state` | Part.4 calculation, profiles, calibration and evaluation | FIRE-VIEWER · private |
 | `fireviewer/fireviewer-model-lab` | Corpus preparation, training recipes, benchmarks and model registry | FIRE-VIEWER · private |
-| `fireviewer/fireviewer-unreal` | Fire-specific visualisation and scenarios | FIRE-VIEWER · private |
+| `fireviewer/fireviewer-unreal` | Fire-specific visualisation and scenarios; simulation on hold outside current MVP work | FIRE-VIEWER · private |
 | `fireviewer/fireviewer-docker` | Version locks, service composition, reconstruction procedures and private operational receipts | FIRE-VIEWER · private |
 | `fireviewer/fireviewer-ai-worker` | Compatibility imports and commands for existing consumers; no new canonical algorithms | FIRE-VIEWER · private, transitional |
+| `fireviewer/FIRE-VIEWER-gestion-android` | Android association management; outside the incident pipeline | FIRE-VIEWER · private, auxiliary |
+| `fireviewer/pointing-atelier` | Manual Android annotation and HF corpus workflows; automatic preparation paused | FIRE-VIEWER · private, auxiliary |
 | `unicornwhodev/map-builder` | Generic measured-map producer, CLI/API/UI and cartographic tooling | UWD · private |
 
 Repository visibility is an access decision, not a maturity level. A publicly accessible website does not make its source repository public.
@@ -60,6 +62,9 @@ Archives serve provenance, compatibility and recovery. They must not receive new
 The compatibility `fireviewer-ai-worker` repository remains active for bounded forwarding imports and commands while consumers migrate. New business logic belongs in the dedicated component. Retiring a repository or changing a README is not permission to remove still-used imports or published artifact paths.
 
 ## Hosted artifacts
+
+The [public Hugging Face catalogue](HUGGINGFACE.md) records five models and four public datasets, their immutable source revisions, protocol boundaries and resource status. Private research resources keep their documentation inside their restricted repositories.
+
 
 Real measured-map packages, model weights and datasets remain outside Git in designated artifact repositories. Their paths and revisions can be compatibility-sensitive and must not be reorganised without a migration.
 

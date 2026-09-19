@@ -23,6 +23,16 @@ the pipeline.
 > an incident-command system or a certified fire-propagation predictor. In an
 > emergency, follow the competent authorities and emergency services.
 
+## Documentation actualisée le 19 septembre 2026
+
+- [Présentation en une page](docs/public/presentations/PRESENTATION_1_PAGE.md), [pitchs](docs/public/presentations/PITCHS.md) et [partenaires/financeurs](docs/public/presentations/PRESENTATION_PARTENAIRES_FINANCEURS.md).
+- [Présentation technique](docs/public/presentations/PRESENTATION_TECHNIQUE.md) et [gouvernance/droits](docs/public/presentations/GOUVERNANCE_ET_DROITS.md).
+- [18 fiches GitHub](docs/public/repositories/README.md) : 16 dépôts cœur/institutionnels/infrastructure/transitoires et 2 auxiliaires Android.
+- [Catalogue public HF](docs/public/HUGGINGFACE.md) : 5 modèles et 4 datasets, avec statuts et limites.
+- [Vocabulaire des statuts](docs/public/STATUTS_ET_VOCABULAIRE.md) et [maintenance documentaire](docs/public/maintenance/PLAN_DE_MAINTENANCE.md).
+
+Site institutionnel : [fire-viewer.fr](https://fire-viewer.fr). La date de revue documentaire ne renouvelle aucune preuve de fonctionnement.
+
 ## Core rule
 
 ```text

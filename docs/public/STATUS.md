@@ -1,6 +1,6 @@
 # Implementation status and acceptance boundaries
 
-**Documentation review: 13 September 2026.** This update aligns the public status with the repository organisation documented on 12 September. It does not report a new application test run, live deployment check, model evaluation or native Unreal acceptance.
+**Documentation and repository inventory review: 19 September 2026.** This review incorporates the supplied documentation pack and checks GitHub/Hugging Face metadata and cards. It does not report a new application test run, live deployment check, model evaluation or native Unreal acceptance.
 
 FireViewer remains an active research MVP. Code present, a package built, an integration configured, a real path accepted end to end and a scientifically qualified result are different levels of evidence. Repository separation does not close unfinished functional work.
 
@@ -17,7 +17,7 @@ The historical snapshot is preserved as its original Git blob. Its headings cont
 
 ## Organisation now documented
 
-The active inventory contains **16 FireViewer repositories and the generic UWD Map Builder repository**. [Organisation](ORGANISATION.md) is the canonical routing reference; the [repository guide](REPOSITORIES.md) explains publication and stewardship.
+The active inventory contains **18 FireViewer repositories (16 core/institutional/infrastructure/transitional and 2 Android auxiliaries), plus the separate generic UWD Map Builder dependency**. [Organisation](ORGANISATION.md) is the canonical routing reference; the [repository guide](REPOSITORIES.md) explains publication and stewardship.
 
 | Boundary | Documented allocation | What this does not prove |
 | --- | --- | --- |
@@ -27,6 +27,12 @@ The active inventory contains **16 FireViewer repositories and the generic UWD M
 | Evidence and calculation | Dedicated FV contracts, ingestion, vision, geolocation, supervision, orchestration, fire-state and model-lab components. | Model quality, real-data geographic precision or calibration merely from package separation. |
 | Compatibility | `fireviewer-ai-worker` retains old imports and commands; new algorithms belong in the canonical components. | Permission to duplicate implementations or remove compatibility identifiers without a migration. |
 | Infrastructure and history | Infrastructure and receipts remain private; spatial, SDG and the former model-registry repositories are retired, not active development locations. | Completion of all historical recovery, local cleanup or legal attribution work. |
+
+## Models and datasets documented on 19 September
+
+The [public HF catalogue](HUGGINGFACE.md) separates the independent detector benchmark from RF-DETR training-validation metrics and DINOv3 pilot metrics. Public model weights do not establish runtime promotion or redistribution permission. DINOv3’s older private/public-release statements remain a rights-review issue; observed public visibility is not an approval decision.
+
+The detection corpus has 102,257 published records according to its retained audit. The new `fire-and-smoke-corpus-point-and-detect` repository contained only `.gitattributes` at the inventory revision: no usable corpus or 250,000-image delivery is established. Historical training bundles are file archives with separate per-bundle readiness. Measured maps remain separate from fire observations.
 
 ## Publication and evidence rules
 
@@ -46,7 +52,7 @@ The current organisation explicitly keeps these areas separate from repository c
 | --- | --- |
 | Agentic perimeters, activity and positioned photographs | A traceable real journey through the relevant components, attached to an incident, with separate layers and human decisions for AI results. |
 | Corpus, models and providers | Identified revisions, reproducible evaluations and the relevant data/model/provider acceptance. CPU checks do not establish GPU or real-provider qualification. |
-| Native Unreal execution and rendering | Native compilation, loading and visual acceptance for the intended target. Python tests and source-only plugins are insufficient. |
+| Native Unreal execution and rendering (simulation on hold, outside current MVP work) | Native compilation, loading and visual acceptance for the intended target. Python tests and source-only plugins are insufficient. |
 | Full contribution and publication journeys | End-to-end evidence for the actual route and configuration, rather than inference from individual repositories or images. |
 
 ### Dated Part.4 assessment
