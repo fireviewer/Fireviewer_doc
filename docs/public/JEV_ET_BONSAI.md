@@ -31,3 +31,7 @@ Leur protocole compare une seule brique à la fois avec observations visuelles c
 ## Dépôt dédié et pause
 
 La campagne 5–9 août 2025 porte sur 26 images au sol et 22 rapports. FV-01 : 48/48 réponses acceptées ; FV-02 : 44/48, quatre erreurs client conservées. Aucune comparaison quotidienne complète, aucun classement qualitatif. Les codes des douze contrats, le tableau, la collecte et les reçus expurgés sont publiés dans le dépôt dédié. La VM du laboratoire est arrêtée et ses données conservées.
+
+## Cohérence des paquets
+
+La migration épingle `fireviewer-contracts` 0.1.2. Les métadonnées de géolocalisation, collecte et supervision sont alignées, sans changement de leurs règles métier. Les CI construisent les dépendances aux commits immuables puis vérifient leurs wheels ; le manifeste de l'expérience référence les révisions de chaque dépôt. Les releases et images précédemment publiées ne sont pas écrasées.
