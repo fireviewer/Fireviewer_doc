@@ -127,3 +127,7 @@ For research, infrastructure, collaboration, rights, provenance or private
 security reports:
 
 **contact@fire-viewer.fr**
+
+## Jev et Bonsaï — 21 septembre 2026
+
+Voir [la migration et les expériences](docs/public/JEV_ET_BONSAI.md). Comparatifs quotidiens inachevés ; laboratoire suspendu.

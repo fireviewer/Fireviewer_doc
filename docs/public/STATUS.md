@@ -72,3 +72,7 @@ Existing published map paths and contracts remain compatibility interfaces. Clea
 Public pages describe responsibilities, methods and dated maturity. Detailed recovery decisions, local archives, provider identifiers, internal endpoints, raw logs and operational receipts remain in controlled private records, according to the [public documentation policy](../REPOSITORY_DOCUMENTATION_POLICY.md).
 
 Future status updates should identify the component or artifact revision, the date and scope of the check, the result and remaining limitations. A documentation date alone must never refresh an old functional claim.
+
+## Jev et Bonsaï — 21 septembre 2026
+
+Voir [la migration et les expériences](JEV_ET_BONSAI.md). Comparatifs quotidiens inachevés ; laboratoire suspendu.
