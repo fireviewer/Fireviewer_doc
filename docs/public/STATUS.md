@@ -76,3 +76,7 @@ Future status updates should identify the component or artifact revision, the da
 ## Jev et Bonsaï — 21 septembre 2026
 
 Voir [la migration et les expériences](JEV_ET_BONSAI.md). Comparatifs quotidiens inachevés ; laboratoire suspendu.
+
+## Complément du 23 septembre 2026
+
+Le pilote de révisions temporelles est décrit dans [la note de migration](INCIDENT_REVISIONS.md). Il conserve les parcours web existants et la compatibilité quotidienne. Cette évolution de sources ne déclare pas une activation en production ni une administration dans l’application Android.

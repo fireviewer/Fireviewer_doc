@@ -123,3 +123,7 @@ This dated atlas verification establishes that the documented pages and selected
 - emergency-service suitability.
 
 For current project maturity, use [Implementation status](STATUS.md). For the distinction between measured geography and incident reconstruction, see [Architecture](ARCHITECTURE.md) and [Map Builder boundary](MAP_BUILDER.md).
+
+## Complément du 23 septembre 2026
+
+Le pilote de révisions temporelles est décrit dans [la note de migration](INCIDENT_REVISIONS.md). Il conserve les parcours web existants et la compatibilité quotidienne. Cette évolution de sources ne déclare pas une activation en production ni une administration dans l’application Android.

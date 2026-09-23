@@ -121,3 +121,7 @@ The backend implements daily-state and correction APIs. The frontend supports ad
 The affected-component release sink requires a qualified component profile, matching identities and enabled backend gates; it does not accept active geometry. The current local component-profile registry contains no qualified profile. No automatic publication is implied by the existence of this code.
 
 See [Architecture](ARCHITECTURE.md), [Evidence and review](EVIDENCE_AND_REVIEW.md) and the dated [implementation status](STATUS.md).
+
+## Complément du 23 septembre 2026
+
+Le pilote de révisions temporelles est décrit dans [la note de migration](INCIDENT_REVISIONS.md). Il conserve les parcours web existants et la compatibilité quotidienne. Cette évolution de sources ne déclare pas une activation en production ni une administration dans l’application Android.

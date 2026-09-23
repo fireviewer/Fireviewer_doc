@@ -33,6 +33,10 @@ the pipeline.
 
 Site institutionnel : [fire-viewer.fr](https://fire-viewer.fr). La date de revue documentaire ne renouvelle aucune preuve de fonctionnement.
 
+## Migration temporelle en cours
+
+[Révisions d’incident : contrats, interfaces et limites de qualification](docs/public/INCIDENT_REVISIONS.md), état des sources au 23 septembre 2026.
+
 ## Public source components
 
 The [first public source release](docs/public/OPEN_SOURCE.md) opens eight components on 19 September 2026. Sites, backend, Android applications and infrastructure remain private. Source publication retains existing licences and does not establish production readiness.

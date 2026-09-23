@@ -16,6 +16,7 @@ This directory contains the maintained public technical description of FireViewe
 ## Technical documentation
 
 - [Architecture](ARCHITECTURE.md).
+- [Migration vers les révisions temporelles](INCIDENT_REVISIONS.md).
 - [Evidence, geographic candidates and review](EVIDENCE_AND_REVIEW.md).
 - [Daily reconstruction and isolated evaluation](RECONSTRUCTION.md).
 - [Data governance and privacy](DATA_GOVERNANCE.md).
