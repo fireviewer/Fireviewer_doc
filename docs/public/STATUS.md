@@ -80,3 +80,18 @@ Voir [la migration et les expériences](JEV_ET_BONSAI.md). Comparatifs quotidien
 ## Complément du 23 septembre 2026
 
 Le pilote de révisions temporelles est décrit dans [la note de migration](INCIDENT_REVISIONS.md). Il conserve les parcours web existants et la compatibilité quotidienne. Cette évolution de sources ne déclare pas une activation en production ni une administration dans l’application Android.
+
+## Réception du 24 septembre 2026
+
+Le backend **0.1.5** et le frontend **1.0.4** sont désormais déployés sur leurs services
+existants, avec le pilote de révisions activé. Les 843 tests backend, les recettes concurrentes
+PostgreSQL, les contrôles publics et de refus d'accès anonyme ont réussi. Deux tâches
+planifiées ont réellement terminé sur la nouvelle version ; la tâche événement manuelle
+n'a pas été exécutée en production pour cette recette.
+
+La carte complète de Die a été vérifiée visuellement avec ses périmètres, sa frise et ses vues
+2D/3D. La [note de migration](INCIDENT_REVISIONS.md) détaille les limites : accueil, compte
+et petit écran restent à compléter, les parcours automatiques sur médias réels ne sont pas
+entièrement reçus et l'ancien chemin quotidien est conservé. Aucun espace d'administration
+n'est ajouté à Android. Une migration d'hébergement AWS se prépare séparément ; elle
+n'est pas déclarée effectuée.

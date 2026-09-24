@@ -1,7 +1,8 @@
 # Migration vers les révisions temporelles d'incident
 
-État des sources au 23 septembre 2026 : raccordement additif en qualification. Cette note ne déclare
-ni un déploiement réalisé, ni les modèles et fournisseurs qualifiés sur des preuves réelles.
+Mise à jour du 24 septembre 2026 : le backend 0.1.5 et le frontend 1.0.4 sont déployés
+sur les services existants, avec le pilote de révisions activé. Cette réception ne qualifie
+pas les modèles et fournisseurs sur des preuves réelles et ne clôt pas l'étape 4.
 
 L'incident et son épisode conservent leur identité. Un état possède un instant de validité, une
 coupure de connaissance et une révision immuable. La journée devient une lecture de ces états ; les
@@ -47,12 +48,29 @@ jamais de l'accord précédent. Les décisions anciennes restent dans l'historiq
 1. Contrats, règles temporelles et cas de recette définis.
 2. Persistance additive des preuves, révisions, dépendances et décisions implémentée.
 3. Fusion à un instant extraite avec adaptateur quotidien conservé.
-4. Raccordements aux producteurs existants et interfaces web implémentés dans le pilote désactivé
-   par défaut. Les reçus de workers sont vérifiés ; cela ne prouve pas l'exécution de chaque modèle
-   et fournisseur sur des médias réels. La qualification PostgreSQL et le parcours déployé restent
-   des critères distincts de la recette locale.
+4. Raccordements aux producteurs existants et interfaces web déployés dans le pilote activé.
+   La qualification PostgreSQL concurrente et les contrôles des routes déployées ont réussi.
+   Les reçus de workers sont vérifiés ; cela ne prouve pas l'exécution de chaque modèle
+   et fournisseur sur des médias réels. L'enrichissement automatique complet reste à recevoir.
 5. Ancien chemin conservé jusqu'à validation complète de ses remplaçants.
 
 Les tests de navigateur à petit écran qualifient le site web responsive, pas l'application Android.
 Les tests CPU et installations isolées ne remplacent ni la calibration, ni une recette native Unreal,
 ni l'acceptation avec services déployés et preuves réelles.
+
+## Réception datée du 24 septembre 2026
+
+Le backend 0.1.5 a passé 843 tests, sans échec ni test ignoré, dont les recettes
+PostgreSQL de concurrence et d'immuabilité. La sauvegarde a été restaurée et migrée
+en recette avant la migration réelle. Les contrôles publics et de refus d'accès anonyme
+ont réussi. Les tâches existantes de publication des cartes et de sources officielles
+ont terminé avec succès sur la nouvelle version ; le pipeline événement manuel n'a
+pas été exécuté en production pour la recette.
+
+La carte complète de Die a été contrôlée visuellement en 2D et 3D, avec ses modes
+Naturel/Altitude, périmètres, photos et changement de date. Les vérifications complémentaires
+de l'accueil, du compte et du site à petit écran restent ouvertes. Les décisions et corrections
+sont exercées avec des fixtures isolées ; aucun faux contenu n'a été publié pour les tester.
+
+La migration d'hébergement vers AWS est en préparation et n'est pas déclarée terminée.
+Les reçus d'exploitation détaillés restent dans la documentation privée d'infrastructure.
