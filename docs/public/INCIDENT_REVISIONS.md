@@ -1,8 +1,10 @@
 # Migration vers les révisions temporelles d'incident
 
-Mise à jour du 24 septembre 2026 : le backend 0.1.5 et le frontend 1.0.4 sont déployés
-sur les services existants, avec le pilote de révisions activé. Cette réception ne qualifie
-pas les modèles et fournisseurs sur des preuves réelles et ne clôt pas l'étape 4.
+Mise à jour du 24 septembre 2026 : le backend 0.1.5 et le frontend 1.0.4 ont été livrés
+avec le pilote de révisions activé. **L'API et la base ont ensuite été arrêtées sur demande
+du mainteneur ; les fonctions dépendantes sont suspendues**, dans l'attente d'un hébergement
+de remplacement reçu. Voir la [disponibilité actuelle](STATUS.md). La réception antérieure
+ne qualifie pas les modèles et fournisseurs sur des preuves réelles et ne clôt pas l'étape 4.
 
 L'incident et son épisode conservent leur identité. Un état possède un instant de validité, une
 coupure de connaissance et une révision immuable. La journée devient une lecture de ces états ; les

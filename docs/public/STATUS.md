@@ -1,5 +1,13 @@
 # Implementation status and acceptance boundaries
 
+**Disponibilité au 24 septembre 2026, 01:49 UTC :** les services de calcul
+Azure, l'API et la base ont été arrêtés sur demande du mainteneur. Les fonctions
+qui dépendent de l'API sont suspendues. Les sauvegardes ont été vérifiées ; les
+catalogues des onze territoires de l'Atlas et des six scènes HF restent
+accessibles sur leurs stockages externes. Le frontend et ses interfaces sont
+conservés. Le remplacement de l'API n'est pas encore déployé ; les réceptions
+ci-dessous précèdent cet arrêt et ne prouvent pas la disponibilité actuelle.
+
 **Documentation and repository inventory review: 19 September 2026.** This review incorporates the supplied documentation pack and checks GitHub/Hugging Face metadata and cards. It does not report a new application test run, live deployment check, model evaluation or native Unreal acceptance.
 
 FireViewer remains an active research MVP. Code present, a package built, an integration configured, a real path accepted end to end and a scientifically qualified result are different levels of evidence. Repository separation does not close unfinished functional work.
@@ -83,7 +91,7 @@ Le pilote de révisions temporelles est décrit dans [la note de migration](INCI
 
 ## Réception du 24 septembre 2026
 
-Le backend **0.1.5** et le frontend **1.0.4** sont désormais déployés sur leurs services
+Le backend **0.1.5** et le frontend **1.0.4** ont été déployés sur leurs services
 existants, avec le pilote de révisions activé. Les 843 tests backend, les recettes concurrentes
 PostgreSQL, les contrôles publics et de refus d'accès anonyme ont réussi. Deux tâches
 planifiées ont réellement terminé sur la nouvelle version ; la tâche événement manuelle
